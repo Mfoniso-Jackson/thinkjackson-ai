@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/container";
+import { LinkedInIcon } from "@/components/linkedin-icon";
 import { Reveal } from "@/components/reveal";
 import { socialLinks } from "@/data/site";
 
@@ -49,9 +50,12 @@ export default function ContactPage() {
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-4 block text-2xl font-semibold text-white hover:text-signal"
+                className="mt-4 inline-flex items-center gap-3 text-2xl font-semibold text-white hover:text-signal"
               >
-                {item.label}
+                <span className="grid h-10 w-10 place-items-center rounded-lg border border-signal/35 bg-signal/10 text-signal">
+                  <LinkedInIcon className="h-5 w-5" />
+                </span>
+                <span>{item.label}</span>
               </Link>
             ))}
             <p className="mt-4 text-sm leading-6 text-steel">

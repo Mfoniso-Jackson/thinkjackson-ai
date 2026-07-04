@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
+import { LinkedInIcon } from "@/components/linkedin-icon";
 import { navigation, socialLinks } from "@/data/site";
 
 export function Footer() {
@@ -25,11 +26,13 @@ export function Footer() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm text-signal hover:text-white"
+              className="inline-flex items-center gap-1.5 text-sm text-signal hover:text-white"
               target="_blank"
               rel="noreferrer"
+              aria-label="LinkedIn profile"
             >
-              {item.label}
+              <LinkedInIcon className="h-4 w-4" />
+              <span>{item.label}</span>
             </Link>
           ))}
         </nav>
