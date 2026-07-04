@@ -1,4 +1,4 @@
-# thinkjackson.ai
+# thinkjackson.com
 
 Production-ready personal brand website for Mfoniso Jackson, built with Next.js App Router, TypeScript, Tailwind CSS, and Framer Motion.
 

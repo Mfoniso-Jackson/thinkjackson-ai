@@ -31,10 +31,10 @@ export default function ContactPage() {
           <div className="rounded-lg border border-line bg-white/[0.035] p-6">
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">Email</p>
             <Link
-              href="mailto:hello@thinkjackson.ai"
+              href="mailto:hello@thinkjackson.com"
               className="mt-4 block text-2xl font-semibold text-white hover:text-signal"
             >
-              hello@thinkjackson.ai
+              hello@thinkjackson.com
             </Link>
             <p className="mt-4 text-sm leading-6 text-steel">
               Replace this placeholder with the preferred public inbox before launch.

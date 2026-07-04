@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/"
     },
-    sitemap: "https://thinkjackson.ai/sitemap.xml"
+    sitemap: "https://thinkjackson.com/sitemap.xml"
   };
 }

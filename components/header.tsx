@@ -9,13 +9,13 @@ export function Header() {
         <Link
           href="/"
           className="group inline-flex items-center gap-3 rounded-md focus:outline-none focus:ring-2 focus:ring-signal"
-          aria-label="thinkjackson.ai home"
+          aria-label="thinkjackson.com home"
         >
           <span className="grid h-8 w-8 place-items-center rounded-md border border-signal/40 bg-signal/10 font-mono text-xs font-bold text-signal">
             TJ
           </span>
           <span className="text-sm font-semibold tracking-wide text-white">
-            thinkjackson.ai
+            thinkjackson.com
           </span>
         </Link>
         <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">

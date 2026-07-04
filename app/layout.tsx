@@ -5,10 +5,10 @@ import { Header } from "@/components/header";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://thinkjackson.ai"),
+  metadataBase: new URL("https://thinkjackson.com"),
   title: {
-    default: "Mfoniso Jackson | thinkjackson.ai",
-    template: "%s | thinkjackson.ai"
+    default: "Mfoniso Jackson | thinkjackson.com",
+    template: "%s | thinkjackson.com"
   },
   description:
     "AI systems for markets, agents, and human coordination. The personal platform of Mfoniso Jackson.",
@@ -16,16 +16,16 @@ export const metadata: Metadata = {
     canonical: "/"
   },
   openGraph: {
-    title: "Mfoniso Jackson | thinkjackson.ai",
+    title: "Mfoniso Jackson | thinkjackson.com",
     description:
       "AI systems for markets, agents, and human coordination.",
-    url: "https://thinkjackson.ai",
-    siteName: "thinkjackson.ai",
+    url: "https://thinkjackson.com",
+    siteName: "thinkjackson.com",
     type: "website"
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mfoniso Jackson | thinkjackson.ai",
+    title: "Mfoniso Jackson | thinkjackson.com",
     description:
       "AI systems for markets, agents, and human coordination."
   },
