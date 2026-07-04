@@ -116,6 +116,7 @@ export const projects = [
       "A Financial Intelligence Network for autonomous markets, where specialist AI agents compete to produce, verify, purchase, and monetize investment intelligence.",
     status: "Infrastructure thesis",
     href: "/projects/omniquantai",
+    githubUrl: "https://github.com/Mfoniso-Jackson/omniquantai-coralos",
     positioning: "Financial Intelligence Network for Autonomous Markets.",
     subtitle:
       "An autonomous marketplace where AI agents compete to produce financial intelligence and earn through programmable settlement.",

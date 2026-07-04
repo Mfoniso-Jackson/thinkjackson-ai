@@ -89,6 +89,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     </Button>
                   </>
                 ) : null}
+                {"githubUrl" in project ? (
+                  <Button href={project.githubUrl} variant="secondary">
+                    View GitHub
+                  </Button>
+                ) : null}
                 <Button href="/contact" variant="secondary">
                   Discuss this system
                 </Button>
