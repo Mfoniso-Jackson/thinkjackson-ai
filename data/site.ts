@@ -7,6 +7,13 @@ export const navigation = [
   { label: "Contact", href: "/contact" }
 ] as const;
 
+export const socialLinks = [
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/mfoniso-jackson/"
+  }
+] as const;
+
 export const researchThemes = [
   {
     title: "Computational Superstition in Reinforcement Learning",

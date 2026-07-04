@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
+import { socialLinks } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -27,7 +28,7 @@ export default function ContactPage() {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
           <div className="rounded-lg border border-line bg-white/[0.035] p-6">
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">Email</p>
             <Link
@@ -38,6 +39,23 @@ export default function ContactPage() {
             </Link>
             <p className="mt-4 text-sm leading-6 text-steel">
               Routed for research conversations, consulting inquiries, and serious collaborations.
+            </p>
+          </div>
+          <div className="rounded-lg border border-line bg-white/[0.035] p-6">
+            <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">Social</p>
+            {socialLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-4 block text-2xl font-semibold text-white hover:text-signal"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <p className="mt-4 text-sm leading-6 text-steel">
+              Connect for research notes, project updates, and founder-to-founder conversations.
             </p>
           </div>
           <div className="rounded-lg border border-line bg-white/[0.035] p-6">

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { navigation } from "@/data/site";
+import { navigation, socialLinks } from "@/data/site";
 
 export function Footer() {
   return (
@@ -18,6 +18,17 @@ export function Footer() {
         <nav className="flex flex-wrap gap-x-4 gap-y-3 md:justify-end" aria-label="Footer navigation">
           {navigation.map((item) => (
             <Link key={item.href} href={item.href} className="text-sm text-steel hover:text-white">
+              {item.label}
+            </Link>
+          ))}
+          {socialLinks.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-sm text-signal hover:text-white"
+              target="_blank"
+              rel="noreferrer"
+            >
               {item.label}
             </Link>
           ))}
