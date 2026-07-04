@@ -22,7 +22,7 @@ export default function Home() {
                 AI systems for markets, agents, and human coordination.
               </h1>
               <p className="mt-7 max-w-3xl text-lg leading-8 text-steel sm:text-xl">
-                thinkjackson.com is the research and builder platform of an AI engineer
+                thinkjackson is the research and builder platform of an AI engineer
                 working across financial engineering, reinforcement learning, autonomous
                 agents, safety, Web3 coordination systems, and portfolio intelligence.
               </p>

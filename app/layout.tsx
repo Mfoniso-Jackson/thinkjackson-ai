@@ -7,8 +7,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://thinkjackson.com"),
   title: {
-    default: "Mfoniso Jackson | thinkjackson.com",
-    template: "%s | thinkjackson.com"
+    default: "Mfoniso Jackson | thinkjackson",
+    template: "%s | thinkjackson"
   },
   description:
     "AI systems for markets, agents, and human coordination. The personal platform of Mfoniso Jackson.",
@@ -16,16 +16,16 @@ export const metadata: Metadata = {
     canonical: "/"
   },
   openGraph: {
-    title: "Mfoniso Jackson | thinkjackson.com",
+    title: "Mfoniso Jackson | thinkjackson",
     description:
       "AI systems for markets, agents, and human coordination.",
     url: "https://thinkjackson.com",
-    siteName: "thinkjackson.com",
+    siteName: "thinkjackson",
     type: "website"
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mfoniso Jackson | thinkjackson.com",
+    title: "Mfoniso Jackson | thinkjackson",
     description:
       "AI systems for markets, agents, and human coordination."
   },

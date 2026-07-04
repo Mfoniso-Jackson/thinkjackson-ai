@@ -8,7 +8,7 @@ export function Footer() {
       <Container className="grid gap-8 py-10 md:grid-cols-[1.3fr_1fr]">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">
-            thinkjackson.com
+            thinkjackson
           </p>
           <p className="mt-3 max-w-xl text-sm leading-6 text-steel">
             AI systems for markets, agents, and human coordination. Research,
