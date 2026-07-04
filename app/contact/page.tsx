@@ -37,7 +37,7 @@ export default function ContactPage() {
               hello@thinkjackson.com
             </Link>
             <p className="mt-4 text-sm leading-6 text-steel">
-              Replace this placeholder with the preferred public inbox before launch.
+              Routed for research conversations, consulting inquiries, and serious collaborations.
             </p>
           </div>
           <div className="rounded-lg border border-line bg-white/[0.035] p-6">

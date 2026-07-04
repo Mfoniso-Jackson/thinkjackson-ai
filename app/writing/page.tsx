@@ -24,8 +24,9 @@ export default function WritingPage() {
                 Notes on agents, markets, coordination, and the strange behavior of adaptive systems.
               </h1>
               <p className="mt-7 text-lg leading-8 text-steel">
-                The writing library is intentionally structured for MDX migration: local
-                arrays today, richer long-form essays tomorrow.
+                Essays and field notes for making the research agenda legible: where
+                agents learn rituals, portfolios become memory systems, and coordination
+                becomes infrastructure.
               </p>
             </div>
           </Reveal>
@@ -34,7 +35,7 @@ export default function WritingPage() {
 
       <section className="border-y border-line bg-graphite/60 py-20">
         <Container>
-          <SectionHeading eyebrow="Selected essays" title="Placeholder posts." />
+          <SectionHeading eyebrow="Selected essays" title="Field notes with a point of view." />
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {writing.map((post, index) => (
               <Reveal key={post.title} delay={index * 0.06}>

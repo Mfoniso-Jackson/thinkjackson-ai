@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Container } from "@/components/container";
 import { CTASection } from "@/components/cta-section";
 import { ResearchCard } from "@/components/research-card";
@@ -35,6 +36,22 @@ export default function ResearchPage() {
       <section className="border-y border-line bg-graphite/60 py-20">
         <Container>
           <SectionHeading eyebrow="Themes" title="Open research tracks." />
+          <div className="mt-8 rounded-lg border border-signal/25 bg-signal/[0.06] p-6">
+            <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Flagship page</p>
+            <h2 className="mt-4 text-2xl font-semibold text-white">
+              Computational Superstition in Reinforcement Learning
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-steel">
+              A deeper research brief on proxy persistence, non-causal stabilization,
+              and learned rituals in adaptive agents.
+            </p>
+            <Link
+              href="/research/computational-superstition"
+              className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white"
+            >
+              Read flagship research
+            </Link>
+          </div>
           <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {researchThemes.map((theme, index) => (
               <Reveal key={theme.title} delay={index * 0.04}>

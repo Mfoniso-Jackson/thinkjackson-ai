@@ -14,6 +14,7 @@ The site presents Mfoniso as an AI engineer, researcher, and founder working acr
 - TypeScript
 - Tailwind CSS
 - Framer Motion
+- Vercel Analytics
 - Local typed content arrays
 - MDX-ready content folder
 - SEO metadata, robots, and sitemap
@@ -46,17 +47,21 @@ npm run lint
 
 ## Content Model
 
-Primary site content lives in [`data/site.ts`](./data/site.ts). Writing placeholders are also mirrored in [`public/content/writing`](./public/content/writing) so the project can move to a full MDX loader later without changing the editorial structure.
+Primary site content lives in [`data/site.ts`](./data/site.ts). Project briefs, writing bodies, research notes, and launch copy are structured there so the project can move to a full MDX loader later without changing the editorial model.
 
 ## Pages
 
 - `/`
 - `/about`
 - `/research`
+- `/research/computational-superstition`
 - `/projects`
+- `/projects/[slug]`
 - `/writing`
+- `/writing/[slug]`
 - `/consulting`
 - `/contact`
+- `/launch`
 
 ## Deployment
 
@@ -69,4 +74,4 @@ Recommended production settings:
 - Install command: `npm install`
 - Output directory: `.next`
 
-Before launch, update the placeholder contact inbox in [`app/contact/page.tsx`](./app/contact/page.tsx).
+Email currently points to `hello@thinkjackson.com`.

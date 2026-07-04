@@ -131,8 +131,8 @@ export default function Home() {
         <Container>
           <SectionHeading eyebrow="Selected writing" title="Field notes from the edge.">
             <p>
-              Placeholder essays are wired through local data arrays now and can be promoted
-              into MDX entries as the writing library grows.
+              Essays are wired through local structured content now and can be promoted
+              into MDX as the research library grows.
             </p>
           </SectionHeading>
           <div className="mt-10 grid gap-5 md:grid-cols-3">

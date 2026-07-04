@@ -5,7 +5,6 @@ import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { projects } from "@/data/site";
-import { slugify } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -39,7 +38,7 @@ export default function ProjectsPage() {
           <div className="mt-10 grid gap-5 md:grid-cols-2">
             {projects.map((project, index) => (
               <Reveal key={project.title} delay={index * 0.04}>
-                <div id={slugify(project.title)}>
+                <div id={project.slug}>
                   <ProjectCard {...project} />
                 </div>
               </Reveal>
