@@ -8,14 +8,24 @@ export function Header() {
       <Container className="flex min-h-16 items-center justify-between gap-5">
         <Link
           href="/"
-          className="group inline-flex items-center gap-3 rounded-md focus:outline-none focus:ring-2 focus:ring-signal"
+          className="group inline-flex min-w-0 items-center gap-3 rounded-md focus:outline-none focus:ring-2 focus:ring-signal"
           aria-label="thinkjackson home"
         >
-          <span className="grid h-8 w-8 place-items-center rounded-md border border-signal/40 bg-signal/10 font-mono text-xs font-bold text-signal">
-            TJ
+          <span className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg border border-signal/45 bg-graphite shadow-[0_0_32px_rgba(139,233,215,0.16)] transition group-hover:border-signal">
+            <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-signal to-transparent" />
+            <span className="absolute bottom-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-volt shadow-[0_0_18px_rgba(215,241,113,0.75)]" />
+            <span className="font-mono text-[13px] font-extrabold tracking-[-0.02em] text-white">
+              TJ
+            </span>
           </span>
-          <span className="text-sm font-semibold tracking-wide text-white">
-            thinkjackson
+          <span className="min-w-0">
+            <span className="flex items-baseline text-[15px] font-semibold leading-none tracking-normal text-white">
+              <span>think</span>
+              <span className="text-signal">jackson</span>
+            </span>
+            <span className="mt-1 hidden font-mono text-[10px] uppercase tracking-[0.22em] text-steel/80 lg:block">
+              machine intelligence
+            </span>
           </span>
         </Link>
         <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
