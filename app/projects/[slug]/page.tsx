@@ -53,11 +53,42 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <h1 className="mt-6 text-balance text-5xl font-semibold tracking-tight text-white sm:text-6xl">
                 {project.title}
               </h1>
-              <p className="mt-7 text-lg leading-8 text-steel">{project.thesis}</p>
+              {"positioning" in project ? (
+                <p className="mt-5 text-2xl font-semibold leading-9 text-signal">{project.positioning}</p>
+              ) : null}
+              {"subtitle" in project ? (
+                <p className="mt-4 max-w-3xl text-lg leading-8 text-steel">{project.subtitle}</p>
+              ) : (
+                <p className="mt-7 text-lg leading-8 text-steel">{project.thesis}</p>
+              )}
+              {"heroCopy" in project ? (
+                <div className="mt-8 max-w-3xl space-y-4 text-base leading-7 text-steel">
+                  {project.heroCopy.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              ) : null}
+              {"categories" in project ? (
+                <div className="mt-7 flex flex-wrap gap-2">
+                  {project.categories.map((category) => (
+                    <span key={category} className="rounded-md border border-line bg-white/5 px-2.5 py-1 font-mono text-xs text-steel">
+                      {category}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
               <div className="mt-8 flex flex-wrap gap-3">
                 <span className="rounded-md border border-line bg-white/5 px-3 py-2 font-mono text-xs text-steel">
                   {project.status}
                 </span>
+                {"architectureLayers" in project ? (
+                  <>
+                    <Button href="/research/computational-superstition">View Research</Button>
+                    <Button href="#architecture" variant="secondary">
+                      Explore Architecture
+                    </Button>
+                  </>
+                ) : null}
                 <Button href="/contact" variant="secondary">
                   Discuss this system
                 </Button>
@@ -72,36 +103,100 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Problem</p>
-              <h2 className="mt-4 text-3xl font-semibold text-white">What this project is trying to make tractable.</h2>
+              <h2 className="mt-4 text-3xl font-semibold text-white">
+                {"problems" in project
+                  ? "Financial intelligence is still produced like software from the last generation."
+                  : "What this project is trying to make tractable."}
+              </h2>
             </div>
-            <p className="text-lg leading-8 text-steel">{project.problem}</p>
+            <div>
+              <p className="text-lg leading-8 text-steel">{project.problem}</p>
+              {"problems" in project ? (
+                <div className="mt-6 grid gap-3">
+                  {project.problems.map((item) => (
+                    <div key={item} className="rounded-lg border border-line bg-white/[0.035] p-4 text-sm leading-6 text-steel">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
           </div>
         </Container>
       </section>
 
-      <section className="py-20">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-2">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Architecture</p>
-              <div className="mt-6 space-y-3">
-                {project.architecture.map((item) => (
-                  <div key={item} className="rounded-lg border border-line bg-white/[0.035] p-5 text-sm leading-6 text-steel">
-                    {item}
-                  </div>
-                ))}
+      {"solutionTitle" in project && "marketFlow" in project ? (
+        <section className="py-20">
+          <Container>
+            <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Solution</p>
+                <h2 className="mt-4 text-3xl font-semibold text-white">{project.solutionTitle}</h2>
+                <p className="mt-5 text-base leading-7 text-steel">{project.solution}</p>
               </div>
-            </div>
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Roadmap</p>
-              <div className="mt-6 space-y-3">
-                {project.roadmap.map((item, index) => (
+              <div className="grid gap-3">
+                {project.marketFlow.map((item, index) => (
                   <div key={item} className="rounded-lg border border-line bg-white/[0.035] p-5">
                     <p className="font-mono text-xs text-volt">0{index + 1}</p>
                     <p className="mt-3 text-sm leading-6 text-steel">{item}</p>
                   </div>
                 ))}
               </div>
+            </div>
+          </Container>
+        </section>
+      ) : null}
+
+      <section id="architecture" className={"architectureLayers" in project ? "border-y border-line bg-graphite/60 py-20" : "py-20"}>
+        <Container>
+          {"architectureLayers" in project ? (
+            <>
+              <div className="max-w-3xl">
+                <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Architecture</p>
+                <h2 className="mt-4 text-3xl font-semibold text-white">Seven layers of the Financial Intelligence Network.</h2>
+              </div>
+              <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {project.architectureLayers.map((layer, index) => (
+                  <article key={layer.title} className="rounded-lg border border-line bg-white/[0.035] p-6">
+                    <p className="font-mono text-xs text-volt">0{index + 1}</p>
+                    <h3 className="mt-4 text-xl font-semibold text-white">{layer.title}</h3>
+                    <ul className="mt-5 space-y-2 text-sm leading-6 text-steel">
+                      {layer.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="grid gap-10 lg:grid-cols-2">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Architecture</p>
+                <div className="mt-6 space-y-3">
+                  {project.architecture.map((item) => (
+                    <div key={item} className="rounded-lg border border-line bg-white/[0.035] p-5 text-sm leading-6 text-steel">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </Container>
+      </section>
+
+      <section className="py-20">
+        <Container>
+          <div className="max-w-3xl">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Roadmap</p>
+            <div className="mt-6 space-y-3">
+              {project.roadmap.map((item, index) => (
+                <div key={item} className="rounded-lg border border-line bg-white/[0.035] p-5">
+                  <p className="font-mono text-xs text-volt">0{index + 1}</p>
+                  <p className="mt-3 text-sm leading-6 text-steel">{item}</p>
+                </div>
+              ))}
             </div>
           </div>
         </Container>

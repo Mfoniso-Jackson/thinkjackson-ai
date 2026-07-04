@@ -111,25 +111,92 @@ export const projects = [
   {
     slug: "omniquantai",
     title: "OmniQuantAI",
-    category: "Autonomous quant intelligence",
+    category: "Financial Intelligence Infrastructure",
     summary:
-      "Infrastructure for autonomous quantitative agents that can reason across data, portfolio context, execution constraints, and model uncertainty.",
-    status: "System design",
+      "A Financial Intelligence Network for autonomous markets, where specialist AI agents compete to produce, verify, purchase, and monetize investment intelligence.",
+    status: "Infrastructure thesis",
     href: "/projects/omniquantai",
+    positioning: "Financial Intelligence Network for Autonomous Markets.",
+    subtitle:
+      "An autonomous marketplace where AI agents compete to produce financial intelligence and earn through programmable settlement.",
+    categories: [
+      "Autonomous Agent Economy",
+      "Machine-native Finance",
+      "Decision Intelligence",
+      "Research Infrastructure",
+      "Web3 Settlement"
+    ],
+    heroCopy: [
+      "OmniQuantAI is building the infrastructure for a new generation of financial markets where autonomous agents are not simply tools used by humans. They become economic participants.",
+      "Specialist AI agents compete to deliver market intelligence, portfolio analysis, macro research, valuation work, news interpretation, and risk insights.",
+      "A buyer agent evaluates competing proposals, purchases the best-value intelligence, and settles payment through programmable financial infrastructure. The long-term vision is an open Financial Intelligence Network where research itself becomes a machine-native market."
+    ],
     thesis:
-      "OmniQuantAI is infrastructure for quant agents that behave less like signal vending machines and more like constrained decision systems with memory, risk posture, and accountability.",
+      "Financial intelligence should not come from one model or one analyst. Markets discover better prices through competition. OmniQuantAI applies the same principle to intelligence: specialist agents compete to produce better investment intelligence, the best-value intelligence wins, and research becomes a market.",
     problem:
-      "Most trading automation over-indexes on prediction and under-invests in memory: what failed, what regime changed, why a signal decayed, and how portfolio context should change action.",
+      "Financial intelligence is still produced like software from the last generation. Research is fragmented across disconnected tools, analysts repeatedly duplicate work, and general-purpose AI produces one opinion instead of exposing competing hypotheses.",
+    problems: [
+      "Research is fragmented across disconnected tools.",
+      "Analysts repeatedly duplicate work.",
+      "General-purpose AI produces one opinion instead of exposing competing hypotheses.",
+      "Institutions struggle to compare multiple reasoning paths.",
+      "There is no native market where autonomous agents can buy or sell financial intelligence.",
+      "Existing financial infrastructure was designed for humans, not autonomous economic actors."
+    ],
+    solutionTitle: "Financial Intelligence as an Open Market.",
+    solution:
+      "OmniQuantAI transforms investment research into an agent economy. A portfolio agent broadcasts a research request, specialist seller agents compete, and the buyer evaluates quality rather than simply selecting the cheapest proposal. The winning seller delivers structured investment intelligence, settlement occurs through programmable payment rails, and every transaction expands the Financial Intelligence Network.",
+    marketFlow: [
+      "A portfolio agent broadcasts a research request.",
+      "Specialist seller agents submit price, reasoning, confidence, and expected delivery.",
+      "A buyer agent evaluates quality, cost, uncertainty, and relevance.",
+      "The winning seller delivers structured investment intelligence.",
+      "Programmable settlement routes payment and reputation back into the network."
+    ],
     architecture: [
-      "Agent memory for hypotheses, backtests, live observations, and post-trade review.",
-      "Portfolio-aware reasoning that keeps execution tied to risk budgets and exposure constraints.",
-      "Research-to-execution pipelines that separate discovery, validation, deployment, and monitoring.",
-      "Intervention points where humans can inspect assumptions before capital is committed."
+      "Market Intelligence Layer: market data, macro, news, sentiment, on-chain, and alternative data.",
+      "Financial Intelligence Layer: market analyst, macro, risk, portfolio, news, valuation, and future specialist agents.",
+      "Marketplace Layer: research requests, agent auctions, seller personas, buyer evaluation, agent competition, and the intelligence marketplace.",
+      "Decision Intelligence Layer: hypothesis generation, scenario analysis, bull/base/bear cases, confidence scoring, investment committee memos, and human approval.",
+      "Coordination Layer: CoralOS, multi-agent workflows, shared memory, task delegation, performance history, and reputation.",
+      "Settlement Layer: Solana settlement, escrow, agent payments, machine commerce, and future Sui settlement adapters.",
+      "Knowledge Network: historical recommendations, research archive, agent memory, and knowledge graph."
+    ],
+    architectureLayers: [
+      {
+        title: "Market Intelligence Layer",
+        items: ["Market data", "Macro", "News", "Sentiment", "On-chain", "Alternative data"]
+      },
+      {
+        title: "Financial Intelligence Layer",
+        items: ["Market Analyst Agent", "Macro Agent", "Risk Agent", "Portfolio Agent", "News Agent", "Valuation Agent", "Future specialist agents"]
+      },
+      {
+        title: "Marketplace Layer",
+        items: ["Research requests", "Agent auctions", "Seller personas", "Buyer evaluation", "Agent competition", "Intelligence marketplace"]
+      },
+      {
+        title: "Decision Intelligence Layer",
+        items: ["Hypothesis generation", "Scenario analysis", "Bull/Base/Bear cases", "Confidence scoring", "Investment committee memo generation", "Human approval"]
+      },
+      {
+        title: "Coordination Layer",
+        items: ["CoralOS", "Multi-agent workflows", "Shared memory", "Task delegation", "Performance history", "Reputation"]
+      },
+      {
+        title: "Settlement Layer",
+        items: ["Solana settlement", "Escrow", "Agent payments", "Machine commerce", "Future Sui settlement adapter"]
+      },
+      {
+        title: "Knowledge Network",
+        items: ["Historical recommendations", "Research archive", "Agent memory", "Knowledge graph"]
+      }
     ],
     roadmap: [
-      "Specify the agent state model and risk memory schema.",
-      "Build a research assistant prototype for strategy triage.",
-      "Layer execution simulation before any live trading integration."
+      "Specify the Financial Intelligence Network protocol: request formats, seller submissions, buyer evaluation criteria, and settlement events.",
+      "Prototype a closed agent marketplace where specialist agents compete on macro, risk, portfolio, news, and valuation briefs.",
+      "Add reputation, research archives, and knowledge graph memory so intelligence compounds across transactions.",
+      "Introduce programmable settlement through Solana rails with future adapter support for Sui."
     ]
   },
   {
