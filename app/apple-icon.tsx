@@ -14,14 +14,14 @@ export default function AppleIcon() {
         style={{
           alignItems: "center",
           background:
-            "radial-gradient(circle at 30% 20%, rgba(139, 233, 215, 0.28), transparent 42%), linear-gradient(135deg, #05070b 0%, #0f1722 100%)",
-          color: "#8be9d7",
+            "radial-gradient(circle at 28% 18%, rgba(215, 241, 113, 0.55), transparent 38%), linear-gradient(135deg, #8be9d7 0%, #5fd8c5 100%)",
+          color: "#05070b",
           display: "flex",
-          fontSize: 58,
-          fontWeight: 800,
+          fontSize: 70,
+          fontWeight: 900,
           height: "100%",
           justifyContent: "center",
-          letterSpacing: "0.01em",
+          letterSpacing: "-0.05em",
           width: "100%"
         }}
       >
