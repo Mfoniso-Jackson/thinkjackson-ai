@@ -21,13 +21,26 @@ export const metadata: Metadata = {
       "AI systems for markets, agents, and human coordination.",
     url: "https://thinkjackson.com",
     siteName: "thinkjackson",
-    type: "website"
+    type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "thinkjackson - AI systems for markets, agents, and human coordination"
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
     title: "Mfoniso Jackson | thinkjackson",
     description:
-      "AI systems for markets, agents, and human coordination."
+      "AI systems for markets, agents, and human coordination.",
+    images: ["/twitter-image"]
+  },
+  icons: {
+    icon: "/icon",
+    apple: "/apple-icon"
   },
   robots: {
     index: true,
