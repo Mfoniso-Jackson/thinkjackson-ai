@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { LinkedInIcon } from "@/components/linkedin-icon";
 import { Reveal } from "@/components/reveal";
+import { SocialIcon } from "@/components/social-icons";
 import { socialLinks } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -44,20 +44,22 @@ export default function ContactPage() {
           </div>
           <div className="rounded-lg border border-line bg-white/[0.035] p-6">
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">Social</p>
-            {socialLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 inline-flex items-center gap-3 text-2xl font-semibold text-white hover:text-signal"
-              >
-                <span className="grid h-10 w-10 place-items-center rounded-lg border border-signal/35 bg-signal/10 text-signal">
-                  <LinkedInIcon className="h-5 w-5" />
-                </span>
-                <span>{item.label}</span>
-              </Link>
-            ))}
+            <div className="mt-4 flex flex-col gap-3">
+              {socialLinks.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-3 text-2xl font-semibold text-white hover:text-signal"
+                >
+                  <span className="grid h-10 w-10 place-items-center rounded-lg border border-signal/35 bg-signal/10 text-signal">
+                    <SocialIcon kind={item.kind} className="h-5 w-5" />
+                  </span>
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </div>
             <p className="mt-4 text-sm leading-6 text-steel">
               Connect for research notes, project updates, and founder-to-founder conversations.
             </p>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { LinkedInIcon } from "@/components/linkedin-icon";
+import { SocialIcon } from "@/components/social-icons";
 import { navigation, socialLinks } from "@/data/site";
 
 export function Footer() {
@@ -29,9 +29,9 @@ export function Footer() {
               className="inline-flex items-center gap-1.5 text-sm text-signal hover:text-white"
               target="_blank"
               rel="noreferrer"
-              aria-label="LinkedIn profile"
+              aria-label={`${item.label} profile`}
             >
-              <LinkedInIcon className="h-4 w-4" />
+              <SocialIcon kind={item.kind} className="h-4 w-4" />
               <span>{item.label}</span>
             </Link>
           ))}

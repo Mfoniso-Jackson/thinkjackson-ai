@@ -9,8 +9,14 @@ export const navigation = [
 
 export const socialLinks = [
   {
+    kind: "linkedin",
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/mfoniso-jackson/"
+  },
+  {
+    kind: "x",
+    label: "X",
+    href: "https://x.com/mrjacksonsays"
   }
 ] as const;
 
