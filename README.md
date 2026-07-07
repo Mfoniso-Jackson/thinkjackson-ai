@@ -15,8 +15,8 @@ The site presents Mfoniso as an AI engineer, researcher, and founder working acr
 - Tailwind CSS
 - Framer Motion
 - Vercel Analytics
-- Local typed content arrays
-- MDX-ready content folder
+- MDX writing content
+- Local typed content data
 - SEO metadata, robots, and sitemap
 - Vercel-ready deployment
 
@@ -47,7 +47,9 @@ npm run lint
 
 ## Content Model
 
-Primary site content lives in [`data/site.ts`](./data/site.ts). Project briefs, writing bodies, research notes, and launch copy are structured there so the project can move to a full MDX loader later without changing the editorial model.
+Primary site data lives in [`data/site.ts`](./data/site.ts). Project briefs, research metadata, consulting offers, launch copy, writing tracks, and editorial queue items are structured there.
+
+Long-form writing lives in [`content/writing`](./content/writing) as MDX files. Each essay exports a `metadata` object with `slug`, `title`, `excerpt`, `date`, `readingTime`, `tags`, and `sections`, then the file is registered in [`lib/writing.ts`](./lib/writing.ts). Reusable essay blocks live in [`components/mdx-blocks.tsx`](./components/mdx-blocks.tsx).
 
 ## Pages
 
@@ -59,6 +61,7 @@ Primary site content lives in [`data/site.ts`](./data/site.ts). Project briefs, 
 - `/projects/[slug]`
 - `/writing`
 - `/writing/[slug]`
+- `/now`
 - `/consulting`
 - `/contact`
 - `/launch`

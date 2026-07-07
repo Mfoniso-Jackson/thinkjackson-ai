@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { projects, writing } from "@/data/site";
+import { projects } from "@/data/site";
+import { writingPosts } from "@/lib/writing";
 
 const routes = [
   "",
@@ -12,7 +13,7 @@ const routes = [
   "/consulting",
   "/contact",
   ...projects.map((project) => `/projects/${project.slug}`),
-  ...writing.map((post) => `/writing/${post.slug}`)
+  ...writingPosts.map((post) => `/writing/${post.slug}`)
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

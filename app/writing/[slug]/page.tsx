@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { CTASection } from "@/components/cta-section";
 import { Reveal } from "@/components/reveal";
-import { writing } from "@/data/site";
+import { getRelatedWritingPosts, getWritingPost, writingPosts } from "@/lib/writing";
 import { formatDate } from "@/lib/utils";
 
 type WritingPageProps = {
@@ -12,12 +12,12 @@ type WritingPageProps = {
 };
 
 export function generateStaticParams() {
-  return writing.map((post) => ({ slug: post.slug }));
+  return writingPosts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: WritingPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = writing.find((item) => item.slug === slug);
+  const post = getWritingPost(slug);
 
   if (!post) {
     return {};
@@ -34,13 +34,14 @@ export async function generateMetadata({ params }: WritingPageProps): Promise<Me
 
 export default async function WritingDetailPage({ params }: WritingPageProps) {
   const { slug } = await params;
-  const post = writing.find((item) => item.slug === slug);
+  const post = getWritingPost(slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = writing.filter((item) => item.slug !== post.slug).slice(0, 2);
+  const relatedPosts = getRelatedWritingPosts(post.slug);
+  const PostContent = post.Component;
 
   return (
     <>
@@ -71,30 +72,21 @@ export default async function WritingDetailPage({ params }: WritingPageProps) {
           </Reveal>
 
           <div className="mt-16 grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
-            <div className="max-w-3xl space-y-12">
-              {post.body.map((section, index) => (
-                <section key={section.heading} id={`section-${index + 1}`} className="scroll-mt-28">
-                  <h2 className="text-2xl font-semibold text-white">{section.heading}</h2>
-                  <div className="mt-5 space-y-5 text-base leading-8 text-steel">
-                    {section.paragraphs.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
-                  </div>
-                </section>
-              ))}
+            <div className="max-w-3xl">
+              <PostContent />
             </div>
 
             <aside className="lg:sticky lg:top-28">
               <div className="rounded-lg border border-line bg-white/[0.035] p-5">
                 <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">In this essay</p>
                 <nav aria-label="Essay sections" className="mt-5 space-y-3">
-                  {post.body.map((section, index) => (
+                  {post.sections.map((section, index) => (
                     <Link
-                      key={section.heading}
+                      key={section}
                       href={`#section-${index + 1}`}
                       className="block text-sm leading-6 text-steel transition hover:text-white"
                     >
-                      {section.heading}
+                      {section}
                     </Link>
                   ))}
                 </nav>

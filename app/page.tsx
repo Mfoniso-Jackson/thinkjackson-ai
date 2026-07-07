@@ -6,7 +6,8 @@ import { ResearchCard } from "@/components/research-card";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { WritingCard } from "@/components/writing-card";
-import { focusItems, projects, researchThemes, writing } from "@/data/site";
+import { focusItems, projects, researchThemes } from "@/data/site";
+import { writingPosts } from "@/lib/writing";
 
 export default function Home() {
   return (
@@ -131,12 +132,12 @@ export default function Home() {
         <Container>
           <SectionHeading eyebrow="Selected writing" title="Field notes from the edge.">
             <p>
-              Essays are wired through local structured content now and can be promoted
-              into MDX as the research library grows.
+              Essays and research notes now live as MDX, so the library can grow into
+              a serious publishing surface with callouts, citations, diagrams, and code.
             </p>
           </SectionHeading>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {writing.map((post, index) => (
+            {writingPosts.map((post, index) => (
               <Reveal key={post.title} delay={index * 0.06}>
                 <WritingCard {...post} />
               </Reveal>

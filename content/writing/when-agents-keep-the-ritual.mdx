@@ -1,0 +1,42 @@
+import { Callout, ResearchNote } from "@/components/mdx-blocks";
+
+export const metadata = {
+  slug: "when-agents-keep-the-ritual",
+  title: "When Agents Keep the Ritual After the Reward Disappears",
+  excerpt:
+    "A note on computational superstition, proxy rituals, and why reinforcement learners can look strangely human under reward uncertainty.",
+  date: "2026-06-18",
+  readingTime: "7 min",
+  tags: ["Reinforcement learning", "AI safety"],
+  sections: [
+    "The ritual is the residue of a once-useful world",
+    "Why this matters for safety",
+    "The research direction"
+  ]
+};
+
+<h2 id="section-1">The ritual is the residue of a once-useful world</h2>
+
+A reinforcement learner does not need beliefs in the human sense to behave as if it has acquired a superstition. It only needs a history where an action, context, or proxy feature repeatedly appeared near reward. When the world changes, the agent may continue performing the old action because the behavior has become stabilized inside the policy, even after the causal bridge has collapsed.
+
+That persistence is not just an oddity. It is a window into how adaptive systems can confuse correlation for structure, especially when reward is delayed, sparse, or filtered through proxies.
+
+<ResearchNote>
+Computational superstition is a behavioral frame before it is a moral one: the question is what a system preserves after the original reward logic has gone stale.
+</ResearchNote>
+
+<h2 id="section-2">Why this matters for safety</h2>
+
+Many safety conversations focus on what an agent optimizes. Computational superstition asks what an agent preserves. The preserved behavior may not be explicitly represented as a goal, yet it can shape future action because it survived earlier selection pressure.
+
+If an autonomous system learns a proxy ritual in a training environment, it may carry that ritual into deployment. The behavior can look like competence until the deployment context reveals that the agent is stabilizing around the wrong abstraction.
+
+<Callout title="Safety question">
+What looks like goal-directed behavior may sometimes be an old correlation that became operationally sticky.
+</Callout>
+
+<h2 id="section-3">The research direction</h2>
+
+The next step is to build environments where reward-relevant and reward-adjacent features can be separated, shifted, and removed. The question is not only whether performance drops. The sharper question is which old behaviors remain, how long they persist, and what interventions help the agent relearn causal structure.
+
+Computational superstition is a small phrase for a large problem: adaptive systems inherit the ghosts of their training histories.

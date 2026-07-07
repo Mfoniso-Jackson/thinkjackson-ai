@@ -6,7 +6,8 @@ import { CTASection } from "@/components/cta-section";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { WritingCard } from "@/components/writing-card";
-import { writing, writingQueue, writingTracks } from "@/data/site";
+import { writingQueue, writingTracks } from "@/data/site";
+import { writingPosts } from "@/lib/writing";
 import { formatDate } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default function WritingPage() {
-  const [featuredPost, ...archivePosts] = writing;
+  const [featuredPost, ...archivePosts] = writingPosts;
 
   return (
     <>
