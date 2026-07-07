@@ -11,7 +11,6 @@ const routes = [
   "/now",
   "/consulting",
   "/contact",
-  "/launch",
   ...projects.map((project) => `/projects/${project.slug}`),
   ...writing.map((post) => `/writing/${post.slug}`)
 ];

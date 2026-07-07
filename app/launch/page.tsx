@@ -4,7 +4,11 @@ import { launchPost } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Launch Post",
-  description: "Launch copy for introducing thinkjackson."
+  description: "Launch copy for introducing thinkjackson.",
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default function LaunchPage() {
