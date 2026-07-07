@@ -358,6 +358,50 @@ export const writing = [
   }
 ] as const;
 
+export const writingTracks = [
+  {
+    title: "Agent Behavior and Safety",
+    summary:
+      "Essays on computational superstition, proxy persistence, non-causal stabilization, and the ways adaptive systems preserve old reward histories.",
+    cadence: "Research notes and experimental memos"
+  },
+  {
+    title: "Market Intelligence and Portfolio Systems",
+    summary:
+      "Writing on autonomous financial agents, portfolio memory, risk cognition, and decision infrastructure for capital under uncertainty.",
+    cadence: "Builder essays and system design notes"
+  },
+  {
+    title: "Machine Economies and Coordination",
+    summary:
+      "Founder notes on agent markets, programmable settlement, contribution graphs, and the social grammar needed for human-machine collaboration.",
+    cadence: "Product theses and coordination memos"
+  }
+] as const;
+
+export const writingQueue = [
+  {
+    title: "Autonomous Trading Agents Need Risk Memory",
+    theme: "Markets",
+    note: "Why execution intelligence is incomplete without a durable account of assumptions, constraints, and regime change."
+  },
+  {
+    title: "The Difference Between Signal, Ritual, and Regime",
+    theme: "Research",
+    note: "A practical vocabulary for separating causal structure from learned habit in agents and markets."
+  },
+  {
+    title: "What an Agent Marketplace for Financial Intelligence Needs to Prove",
+    theme: "Machine economies",
+    note: "A launch thesis for OmniQuantAI: competition, verification, reputation, and settlement as intelligence infrastructure."
+  },
+  {
+    title: "Portfolio Intelligence as an Operating System for Capital",
+    theme: "Portfolio systems",
+    note: "A deeper argument for replacing static dashboards with memory-bearing decision systems."
+  }
+] as const;
+
 export const flagshipResearch = {
   slug: "computational-superstition",
   title: "Computational Superstition in Reinforcement Learning",
