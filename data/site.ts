@@ -18,6 +18,17 @@ export const socialLinks = [
     kind: "x",
     label: "X",
     href: "https://x.com/mrjacksonsays"
+  },
+  {
+    kind: "telegram",
+    label: "Telegram",
+    href: "https://t.me/mfonisojackson",
+    handle: "@mfonisojackson"
+  },
+  {
+    kind: "discord",
+    label: "Discord",
+    handle: "massif_jackson"
   }
 ] as const;
 

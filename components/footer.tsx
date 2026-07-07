@@ -23,17 +23,28 @@ export function Footer() {
             </Link>
           ))}
           {socialLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="inline-flex items-center gap-1.5 text-sm text-signal hover:text-white"
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${item.label} profile`}
-            >
-              <SocialIcon kind={item.kind} className="h-4 w-4" />
-              <span>{item.label}</span>
-            </Link>
+            "href" in item ? (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="inline-flex items-center gap-1.5 text-sm text-signal hover:text-white"
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${item.label} profile`}
+              >
+                <SocialIcon kind={item.kind} className="h-4 w-4" />
+                <span>{item.label}</span>
+              </Link>
+            ) : (
+              <span
+                key={item.label}
+                className="inline-flex items-center gap-1.5 text-sm text-signal"
+                aria-label={`${item.label}: ${item.handle}`}
+              >
+                <SocialIcon kind={item.kind} className="h-4 w-4" />
+                <span>{item.label}</span>
+              </span>
+            )
           ))}
         </nav>
       </Container>
