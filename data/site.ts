@@ -75,6 +75,7 @@ export const projects = [
       "A platform for dream-linked micro-tipping and worker funding, designed around gratitude as an economic primitive rather than a marketing mechanic.",
     status: "Product architecture",
     href: "/projects/gratifi",
+    githubUrl: "https://github.com/Mfoniso-Jackson/Gratifi",
     thesis:
       "GratiFi treats gratitude as a coordination signal: a lightweight way for communities to fund ambition, recognize invisible labor, and route support toward people before institutions know how to value them.",
     problem:
@@ -215,6 +216,7 @@ export const projects = [
       "Research into proxy persistence, non-causal stabilization, and learned rituals in reinforcement learning agents.",
     status: "Research track",
     href: "/projects/computational-superstition-rl",
+    githubUrl: "https://github.com/Mfoniso-Jackson/noncausal-stabilization-rl",
     thesis:
       "Computational superstition names a class of agent behaviors where learned proxies persist after their causal usefulness disappears, creating rituals that look adaptive because they once correlated with reward.",
     problem:
@@ -440,7 +442,7 @@ export const nowItems = [
 export const ownerTasks = [
   "Confirm Cloudflare Email Routing is receiving mail for hello@thinkjackson.com.",
   "Decide whether /launch should stay public, become private, or turn into a polished public launch note.",
-  "Share any real repositories or demos for GratiFi, MassifX, DomusGraph/HomeGraph, or Computational Superstition RL.",
+  "Share any real repositories or demos for MassifX or DomusGraph/HomeGraph.",
   "Write one longer flagship essay expanding Computational Superstition in Reinforcement Learning.",
   "Collect any real screenshots, diagrams, notebooks, or architecture artifacts that can make the project pages more concrete."
 ] as const;
