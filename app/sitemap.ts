@@ -8,6 +8,7 @@ const routes = [
   "/research/computational-superstition",
   "/projects",
   "/writing",
+  "/now",
   "/consulting",
   "/contact",
   "/launch",

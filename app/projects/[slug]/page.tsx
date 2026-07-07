@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import { CTASection } from "@/components/cta-section";
+import { OmniQuantDiagram } from "@/components/omniquant-diagram";
 import { Reveal } from "@/components/reveal";
 import { projects } from "@/data/site";
 
@@ -159,6 +160,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <div className="max-w-3xl">
                 <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Architecture</p>
                 <h2 className="mt-4 text-3xl font-semibold text-white">Seven layers of the Financial Intelligence Network.</h2>
+              </div>
+              <div className="mt-10">
+                <OmniQuantDiagram />
               </div>
               <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {project.architectureLayers.map((layer, index) => (

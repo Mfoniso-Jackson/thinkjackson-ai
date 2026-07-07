@@ -3,6 +3,7 @@ export const navigation = [
   { label: "Research", href: "/research" },
   { label: "Projects", href: "/projects" },
   { label: "Writing", href: "/writing" },
+  { label: "Now", href: "/now" },
   { label: "Consulting", href: "/consulting" },
   { label: "Contact", href: "/contact" }
 ] as const;
@@ -411,6 +412,37 @@ export const focusItems = [
   "Designing autonomous market systems with durable risk memory.",
   "Turning research claims into product surfaces that operators can trust.",
   "Building coordination infrastructure for agent-mediated economic networks."
+] as const;
+
+export const nowItems = [
+  {
+    title: "Building OmniQuantAI as a Financial Intelligence Network",
+    detail:
+      "Developing the architecture for an agent marketplace where specialist financial agents compete to produce research, risk views, and portfolio intelligence."
+  },
+  {
+    title: "Formalizing computational superstition in reinforcement learning",
+    detail:
+      "Turning the proxy-persistence idea into a research track with clear experiments, vocabulary, and implications for autonomous agent safety."
+  },
+  {
+    title: "Exploring agentic markets and programmable settlement",
+    detail:
+      "Studying how autonomous agents can request, evaluate, purchase, and settle intelligence through machine-native financial rails."
+  },
+  {
+    title: "Selective consulting",
+    detail:
+      "Open to focused work with founders, funds, and technical teams building AI systems where markets, agents, and coordination matter."
+  }
+] as const;
+
+export const ownerTasks = [
+  "Confirm Cloudflare Email Routing is receiving mail for hello@thinkjackson.com.",
+  "Decide whether /launch should stay public, become private, or turn into a polished public launch note.",
+  "Share any real repositories or demos for GratiFi, MassifX, DomusGraph/HomeGraph, or Computational Superstition RL.",
+  "Write one longer flagship essay expanding Computational Superstition in Reinforcement Learning.",
+  "Collect any real screenshots, diagrams, notebooks, or architecture artifacts that can make the project pages more concrete."
 ] as const;
 
 export const consultingOffers = [
