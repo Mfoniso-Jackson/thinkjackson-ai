@@ -49,7 +49,7 @@ npm run lint
 
 Primary site data lives in [`data/site.ts`](./data/site.ts). Project briefs, research metadata, consulting offers, launch copy, writing tracks, and editorial queue items are structured there.
 
-Long-form writing lives in [`content/writing`](./content/writing) as MDX files. Each essay exports a `metadata` object with `slug`, `title`, `excerpt`, `date`, `readingTime`, `tags`, and `sections`, then the file is registered in [`lib/writing.ts`](./lib/writing.ts). Reusable essay blocks live in [`components/mdx-blocks.tsx`](./components/mdx-blocks.tsx).
+Long-form writing lives in [`content/writing`](./content/writing) as MDX files. Each essay exports a `metadata` object with `slug`, `title`, `excerpt`, `date`, `readingTime`, `tags`, and `sections`, then the file is registered in [`lib/writing.ts`](./lib/writing.ts). Reusable essay blocks live in [`components/mdx-blocks.tsx`](./components/mdx-blocks.tsx), including `Callout`, `Principle`, `ResearchNote`, and `References` for further reading sections.
 
 ## Pages
 

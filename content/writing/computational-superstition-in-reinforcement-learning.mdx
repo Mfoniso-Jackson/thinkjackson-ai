@@ -1,0 +1,181 @@
+import { Callout, Principle, References, ResearchNote } from "@/components/mdx-blocks";
+
+export const metadata = {
+  slug: "computational-superstition-in-reinforcement-learning",
+  title: "Computational Superstition in Reinforcement Learning",
+  excerpt:
+    "A flagship research essay on proxy persistence, non-causal stabilization, and why adaptive agents can preserve rituals after the reward logic changes.",
+  date: "2026-07-07",
+  readingTime: "14 min",
+  tags: ["Reinforcement learning", "AI safety", "Agent behavior"],
+  sections: [
+    "The failure mode is preservation, not only optimization",
+    "A working definition",
+    "Why reinforcement learning can produce rituals",
+    "The experimental agenda",
+    "Why this matters for safety",
+    "Markets, agents, and regime confusion",
+    "What would count as progress"
+  ]
+};
+
+<h2 id="section-1">The failure mode is preservation, not only optimization</h2>
+
+AI safety often begins with the question of what a system is optimizing. That question is necessary, but it is not complete. Adaptive systems also preserve things: old action patterns, old proxy features, old ways of compressing the world. Some of those preserved behaviors remain useful. Others survive because they were once adjacent to reward and became stable inside the policy.
+
+Computational superstition names the second case. It is the persistence of behavior that was historically correlated with reward, but no longer has a causal relationship to successful action.
+
+The agent does not need a mystical belief. It does not need language. It does not need to represent the ritual as a symbol. It only needs a learning history in which a pattern appeared near reward often enough that the policy came to treat the pattern as part of how success is produced.
+
+<ResearchNote>
+The core question is not simply whether an agent can adapt after a distribution shift. It is which behaviors remain sticky after the causal support for those behaviors disappears.
+</ResearchNote>
+
+<h2 id="section-2">A working definition</h2>
+
+Computational superstition is a learned behavioral dependency on a non-causal or formerly-causal proxy that continues after the proxy stops being useful.
+
+The definition has four parts.
+
+1. There is a reward-relevant outcome.
+2. There is a proxy action, feature, context, or ritual that appears near reward during training.
+3. The agent stabilizes behavior around that proxy.
+4. The proxy is removed, inverted, or made irrelevant, yet the behavior persists.
+
+The word "superstition" is useful because it points to the shape of the error. In humans, a superstition is often a causal story built around an accidental correlation. In agents, the same pattern can appear without a story. The behavior persists because selection pressure made it operationally sticky.
+
+<Callout title="Central claim">
+An agent can preserve a ritual without believing in it. The ritual is stored in the policy, not necessarily in an explicit model of the world.
+</Callout>
+
+This makes computational superstition different from ordinary poor performance. A weak agent fails because it has not learned enough. A superstitious agent can fail because it learned too much of the wrong surrounding structure.
+
+<h2 id="section-3">Why reinforcement learning can produce rituals</h2>
+
+Reinforcement learning is powerful because it lets an agent learn from interaction. The agent acts, receives feedback, updates behavior, and tries again. But the feedback signal is often compressed. Reward is usually a narrow channel. It may not explain why an action worked, which parts of the context mattered, or whether the signal was causal, accidental, delayed, or regime-specific.
+
+This creates room for proxy dependence.
+
+If a feature repeatedly appears before reward, the agent may treat it as part of the path to reward. If an action sequence is rewarded in one phase of training, the policy may continue to prefer that sequence even after the environment changes. If reward is sparse or delayed, credit assignment becomes even harder. The system has to decide which earlier details deserve credit, and the wrong detail can become behaviorally durable.
+
+<Principle label="Credit assignment risk">
+When reward is delayed, the agent may stabilize around the most available explanation of success rather than the true causal explanation of success.
+</Principle>
+
+This is not only a toy problem. Many real systems operate in environments where the reward channel is imperfect: financial markets, recommender systems, robotic control, logistics, game environments, and autonomous workflows. In each case, a proxy can be locally useful, then become dangerous once the environment changes.
+
+The most interesting failure is not the dramatic collapse. It is the subtle continuation. The agent still appears competent. It still improves on some metrics. Yet part of its behavior is anchored to an artifact of the old world.
+
+<h2 id="section-4">The experimental agenda</h2>
+
+A useful research program needs environments where causal features and reward-adjacent proxies can be separated on purpose.
+
+The simplest experiment has phases.
+
+1. Introduce a proxy that is correlated with reward.
+2. Train the agent until the proxy becomes behaviorally useful.
+3. Remove or invert the proxy while preserving the underlying task.
+4. Measure which behaviors persist, which disappear, and which are replaced by new rituals.
+
+This should be measured beyond aggregate return. Return matters, but it can hide the mechanism. A policy can recover return while preserving a brittle subroutine. Or it can lose return while correctly abandoning a false proxy. The research needs behavioral probes.
+
+Useful measurements include:
+
+1. Persistence: how long the proxy behavior continues after the proxy loses causal value.
+2. Extinction: how quickly the behavior disappears without direct punishment.
+3. Substitution: whether the agent replaces one proxy ritual with another.
+4. Recovery: whether the agent relearns the true causal feature.
+5. Transfer: whether the ritual appears in neighboring environments.
+
+<ResearchNote>
+The strongest experiments will separate performance recovery from causal relearning. A system can regain score while still carrying a residue of the old proxy.
+</ResearchNote>
+
+The intervention side matters too. Possible interventions include causal feature tests, environment randomization, memory review, counterfactual rollouts, policy distillation after proxy removal, and explicit uncertainty over historical reward explanations.
+
+The goal is not to make agents forget. The goal is to make them revise.
+
+<h2 id="section-5">Why this matters for safety</h2>
+
+Computational superstition sits near reward hacking, specification gaming, and distribution shift, but it is not identical to any one of them.
+
+Reward hacking is often about exploiting the objective. Specification gaming is about satisfying the literal specification while violating intent. Distribution shift is about deployment conditions differing from training conditions. Computational superstition asks a narrower behavioral question: what non-causal dependencies did the system preserve because they were historically selected?
+
+That distinction matters because preserved behaviors can be hard to see. They may not show up as an explicit objective. They may not be visible in a clean capability benchmark. They may only appear when the environment changes in a way that exposes the old proxy.
+
+<Callout title="Safety implication">
+The agent's failure may not be that it wants the wrong thing. The failure may be that it still acts through an old map of how reward used to happen.
+</Callout>
+
+This is especially relevant for autonomous agents that operate across long horizons. Long-horizon systems build routines. They compress context. They learn shortcuts. They reuse strategies. That reuse is useful, until the shortcut becomes a ritual.
+
+The safety question becomes: can the system inspect its own learned dependencies well enough to abandon a proxy before the proxy becomes harmful?
+
+<h2 id="section-6">Markets, agents, and regime confusion</h2>
+
+Markets are natural environments for computational superstition because they are adaptive, noisy, and regime-dependent.
+
+A trading agent can learn that a pattern predicts reward in one market regime. The pattern may be real for a while. It may reflect liquidity, volatility, positioning, macro policy, market microstructure, or reflexive behavior among participants. Then the regime changes. The old pattern stops carrying the same causal force.
+
+If the agent keeps trading the old pattern, the behavior can look like superstition. It is not irrational in the human sense. It is historically rational and currently wrong.
+
+This matters for portfolio intelligence. A serious market agent should not only track what worked. It should track why the system believed it worked, what would invalidate that belief, and whether the evidence still belongs to the same regime.
+
+<Principle label="Market agent principle">
+Autonomous financial systems need memory, but they also need mechanisms for doubting memory.
+</Principle>
+
+This is where the research connects to the broader thinkjackson agenda: autonomous trading agents, portfolio intelligence, machine economies, and AI safety are not separate interests. They meet at the problem of adaptive systems acting under uncertainty with imperfect feedback.
+
+<h2 id="section-7">What would count as progress</h2>
+
+Progress starts with language, but it cannot stop there.
+
+The first step is a vocabulary: proxy persistence, ritual survival, non-causal stabilization, extinction, substitution, and recovery. The second step is instrumentation: environments and probes that make the behavior measurable. The third step is intervention: methods that reduce brittle proxy dependence without destroying useful memory.
+
+A successful research track would produce:
+
+1. Toy environments where computational superstition can be induced and measured.
+2. Metrics that separate causal relearning from simple performance recovery.
+3. Visualizations of policy persistence after proxy removal.
+4. Intervention comparisons across algorithms and environment shifts.
+5. Design principles for agent architectures that need to operate outside static benchmark worlds.
+
+The deeper ambition is to build agents that can ask a version of the question humans often fail to ask:
+
+> Did this work because it was true, or because the world briefly rewarded me for acting as if it was true?
+
+That is the frontier. Not merely agents that learn, but agents that can revise the reasons their learning became stable.
+
+<References
+  items={[
+    {
+      title: "Reinforcement Learning: An Introduction",
+      source: "Sutton and Barto, MIT Press",
+      href: "http://incompleteideas.net/book/the-book-2nd.html",
+      note:
+        "The core reference for reinforcement learning foundations, including reward, value functions, policies, and temporal-difference learning."
+    },
+    {
+      title: "Concrete Problems in AI Safety",
+      source: "Amodei et al., arXiv",
+      href: "https://arxiv.org/abs/1606.06565",
+      note:
+        "Frames practical accident risks including reward hacking, safe exploration, scalable oversight, and distributional shift."
+    },
+    {
+      title: "Specification Gaming: The Flip Side of AI Ingenuity",
+      source: "DeepMind",
+      href: "https://deepmind.google/discover/blog/specification-gaming-the-flip-side-of-ai-ingenuity/",
+      note:
+        "A collection of examples where systems satisfy a specified objective in unintended ways, useful background for proxy failure modes."
+    },
+    {
+      title: "Reward is Enough",
+      source: "Silver, Singh, Precup, and Sutton",
+      href: "https://www.sciencedirect.com/science/article/pii/S0004370221000862",
+      note:
+        "A strong reward-centered thesis that helps clarify what reward can and cannot explain when behavior stabilizes around learned structure."
+    }
+  ]}
+/>

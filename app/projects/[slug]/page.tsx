@@ -7,6 +7,8 @@ import { CTASection } from "@/components/cta-section";
 import { OmniQuantDiagram } from "@/components/omniquant-diagram";
 import { Reveal } from "@/components/reveal";
 import { projects } from "@/data/site";
+import { getWritingPost } from "@/lib/writing";
+import { formatDate } from "@/lib/utils";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -40,6 +42,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   if (!project) {
     notFound();
   }
+
+  const relatedWriting =
+    "relatedWritingSlugs" in project
+      ? project.relatedWritingSlugs.map((postSlug) => getWritingPost(postSlug)).filter((post) => post !== undefined)
+      : [];
 
   return (
     <>
@@ -197,16 +204,41 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
       <section className="py-20">
         <Container>
-          <div className="max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Roadmap</p>
-            <div className="mt-6 space-y-3">
-              {project.roadmap.map((item, index) => (
-                <div key={item} className="rounded-lg border border-line bg-white/[0.035] p-5">
-                  <p className="font-mono text-xs text-volt">0{index + 1}</p>
-                  <p className="mt-3 text-sm leading-6 text-steel">{item}</p>
-                </div>
-              ))}
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+            <div className="max-w-3xl">
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Roadmap</p>
+              <div className="mt-6 space-y-3">
+                {project.roadmap.map((item, index) => (
+                  <div key={item} className="rounded-lg border border-line bg-white/[0.035] p-5">
+                    <p className="font-mono text-xs text-volt">0{index + 1}</p>
+                    <p className="mt-3 text-sm leading-6 text-steel">{item}</p>
+                  </div>
+                ))}
+              </div>
             </div>
+            {relatedWriting.length > 0 ? (
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Related writing</p>
+                <h2 className="mt-4 text-3xl font-semibold text-white">The thesis layer behind the build.</h2>
+                <div className="mt-6 space-y-4">
+                  {relatedWriting.map((post) => (
+                    <Link
+                      key={post.slug}
+                      href={`/writing/${post.slug}`}
+                      className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 hover:bg-white/[0.055]"
+                    >
+                      <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-steel">
+                        <time dateTime={post.date}>{formatDate(post.date)}</time>
+                        <span aria-hidden="true">/</span>
+                        <span>{post.readingTime}</span>
+                      </div>
+                      <h3 className="mt-3 text-xl font-semibold leading-7 text-white">{post.title}</h3>
+                      <p className="mt-3 text-sm leading-6 text-steel">{post.excerpt}</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         </Container>
       </section>

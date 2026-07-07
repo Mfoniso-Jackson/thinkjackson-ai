@@ -87,6 +87,7 @@ export const projects = [
     status: "Product architecture",
     href: "/projects/gratifi",
     githubUrl: "https://github.com/Mfoniso-Jackson/Gratifi",
+    relatedWritingSlugs: ["machine-economies-need-coordination-primitives"],
     thesis:
       "GratiFi treats gratitude as a coordination signal: a lightweight way for communities to fund ambition, recognize invisible labor, and route support toward people before institutions know how to value them.",
     problem:
@@ -111,6 +112,10 @@ export const projects = [
       "A decentralized AI quant hub for research, strategies, and market intelligence at the edge of collaborative financial engineering.",
     status: "Concept to infrastructure",
     href: "/projects/massifx",
+    relatedWritingSlugs: [
+      "portfolio-intelligence-is-not-a-dashboard",
+      "machine-economies-need-coordination-primitives"
+    ],
     thesis:
       "MassifX imagines quant research as a networked intelligence layer: researchers, agents, datasets, and strategies coordinating around market discovery without collapsing into a closed black box.",
     problem:
@@ -136,6 +141,10 @@ export const projects = [
     status: "Infrastructure thesis",
     href: "/projects/omniquantai",
     githubUrl: "https://github.com/Mfoniso-Jackson/omniquantai-coralos",
+    relatedWritingSlugs: [
+      "machine-economies-need-coordination-primitives",
+      "portfolio-intelligence-is-not-a-dashboard"
+    ],
     positioning: "Financial Intelligence Network for Autonomous Markets.",
     subtitle:
       "An autonomous marketplace where AI agents compete to produce financial intelligence and earn through programmable settlement.",
@@ -228,6 +237,10 @@ export const projects = [
     status: "Research track",
     href: "/projects/computational-superstition-rl",
     githubUrl: "https://github.com/Mfoniso-Jackson/noncausal-stabilization-rl",
+    relatedWritingSlugs: [
+      "computational-superstition-in-reinforcement-learning",
+      "when-agents-keep-the-ritual"
+    ],
     thesis:
       "Computational superstition names a class of agent behaviors where learned proxies persist after their causal usefulness disappears, creating rituals that look adaptive because they once correlated with reward.",
     problem:
@@ -252,6 +265,7 @@ export const projects = [
       "A data intelligence layer for renters, landlords, and property managers, turning fragmented housing records into useful decision graphs.",
     status: "Applied intelligence",
     href: "/projects/domusgraph-homegraph",
+    relatedWritingSlugs: ["portfolio-intelligence-is-not-a-dashboard"],
     thesis:
       "DomusGraph turns housing information into a decision graph: a structured layer where renters, landlords, and property managers can reason about homes, histories, obligations, and risk.",
     problem:
@@ -298,9 +312,9 @@ export const writingQueue = [
     note: "Why execution intelligence is incomplete without a durable account of assumptions, constraints, and regime change."
   },
   {
-    title: "The Difference Between Signal, Ritual, and Regime",
+    title: "Risk Memory for Autonomous Trading Agents",
     theme: "Research",
-    note: "A practical vocabulary for separating causal structure from learned habit in agents and markets."
+    note: "A design note on how market agents should remember assumptions without becoming trapped by old regimes."
   },
   {
     title: "What an Agent Marketplace for Financial Intelligence Needs to Prove",
@@ -399,7 +413,7 @@ export const ownerTasks = [
   "Confirm Cloudflare Email Routing is receiving mail for hello@thinkjackson.com.",
   "Decide whether /launch should stay public, become private, or turn into a polished public launch note.",
   "Share any real repositories or demos for MassifX or DomusGraph/HomeGraph.",
-  "Write one longer flagship essay expanding Computational Superstition in Reinforcement Learning.",
+  "Write two more flagship essays before adding newsletter or waitlist capture.",
   "Collect any real screenshots, diagrams, notebooks, or architecture artifacts that can make the project pages more concrete."
 ] as const;
 

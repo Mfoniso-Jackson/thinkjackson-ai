@@ -1,3 +1,6 @@
+import ComputationalSuperstitionPost, {
+  metadata as computationalSuperstitionMetadata
+} from "@/content/writing/computational-superstition-in-reinforcement-learning.mdx";
 import MachineEconomiesPost, {
   metadata as machineEconomiesMetadata
 } from "@/content/writing/machine-economies-need-coordination-primitives.mdx";
@@ -10,6 +13,10 @@ import AgentRitualPost, {
 import type { WritingPost } from "@/lib/writing-types";
 
 export const writingPosts = [
+  {
+    ...computationalSuperstitionMetadata,
+    Component: ComputationalSuperstitionPost
+  },
   {
     ...agentRitualMetadata,
     Component: AgentRitualPost
