@@ -81,27 +81,27 @@ export const projects = [
   {
     slug: "gratifi",
     title: "GratiFi",
-    category: "AI/Web3 coordination",
+    category: "Recognition infrastructure",
     summary:
-      "A platform for dream-linked micro-tipping and worker funding, designed around gratitude as an economic primitive rather than a marketing mechanic.",
-    status: "Product architecture",
+      "Production-ready recognition infrastructure for hospitality and service venues, combining QR flows, Stripe verification, Supabase records, and Moonbeam anchoring.",
+    status: "Production-shaped platform",
     href: "/projects/gratifi",
     githubUrl: "https://github.com/Mfoniso-Jackson/Gratifi",
     relatedWritingSlugs: ["machine-economies-need-coordination-primitives"],
     thesis:
-      "GratiFi treats gratitude as a coordination signal: a lightweight way for communities to fund ambition, recognize invisible labor, and route support toward people before institutions know how to value them.",
+      "GratiFi treats recognition as verifiable coordination infrastructure: a way for customers, workers, and venues to route gratitude into auditable records without forcing customers through a wallet-first experience.",
     problem:
-      "Most funding systems are optimized for credentials, scale, and legibility. The early moments of a dream are usually illegible: a worker needs a small bridge, a creator needs momentum, a contributor needs recognition before a formal market exists.",
+      "Hospitality and service recognition is usually fragmented across cash tips, informal thank-yous, opaque platform payouts, and venue systems that do not preserve portable proof of appreciation.",
     architecture: [
-      "Dream-linked profiles that connect a person, their current work, and the concrete support they need next.",
-      "Micro-tipping flows that make small acts of support feel intentional rather than disposable.",
-      "AI-assisted matching between contributors, community context, and funding opportunities.",
-      "Web3-native attribution and optional settlement rails for portable reputation and transparent funding trails."
+      "QR-based customer flow for selecting or viewing a worker and leaving recognition with an optional thank-you message.",
+      "Stripe server-side verification before recognition events are persisted.",
+      "Supabase data layer for recognition events, admin monitoring, export workflows, and retry state.",
+      "Moonbeam anchoring for deterministic recognition hashes that make gratitude records verifiable without making the customer experience crypto-heavy."
     ],
     roadmap: [
-      "Prototype the dream profile and contribution graph.",
-      "Design the trust layer for identity, fraud resistance, and social verification.",
-      "Pilot with a small community where creative work, service work, and mutual aid already overlap."
+      "Harden the platform app around venue onboarding, worker profiles, recognition events, and admin verification.",
+      "Expand protocol documentation for recognition hashing, retry behavior, and event export.",
+      "Pilot with hospitality or service venues where recognition, retention, and trust are operationally meaningful."
     ]
   },
   {
@@ -262,24 +262,25 @@ export const projects = [
     title: "DomusGraph / HomeGraph",
     category: "Property intelligence",
     summary:
-      "A data intelligence layer for renters, landlords, and property managers, turning fragmented housing records into useful decision graphs.",
-    status: "Applied intelligence",
+      "A production-shaped housing transparency MVP that turns reviews, maintenance issues, claims, referrals, and verified housing events into a housing graph.",
+    status: "Production-shaped MVP",
     href: "/projects/domusgraph-homegraph",
+    githubUrl: "https://github.com/Mfoniso-Jackson/domusgraph",
     relatedWritingSlugs: ["portfolio-intelligence-is-not-a-dashboard"],
     thesis:
-      "DomusGraph turns housing information into a decision graph: a structured layer where renters, landlords, and property managers can reason about homes, histories, obligations, and risk.",
+      "DomusGraph turns housing transparency into a graph-growth system: every review, issue, claim, referral, manager intake, and feedback response becomes a structured signal for more trustworthy property intelligence.",
     problem:
-      "Housing data is scattered across listings, messages, maintenance records, contracts, payments, inspections, and subjective memory. Important decisions are made with partial context and weak continuity.",
+      "Housing decisions are made with partial memory. Renters know fragments, landlords and managers hold operational context, and public discovery often lacks structured signals about maintenance, safety, responsiveness, and trust.",
     architecture: [
-      "Entity graph for properties, units, tenants, landlords, managers, issues, documents, and events.",
-      "Data ingestion from listings, forms, maintenance tickets, and communication records.",
-      "Decision views for affordability, maintenance risk, tenant experience, and operational follow-up.",
-      "AI-assisted summarization that keeps human judgment anchored to traceable records."
+      "Next.js App Router product with property search, property profiles, tenant reviews, maintenance issue reporting, landlord/property-manager claims, onboarding, dashboards, and admin research tools.",
+      "Supabase Auth, PostgreSQL, RLS, server actions, and CSV exports for structured housing research workflows.",
+      "Housing Event Engine centered on Verified Housing Events, graph-growth analytics, contributor reputation, and property profile completeness.",
+      "SEO discovery routes for city, postcode, and neighbourhood surfaces that can compound housing graph coverage."
     ],
     roadmap: [
-      "Define the core housing graph schema.",
-      "Prototype renter and property-manager views on the same underlying data model.",
-      "Explore partnerships where fragmented property workflows create real operational drag."
+      "Add Supabase Auth UI, magic-link sign-in, and approve/reject moderation controls.",
+      "Add address normalization, postcode lookup, evidence uploads, verification levels, rate limiting, and abuse prevention.",
+      "Enrich the housing graph with EPC, UPRN-backed property identity, HMO/selective licensing, council enforcement data, and real email delivery."
     ]
   }
 ] as const;
@@ -412,7 +413,7 @@ export const nowItems = [
 export const ownerTasks = [
   "Confirm Cloudflare Email Routing is receiving mail for hello@thinkjackson.com.",
   "Decide whether /launch should stay public, become private, or turn into a polished public launch note.",
-  "Share any real repositories or demos for MassifX or DomusGraph/HomeGraph.",
+  "Share any real repositories or demos for MassifX.",
   "Write two more flagship essays before adding newsletter or waitlist capture.",
   "Collect any real screenshots, diagrams, notebooks, or architecture artifacts that can make the project pages more concrete."
 ] as const;
