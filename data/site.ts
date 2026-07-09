@@ -107,29 +107,30 @@ export const projects = [
   {
     slug: "massifx",
     title: "MassifX",
-    category: "Decentralized quant systems",
+    category: "AI quant infrastructure",
     summary:
-      "A decentralized AI quant hub for research, strategies, and market intelligence at the edge of collaborative financial engineering.",
-    status: "Concept to infrastructure",
+      "Production-oriented MVP for crypto trading intelligence, strategy evaluation, backtesting, paper execution, and investor demos.",
+    status: "Production-oriented MVP",
     href: "/projects/massifx",
+    githubUrl: "https://github.com/Mfoniso-Jackson/massifx",
     relatedWritingSlugs: [
       "portfolio-intelligence-is-not-a-dashboard",
       "machine-economies-need-coordination-primitives"
     ],
     thesis:
-      "MassifX imagines quant research as a networked intelligence layer: researchers, agents, datasets, and strategies coordinating around market discovery without collapsing into a closed black box.",
+      "MassifX turns quant research into controlled agent infrastructure: strategy evaluation, risk review, paper execution, and backtesting in a system where live-money execution is deliberately out of scope for v1.",
     problem:
-      "Quant work is fragmented between private notebooks, opaque funds, social media speculation, and toolchains that do not preserve reasoning. The result is duplicated effort, weak attribution, and strategy ideas that cannot become durable systems.",
+      "Crypto trading intelligence is often split between notebooks, dashboards, discretionary chat, and unsafe automation. Serious agentic trading infrastructure needs a boundary between research, decisioning, risk approval, and execution.",
     architecture: [
-      "Research workspaces for strategy hypotheses, data lineage, experiments, and peer review.",
-      "Agent-assisted research flows that surface regime shifts, anomalies, and model failure modes.",
-      "Strategy registries with attribution, risk notes, and lifecycle state.",
-      "Coordination mechanisms for contributors, capital allocators, and infrastructure operators."
+      "pnpm monorepo with a Next.js dashboard, API routes, demo auth, and Recharts market intelligence surfaces.",
+      "Core package for strategy interfaces, risk engine, backtester, and paper trading simulator.",
+      "Agent package for structured regime detection and JSON decision output over OHLCV candles.",
+      "Data and database packages for Binance-compatible market data abstraction, Prisma schema, and local Postgres through Docker Compose."
     ],
     roadmap: [
-      "Define the research object model: thesis, dataset, experiment, signal, strategy, risk note.",
-      "Build a private alpha around collaborative strategy memos.",
-      "Add agentic market-monitoring workflows once the human research loop is disciplined."
+      "Keep v1 paper trading only, with ENABLE_LIVE_TRADING disabled and no live exchange order path.",
+      "Expand Vitest coverage for core quant logic, risk evaluation, and backtesting behavior.",
+      "Harden any future live adapter behind explicit environment gates, key management, audit logs, and risk controls."
     ]
   },
   {
@@ -413,9 +414,9 @@ export const nowItems = [
 export const ownerTasks = [
   "Confirm Cloudflare Email Routing is receiving mail for hello@thinkjackson.com.",
   "Decide whether /launch should stay public, become private, or turn into a polished public launch note.",
-  "Share any real repositories or demos for MassifX.",
+  "Collect live screenshots, diagrams, notebooks, and demo artifacts for MassifX, GratiFi, DomusGraph, and OmniQuantAI.",
   "Write two more flagship essays before adding newsletter or waitlist capture.",
-  "Collect any real screenshots, diagrams, notebooks, or architecture artifacts that can make the project pages more concrete."
+  "Add one research artifact page for the Computational Superstition RL experimental design."
 ] as const;
 
 export const consultingOffers = [
