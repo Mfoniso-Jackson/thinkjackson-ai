@@ -50,6 +50,39 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://thinkjackson.com/#person",
+        name: "Mfoniso Jackson",
+        url: "https://thinkjackson.com",
+        sameAs: [
+          "https://www.linkedin.com/in/mfoniso-jackson/",
+          "https://x.com/mrjacksonsays",
+          "https://github.com/Mfoniso-Jackson"
+        ],
+        knowsAbout: [
+          "Artificial intelligence",
+          "Financial engineering",
+          "Reinforcement learning",
+          "Autonomous agents",
+          "AI safety",
+          "Portfolio intelligence",
+          "Web3 coordination"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://thinkjackson.com/#website",
+        name: "thinkjackson",
+        url: "https://thinkjackson.com",
+        description: "AI systems for markets, agents, and human coordination."
+      }
+    ]
+  };
+
   return (
     <html lang="en">
       <body className="font-sans antialiased">
@@ -59,6 +92,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <Analytics />
       </body>
     </html>

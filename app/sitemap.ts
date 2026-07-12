@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/data/site";
+import { publicVentures } from "@/data/ventures";
 import { writingPosts } from "@/lib/writing";
 
 const routes = [
@@ -8,11 +8,14 @@ const routes = [
   "/research",
   "/research/computational-superstition",
   "/projects",
+  "/investors",
   "/writing",
   "/now",
   "/consulting",
   "/contact",
-  ...projects.map((project) => `/projects/${project.slug}`),
+  "/privacy",
+  "/site-notice",
+  ...publicVentures.map((venture) => `/projects/${venture.slug}`),
   ...writingPosts.map((post) => `/writing/${post.slug}`)
 ];
 

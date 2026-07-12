@@ -15,6 +15,10 @@ export function Footer() {
             AI systems for markets, agents, and human coordination. Research,
             product architecture, and founder-grade execution by Mfoniso Jackson.
           </p>
+          <p className="mt-4 max-w-xl text-xs leading-5 text-steel/80">
+            Informational only. Nothing on this site is financial advice, investment advice,
+            brokerage activity, or an offer to sell securities.
+          </p>
         </div>
         <nav className="flex flex-wrap gap-x-4 gap-y-3 md:justify-end" aria-label="Footer navigation">
           {navigation.map((item) => (
@@ -46,6 +50,12 @@ export function Footer() {
               </span>
             )
           ))}
+          <Link href="/privacy" className="text-sm text-steel hover:text-white">
+            Privacy
+          </Link>
+          <Link href="/site-notice" className="text-sm text-steel hover:text-white">
+            Site notice
+          </Link>
         </nav>
       </Container>
     </footer>

@@ -1,15 +1,28 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { Button } from "@/components/button";
 import { Container } from "@/components/container";
-import { CTASection } from "@/components/cta-section";
-import { ProjectCard } from "@/components/project-card";
-import { ResearchCard } from "@/components/research-card";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
+import { VentureCard } from "@/components/venture-card";
 import { WritingCard } from "@/components/writing-card";
-import { focusItems, projects, researchThemes } from "@/data/site";
+import { capabilityThesis, capitalObjectiveLabels, flagshipVenture, founderProfile, publicVentures } from "@/data/ventures";
 import { writingPosts } from "@/lib/writing";
+import { verifiedEvidence } from "@/lib/venture-validation";
+
+export const metadata: Metadata = {
+  title: "AI Venture Builder",
+  description:
+    "Mfoniso Jackson builds adaptive intelligence infrastructure for markets, risk, autonomous agents, and economic coordination.",
+  alternates: {
+    canonical: "/"
+  }
+};
 
 export default function Home() {
+  const featuredVentures = publicVentures.filter((venture) => venture.featured);
+  const activeObjectives = publicVentures.filter((venture) => venture.capitalObjectives[0] !== "not-raising").slice(0, 4);
+
   return (
     <>
       <section className="relative overflow-hidden py-24 sm:py-32 lg:py-40">
@@ -17,89 +30,91 @@ export default function Home() {
           <div className="max-w-5xl">
             <Reveal>
               <p className="font-mono text-sm uppercase tracking-[0.3em] text-signal">
-                Mfoniso Jackson
+                Mfoniso Jackson · AI Engineer and Venture Builder
               </p>
               <h1 className="mt-6 text-balance text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
-                AI systems for markets, agents, and human coordination.
+                Building adaptive intelligence infrastructure for markets, risk and economic coordination.
               </h1>
-              <p className="mt-7 max-w-3xl text-lg leading-8 text-steel sm:text-xl">
-                thinkjackson is the research and builder platform of an AI engineer
-                working across financial engineering, reinforcement learning, autonomous
-                agents, safety, Web3 coordination systems, and portfolio intelligence.
+              <p className="mt-7 max-w-4xl text-lg leading-8 text-steel sm:text-xl">
+                thinkjackson is the research and venture platform behind AI-native systems spanning financial
+                intelligence, autonomous agents, risk infrastructure, property operations, worker recognition,
+                incident intelligence, and adaptive-agent safety.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <Button href="/research">Explore Research</Button>
-                <Button href="/consulting" variant="secondary">
-                  Work With Me
+                <Button href="/projects">Explore the Venture Portfolio</Button>
+                <Button href="/investors" variant="secondary">
+                  Read the Investor Brief
                 </Button>
               </div>
+              <Link href="/research" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white">
+                Explore the research thesis
+              </Link>
             </Reveal>
-          </div>
-          <div className="mt-20 grid gap-4 md:grid-cols-3">
-            {["Research-grade systems", "Market-aware agents", "Coordination infrastructure"].map(
-              (item, index) => (
-                <Reveal key={item} delay={index * 0.08}>
-                  <div className="rounded-lg border border-line bg-white/[0.035] p-5">
-                    <p className="font-mono text-xs uppercase tracking-[0.22em] text-volt">
-                      0{index + 1}
-                    </p>
-                    <p className="mt-4 text-lg font-semibold text-white">{item}</p>
-                  </div>
-                </Reveal>
-              )
-            )}
           </div>
         </Container>
       </section>
 
-      <section className="border-y border-line bg-graphite/70 py-20">
+      <section id="thesis" className="border-y border-line bg-graphite/70 py-20">
         <Container>
-          <Reveal>
-            <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-              <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">
-                Manifesto
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+            <SectionHeading eyebrow="Capital thesis" title="One technical thesis. Multiple high-value markets.">
+              <p>
+                The ventures are connected by a reusable capability stack for environments where capital, risk,
+                trust, incentives, and autonomous agents interact.
               </p>
-              <p className="text-2xl font-medium leading-10 text-white">
-                The interesting frontier is not simply making models more capable. It is
-                building systems that remember risk, understand incentives, resist false
-                rituals, and help humans coordinate around decisions too complex for static
-                software.
-              </p>
+            </SectionHeading>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {capabilityThesis.map((capability) => (
+                <div key={capability} className="rounded-lg border border-line bg-white/[0.035] p-4 text-sm font-medium text-white">
+                  {capability}
+                </div>
+              ))}
             </div>
-          </Reveal>
+          </div>
         </Container>
       </section>
 
       <section className="py-20">
         <Container>
-          <SectionHeading eyebrow="Research themes" title="Where machine behavior meets markets.">
-            <p>
-              The research program treats agents, portfolios, protocols, and human decision
-              systems as adaptive machines operating under uncertainty.
-            </p>
+          <SectionHeading eyebrow="Flagship opportunity" title={flagshipVenture.name}>
+            <p>{flagshipVenture.investmentThesis}</p>
           </SectionHeading>
-          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {researchThemes.map((theme, index) => (
-              <Reveal key={theme.title} delay={index * 0.04}>
-                <ResearchCard {...theme} />
-              </Reveal>
-            ))}
+          <div className="mt-10 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="rounded-lg border border-line bg-white/[0.035] p-7">
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">{flagshipVenture.category}</p>
+              <h3 className="mt-4 text-3xl font-semibold text-white">{flagshipVenture.tagline}</h3>
+              <p className="mt-5 text-base leading-8 text-steel">{flagshipVenture.problem}</p>
+              <p className="mt-5 text-base leading-8 text-white">{flagshipVenture.solution}</p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <Button href={`/projects/${flagshipVenture.slug}`}>Full venture page</Button>
+                <Button href="/investors#request" variant="secondary">
+                  Request investor materials
+                </Button>
+              </div>
+            </div>
+            <div className="grid gap-4">
+              {[
+                ["Stage", flagshipVenture.statusLabel],
+                ["Current objective", flagshipVenture.currentAsk],
+                ["Next milestone", flagshipVenture.nextMilestone]
+              ].map(([label, value]) => (
+                <div key={label} className="rounded-lg border border-line bg-ink/70 p-5">
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">{label}</p>
+                  <p className="mt-3 text-sm leading-6 text-steel">{value}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </Container>
       </section>
 
       <section className="border-y border-line bg-graphite/60 py-20">
         <Container>
-          <SectionHeading eyebrow="Featured projects" title="Systems with research inside them.">
-            <p>
-              Each project is a different way of asking the same question: how should
-              intelligent systems allocate attention, capital, trust, and action?
-            </p>
-          </SectionHeading>
+          <SectionHeading eyebrow="Venture portfolio" title="Disciplined systems, not a startup directory." />
           <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {projects.slice(0, 3).map((project, index) => (
-              <Reveal key={project.title} delay={index * 0.06}>
-                <ProjectCard {...project} />
+            {featuredVentures.map((venture, index) => (
+              <Reveal key={venture.slug} delay={index * 0.04}>
+                <VentureCard venture={venture} />
               </Reveal>
             ))}
           </div>
@@ -109,19 +124,14 @@ export default function Home() {
       <section className="py-20">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-            <SectionHeading eyebrow="Current focus" title="The near-field work.">
-              <p>
-                Mfoniso is focused on the bridge between original research and systems
-                that can operate in live economic environments.
-              </p>
+            <SectionHeading eyebrow="Founder advantage" title="Why this founder, why these problems, why now.">
+              <p>{founderProfile.thesis}</p>
             </SectionHeading>
-            <div className="grid gap-3">
-              {focusItems.map((item) => (
-                <Reveal key={item}>
-                  <div className="rounded-lg border border-line bg-white/[0.035] p-5 text-base leading-7 text-white">
-                    {item}
-                  </div>
-                </Reveal>
+            <div className="grid gap-4">
+              {founderProfile.verifiedFacts.map((fact) => (
+                <div key={fact} className="rounded-lg border border-line bg-white/[0.035] p-5 text-sm leading-6 text-steel">
+                  {fact}
+                </div>
               ))}
             </div>
           </div>
@@ -130,23 +140,104 @@ export default function Home() {
 
       <section className="border-y border-line bg-graphite/60 py-20">
         <Container>
-          <SectionHeading eyebrow="Selected writing" title="Field notes from the edge.">
-            <p>
-              Essays and research notes now live as MDX, so the library can grow into
-              a serious publishing surface with callouts, citations, diagrams, and code.
-            </p>
-          </SectionHeading>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {writingPosts.map((post, index) => (
-              <Reveal key={post.title} delay={index * 0.06}>
-                <WritingCard {...post} />
-              </Reveal>
+          <div className="grid gap-10 lg:grid-cols-2">
+            <SectionHeading eyebrow="Research moat" title="Adaptive-agent research as technical differentiation.">
+              <p>
+                Computational superstition research studies proxy persistence, false correlation, and behavior that
+                remains stable after reward conditions change. For market agents and decision systems, that becomes
+                a practical lens for regime change, risk memory, and safer adaptation.
+              </p>
+            </SectionHeading>
+            <div className="grid gap-3">
+              {[
+                "More robust autonomous agents",
+                "Better detection of false correlations",
+                "Safer strategy adaptation under regime change",
+                "Improved interpretability of decision systems",
+                "Defensible technical knowledge across the venture portfolio"
+              ].map((item) => (
+                <div key={item} className="rounded-lg border border-line bg-white/[0.035] p-4 text-sm text-white">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-20">
+        <Container>
+          <SectionHeading eyebrow="Execution evidence" title="Public proof-of-work." />
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            {publicVentures.flatMap((venture) =>
+              verifiedEvidence(venture).slice(0, 1).map((item) => (
+                <Link
+                  key={`${venture.slug}-${item.label}`}
+                  href={item.url ?? `/projects/${venture.slug}`}
+                  target={item.url?.startsWith("http") ? "_blank" : undefined}
+                  rel={item.url?.startsWith("http") ? "noreferrer" : undefined}
+                  className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35"
+                >
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">{venture.name}</p>
+                  <h3 className="mt-3 text-lg font-semibold text-white">{item.label}</h3>
+                  <p className="mt-2 text-sm leading-6 text-steel">{item.description}</p>
+                </Link>
+              ))
+            )}
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-y border-line bg-graphite/60 py-20">
+        <Container>
+          <SectionHeading eyebrow="Current capital objectives" title="What aligned counterparties can help unlock." />
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            {activeObjectives.map((venture) => (
+              <div key={venture.slug} className="rounded-lg border border-line bg-white/[0.035] p-5">
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">{venture.name}</p>
+                <h3 className="mt-3 text-xl font-semibold text-white">
+                  {venture.capitalObjectives.map((objective) => capitalObjectiveLabels[objective]).join(" / ")}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-steel">{venture.currentAsk}</p>
+              </div>
             ))}
           </div>
         </Container>
       </section>
 
-      <CTASection />
+      <section className="py-20">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+            <SectionHeading eyebrow="Selected writing" title="Research notes investors can inspect.">
+              <p>Writing is part of the diligence path: it shows the technical thesis behind the venture portfolio.</p>
+            </SectionHeading>
+            <div className="grid gap-5">
+              {writingPosts.slice(0, 2).map((post) => (
+                <WritingCard key={post.slug} {...post} />
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-t border-line bg-graphite/70 py-20">
+        <Container>
+          <div className="max-w-3xl">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Investor CTA</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">Interested in the systems being built?</h2>
+            <p className="mt-5 text-base leading-8 text-steel">
+              Aligned investors, grant organisations, strategic partners, pilot customers, and domain experts can
+              request the appropriate public or confidential materials through a qualified conversation path.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button href="/investors#request">Request Investor Brief</Button>
+              <Button href="/contact" variant="secondary">
+                Start a Conversation
+              </Button>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

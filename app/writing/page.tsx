@@ -84,7 +84,7 @@ export default function WritingPage() {
             </Reveal>
 
             <Reveal delay={0.08}>
-              <div className="rounded-lg border border-line bg-void/70 p-6">
+              <div className="rounded-lg border border-line bg-ink/70 p-6">
                 <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Writing tracks</p>
                 <div className="mt-6 space-y-6">
                   {writingTracks.map((track) => (

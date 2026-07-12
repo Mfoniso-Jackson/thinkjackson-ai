@@ -40,10 +40,10 @@ export function Header() {
           ))}
         </nav>
         <Link
-          href="/contact"
-          className="hidden rounded-md border border-line px-3.5 py-2 text-sm font-medium text-white transition hover:border-signal/70 hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-signal sm:inline-flex"
+          href="/investors"
+          className="hidden rounded-md bg-signal px-3.5 py-2 text-sm font-semibold text-ink transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-signal sm:inline-flex"
         >
-          Start a conversation
+          Investor Brief
         </Link>
       </Container>
       <div className="border-t border-line md:hidden">
