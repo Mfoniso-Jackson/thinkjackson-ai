@@ -5,16 +5,20 @@ import { writingPosts } from "@/lib/writing";
 const routes = [
   "",
   "/about",
+  "/evidence",
   "/research",
   "/research/computational-superstition",
+  "/products",
   "/projects",
   "/investors",
   "/writing",
+  "/timeline",
   "/now",
   "/consulting",
   "/contact",
   "/privacy",
   "/site-notice",
+  "/rss.xml",
   ...publicVentures.map((venture) => `/projects/${venture.slug}`),
   ...writingPosts.map((post) => `/writing/${post.slug}`)
 ];

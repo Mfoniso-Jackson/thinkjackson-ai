@@ -26,6 +26,15 @@ export function Footer() {
               {item.label}
             </Link>
           ))}
+          <Link href="/projects" className="text-sm text-steel hover:text-white">
+            Ventures
+          </Link>
+          <Link href="/timeline" className="text-sm text-steel hover:text-white">
+            Timeline
+          </Link>
+          <Link href="/rss.xml" className="text-sm text-steel hover:text-white">
+            RSS
+          </Link>
           {socialLinks.map((item) => (
             "href" in item ? (
               <Link

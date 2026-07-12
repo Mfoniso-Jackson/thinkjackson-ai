@@ -1,10 +1,11 @@
 export const navigation = [
   { label: "Thesis", href: "/#thesis" },
-  { label: "Ventures", href: "/projects" },
+  { label: "Products", href: "/products" },
+  { label: "Evidence", href: "/evidence" },
   { label: "Research", href: "/research" },
-  { label: "Founder", href: "/about" },
   { label: "Investor Brief", href: "/investors" },
   { label: "Writing", href: "/writing" },
+  { label: "Founder", href: "/about" },
   { label: "Contact", href: "/contact" }
 ] as const;
 
