@@ -27,7 +27,9 @@ export default function ConsultingPage() {
                 who need rigorous AI systems thinking rather than trend-chasing theater.
               </p>
               <div className="mt-9">
-                <Button href="/contact">Start a conversation</Button>
+                <Button href="/contact?intent=consulting&sourcePage=/consulting&campaign=consulting-hero-cta">
+                  Start a conversation
+                </Button>
               </div>
             </div>
           </Reveal>

@@ -34,3 +34,18 @@ Use conservative public wording until these are confirmed.
 
 - Confirm whether a lawyer should review the site notice before broader investor outreach.
 - Confirm whether any venture requires additional disclaimers due to payments, crypto, trading, housing, or security operations.
+## Sales Operating System
+
+- Confirm the current flagship venture for sales prioritisation.
+- Confirm active commercial ventures for the next 30 days.
+- Confirm paused ventures.
+- Confirm ventures seeking pilots, investment, grants, and strategic partners.
+- Choose the CRM owner name shown in private records.
+- Provide a verified scheduling link.
+- Provide a verified email sender and notification recipient.
+- Set `ADMIN_SALES_PASSWORD` in Vercel.
+- Decide whether `SALES_LEAD_WEBHOOK_URL` points to Supabase, Zapier, Make, Airtable, HubSpot, or a custom endpoint.
+- Confirm pilot offers and pricing ranges.
+- Confirm qualification score thresholds.
+- Confirm lead notification rules.
+- Confirm whether CSV import/export should be enabled after auth is connected.

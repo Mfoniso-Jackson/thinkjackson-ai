@@ -4,6 +4,7 @@ import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
+import { SalesCtaGroup } from "@/components/sales-cta";
 import { VentureCard } from "@/components/venture-card";
 import { WritingCard } from "@/components/writing-card";
 import { capabilityThesis, capitalObjectiveLabels, flagshipVenture, founderProfile, publicVentures } from "@/data/ventures";
@@ -222,20 +223,11 @@ export default function Home() {
 
       <section className="border-t border-line bg-graphite/70 py-20">
         <Container>
-          <div className="max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Investor CTA</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">Interested in the systems being built?</h2>
-            <p className="mt-5 text-base leading-8 text-steel">
-              Aligned investors, grant organisations, strategic partners, pilot customers, and domain experts can
-              request the appropriate public or confidential materials through a qualified conversation path.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href="/investors#request">Request Investor Brief</Button>
-              <Button href="/contact" variant="secondary">
-                Start a Conversation
-              </Button>
-            </div>
-          </div>
+          <SalesCtaGroup
+            sourcePage="/"
+            title="Interested in the systems being built?"
+            description="Aligned investors, grant organisations, strategic partners, pilot customers, and domain experts can request the appropriate public or confidential path."
+          />
         </Container>
       </section>
     </>

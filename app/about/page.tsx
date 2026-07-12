@@ -30,7 +30,7 @@ export default function AboutPage() {
               <p className="mt-7 max-w-4xl text-lg leading-8 text-steel">{founderProfile.bio}</p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button href="/investors">Read investor brief</Button>
-                <Button href="/contact" variant="secondary">
+                <Button href="/contact?intent=general&sourcePage=/about&campaign=founder-profile-cta" variant="secondary">
                   Start a conversation
                 </Button>
               </div>

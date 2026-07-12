@@ -6,6 +6,7 @@ import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
+import { SalesCtaGroup } from "@/components/sales-cta";
 import { capitalObjectiveLabels, publicVentures } from "@/data/ventures";
 import { getWritingPost } from "@/lib/writing";
 import { formatDate } from "@/lib/utils";
@@ -78,7 +79,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <p className="mt-5 max-w-4xl text-2xl font-semibold leading-9 text-signal">{venture.tagline}</p>
               <p className="mt-6 max-w-4xl text-lg leading-8 text-steel">{venture.investmentThesis}</p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button href="/investors#request">Request materials</Button>
+                <Button href={`/contact?intent=investor&venture=${venture.slug}&sourcePage=/projects/${venture.slug}&campaign=${venture.slug}-hero-materials`}>
+                  Request materials
+                </Button>
                 {venture.repositoryUrl ? (
                   <Button href={venture.repositoryUrl} variant="secondary">
                     View repository
@@ -250,20 +253,12 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
       <section className="border-t border-line bg-graphite/70 py-20">
         <Container>
-          <div className="max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Request materials</p>
-            <h2 className="mt-4 text-3xl font-semibold text-white">Qualified diligence starts with a conversation.</h2>
-            <p className="mt-5 text-base leading-8 text-steel">
-              Public venture pages do not expose confidential decks, financial models, cap tables, private repositories,
-              or sensitive technical material.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href="/investors#request">Request materials</Button>
-              <Button href="/contact" variant="secondary">
-                Start a conversation
-              </Button>
-            </div>
-          </div>
+          <SalesCtaGroup
+            sourcePage={`/projects/${venture.slug}`}
+            ventureSlug={venture.slug}
+            title="Qualified diligence starts with the right path."
+            description="Public venture pages do not expose confidential decks, financial models, cap tables, private repositories, or sensitive technical material. Choose the route that matches your interest."
+          />
         </Container>
       </section>
     </>
