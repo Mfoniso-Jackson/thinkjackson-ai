@@ -13,17 +13,15 @@ export default function Icon() {
       <div
         style={{
           alignItems: "center",
-          background: "#05070b",
-          border: "2px solid #8be9d7",
-          boxShadow: "inset 0 0 0 1px rgba(215, 241, 113, 0.45)",
-          color: "#ffffff",
+          background: "#d7f171",
+          border: "3px solid #05070b",
+          color: "#05070b",
           display: "flex",
-          fontSize: 15,
+          fontSize: 17,
           fontWeight: 900,
           height: "100%",
           justifyContent: "center",
-          letterSpacing: "-0.03em",
-          textShadow: "0 0 10px rgba(139, 233, 215, 0.65)",
+          letterSpacing: "-0.06em",
           width: "100%"
         }}
       >

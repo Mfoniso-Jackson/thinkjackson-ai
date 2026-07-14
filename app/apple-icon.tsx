@@ -14,17 +14,15 @@ export default function AppleIcon() {
         style={{
           alignItems: "center",
           background:
-            "radial-gradient(circle at 24% 16%, rgba(139, 233, 215, 0.26), transparent 34%), linear-gradient(135deg, #05070b 0%, #111827 100%)",
-          border: "10px solid #8be9d7",
-          boxShadow: "inset 0 0 0 4px rgba(215, 241, 113, 0.5)",
-          color: "#ffffff",
+            "radial-gradient(circle at 28% 18%, rgba(139, 233, 215, 0.55), transparent 34%), linear-gradient(135deg, #d7f171 0%, #8be9d7 100%)",
+          border: "14px solid #05070b",
+          color: "#05070b",
           display: "flex",
-          fontSize: 76,
+          fontSize: 82,
           fontWeight: 900,
           height: "100%",
           justifyContent: "center",
-          letterSpacing: "-0.03em",
-          textShadow: "0 0 28px rgba(139, 233, 215, 0.85)",
+          letterSpacing: "-0.06em",
           width: "100%"
         }}
       >
