@@ -44,6 +44,8 @@ export default function TimelinePage() {
               <Link
                 key={`${event.date}-${event.title}`}
                 href={event.href ?? "/timeline"}
+                target={event.href?.startsWith("http") ? "_blank" : undefined}
+                rel={event.href?.startsWith("http") ? "noreferrer" : undefined}
                 className="grid gap-5 rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 md:grid-cols-[180px_1fr]"
               >
                 <div>

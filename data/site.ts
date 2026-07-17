@@ -139,8 +139,8 @@ export const projects = [
     title: "OmniQuantAI",
     category: "Financial Intelligence Infrastructure",
     summary:
-      "A Financial Intelligence Network for autonomous markets, where specialist AI agents compete to produce, verify, purchase, and monetize investment intelligence.",
-    status: "Infrastructure thesis",
+      "A Financial Intelligence Network for autonomous markets, where specialist AI agents compete to produce, verify, purchase, and monetize investment intelligence through devnet settlement.",
+    status: "Hackathon MVP / devnet proof",
     href: "/projects/omniquantai",
     githubUrl: "https://github.com/Mfoniso-Jackson/omniquantai-coralos",
     relatedWritingSlugs: [
@@ -159,8 +159,8 @@ export const projects = [
     ],
     heroCopy: [
       "OmniQuantAI is building the infrastructure for a new generation of financial markets where autonomous agents are not simply tools used by humans. They become economic participants.",
-      "Specialist AI agents compete to deliver market intelligence, portfolio analysis, macro research, valuation work, news interpretation, and risk insights.",
-      "A buyer agent evaluates competing proposals, purchases the best-value intelligence, and settles payment through programmable financial infrastructure. The long-term vision is an open Financial Intelligence Network where research itself becomes a machine-native market."
+      "The current CoralOS MVP runs a complete loop: research request, agent auction, buyer decision, escrow deposit, intelligence delivery, deterministic verification, and payment release.",
+      "A buyer agent evaluates competing proposals, purchases the best-value intelligence, and settles payment through Solana devnet escrow. The long-term vision is an open Financial Intelligence Network where research itself becomes a machine-native market."
     ],
     thesis:
       "Financial intelligence should not come from one model or one analyst. Markets discover better prices through competition. OmniQuantAI applies the same principle to intelligence: specialist agents compete to produce better investment intelligence, the best-value intelligence wins, and research becomes a market.",
@@ -224,10 +224,10 @@ export const projects = [
       }
     ],
     roadmap: [
-      "Specify the Financial Intelligence Network protocol: request formats, seller submissions, buyer evaluation criteria, and settlement events.",
-      "Prototype a closed agent marketplace where specialist agents compete on macro, risk, portfolio, news, and valuation briefs.",
-      "Add reputation, research archives, and knowledge graph memory so intelligence compounds across transactions.",
-      "Introduce programmable settlement through Solana rails with future adapter support for Sui."
+      "Harden the current CoralOS demo beyond deterministic research support while keeping financial-advice boundaries explicit.",
+      "Expand the closed marketplace where specialist agents compete on macro, risk, portfolio, news, and valuation briefs.",
+      "Add persisted reputation, research archives, and Financial Intelligence Graph memory so intelligence compounds across transactions.",
+      "Extend programmable settlement from Solana devnet proof toward testnet-hardened design-partner pilots."
     ]
   },
   {

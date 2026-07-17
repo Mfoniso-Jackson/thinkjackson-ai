@@ -27,60 +27,87 @@ export const ventures = [
     slug: "omniquantai",
     name: "OmniQuantAI",
     category: "AI agent infrastructure / financial intelligence",
-    tagline: "A financial intelligence network for autonomous markets.",
+    tagline: "A financial intelligence network where autonomous agents buy, sell, verify, and settle investment research.",
     problem:
-      "Financial research is fragmented across models, analysts, dashboards, and workflows that do not expose competing hypotheses or machine-native coordination.",
+      "Financial research is still routed through human-only workflows, disconnected dashboards, and single-model outputs. There is no native market where autonomous agents can request, price, compete on, verify, and settle financial intelligence.",
     solution:
-      "Specialist agents produce market, portfolio, macro, valuation, news, and risk intelligence; buyer agents evaluate proposals; settlement and reputation make intelligence tradable and auditable.",
+      "A CoralOS-coordinated marketplace where a buyer agent broadcasts a research request, specialist seller agents bid, the buyer selects best value, intelligence is delivered as a structured memo, a verifier checks the report, and Solana devnet escrow releases payment.",
     targetCustomer: "Funds, AI-native research teams, autonomous-agent builders, and market infrastructure partners.",
     currentAlternative:
-      "General-purpose AI chat, analyst workflows, terminal dashboards, closed quant tooling, and disconnected research notebooks.",
+      "General-purpose AI chat, analyst workflows, terminal dashboards, closed quant tooling, disconnected research notebooks, and marketplace ideas without working settlement proof.",
     investmentThesis:
-      "The intelligence and coordination layer for markets increasingly populated by autonomous economic agents.",
-    stage: "prototype",
-    statusLabel: "Flagship in development",
-    businessModel: ["Agent marketplace fees", "Research workflow subscriptions", "Enterprise infrastructure pilots"],
-    differentiation: [
-      "Multi-agent competition rather than one-model research output.",
-      "Programmable settlement and reputation as first-class intelligence infrastructure.",
-      "Research memory designed to compound across agent transactions."
+      "As software agents become economic actors, financial intelligence needs market structure: requests, bids, verification, reputation, settlement, and memory.",
+    stage: "mvp",
+    statusLabel: "Hackathon MVP / devnet proof",
+    businessModel: [
+      "Agent marketplace fees",
+      "Research workflow subscriptions",
+      "Enterprise infrastructure pilots",
+      "Verification and reputation services",
+      "Developer ecosystem incentives"
     ],
-    marketEntry: "Closed agent marketplace prototypes for financial intelligence requests, seller proposals, buyer evaluation, and research memory.",
+    differentiation: [
+      "Working WANT/BID/AWARD flow instead of a static concept deck.",
+      "Buyer selects best value rather than the cheapest seller bid.",
+      "Deterministic verifier gates release of payment after report delivery.",
+      "Solana devnet escrow proves machine-native settlement for useful agent work.",
+      "Architecture is marketplace-shaped so specialist agents, reputation, and research memory can compound."
+    ],
+    marketEntry:
+      "Judge-facing demo around a concrete NVDA exposure question, then design-partner pilots with funds, AI-native research teams, and agent infrastructure partners that need controlled financial-intelligence workflows.",
     defensibility: [
-      "Workflow-specific agent protocols.",
-      "Historical research archive and reputation graph.",
+      "CoralOS coordination layer for buyer and seller agents.",
+      "Marketplace protocol surfaces for research requests, bids, awards, verification, and settlement.",
+      "Historical research archive, reputation graph, and future Financial Intelligence Graph.",
       "Founder research around proxy persistence, regime confusion, and adaptive decision systems."
     ],
     milestones: [
-      "Defined Financial Intelligence Network protocol surfaces.",
-      "Public OmniQuantAI and CoralOS repositories exist.",
-      "Project page includes seven-layer architecture and marketplace flow."
+      "Built a judge-facing demo for the question: should a fund increase exposure to Nvidia over the next 3-6 months?",
+      "Implemented Research Request -> Agent Auction -> Buyer Decision -> Escrow Deposited -> Intelligence Delivered -> Verified -> Payment Released.",
+      "Launched four bootstrap seller agents: market analyst, news and earnings, macro risk, and portfolio risk.",
+      "Published a public proof release on July 16, 2026.",
+      "Documented testnet posture, production plan, token/network coordination strategy, and ecosystem playbooks."
     ],
     evidence: [
       {
-        label: "OmniQuantAI CoralOS repository",
-        description: "Public repository for multi-agent coordination infrastructure.",
-        url: "https://github.com/Mfoniso-Jackson/omniquantai-coralos",
-        verified: true
+        label: "Public proof run release",
+        description:
+          "GitHub release for the OmniQuantAI public proof run, documenting the current devnet proof posture.",
+        url: "https://github.com/Mfoniso-Jackson/omniquantai-coralos/releases/tag/proof-2026-07-16",
+        verified: true,
+        date: "2026-07-16"
       },
       {
-        label: "OmniQuantAI repository",
-        description: "Public repository for OmniQuantAI development.",
+        label: "OmniQuantAI CoralOS repository",
+        description:
+          "Public TypeScript repository for the CoralOS-coordinated financial intelligence marketplace and Solana devnet settlement demo.",
+        url: "https://github.com/Mfoniso-Jackson/omniquantai-coralos",
+        verified: true,
+        date: "2026-07-17"
+      },
+      {
+        label: "OmniQuantAI trading foundation repository",
+        description:
+          "Public paper-first trading platform foundation with market data abstraction, paper broker, position manager, risk engine, strategy protocol, regime detector, analytics, and WEEX competition integration.",
         url: "https://github.com/Mfoniso-Jackson/OmniQuantAI",
-        verified: true
+        verified: true,
+        date: "2026-07-09"
       }
     ],
     capitalObjectives: ["strategic-partners", "research-sponsors", "grant"],
-    currentAsk: "Aligned investors, ecosystem partners, and research sponsors for agentic financial-intelligence infrastructure.",
-    useOfFunds: ["Product engineering", "Data infrastructure", "Security and compliance", "Pilot delivery", "Research"],
-    nextMilestone: "Closed prototype demonstrating request, seller-agent proposal, buyer evaluation, research delivery, and reputation memory.",
+    currentAsk: "Aligned investors, ecosystem partners, design partners, and research sponsors for agentic financial-intelligence infrastructure.",
+    useOfFunds: ["Product engineering", "Data infrastructure", "Security and compliance", "Pilot delivery", "Research", "Developer ecosystem"],
+    nextMilestone:
+      "Move from deterministic demo support into a closed design-partner pilot with stronger live-data adapters, richer verification, persisted reputation, and testnet deployment hardening.",
     risks: [
       "Financial-services compliance boundaries require careful scope control.",
-      "Quality evaluation for agent-generated intelligence must be rigorous before any live capital use.",
-      "Settlement and reputation design need focused protocol validation."
+      "Demo research support is not trading advice and should not be represented as a live investment recommendation.",
+      "Current market/news/macro evidence includes deterministic fallback data for reliability.",
+      "Mainnet settlement is not enabled.",
+      "Quality evaluation for agent-generated intelligence must be rigorous before any live capital or customer use."
     ],
     founderAdvantage:
-      "Connects financial engineering, agent architecture, portfolio intelligence, Web3 settlement, and AI safety research under one technical thesis.",
+      "Connects financial engineering, agent architecture, portfolio intelligence, Web3 settlement, and AI safety research under one working marketplace proof.",
     repositoryUrl: "https://github.com/Mfoniso-Jackson/omniquantai-coralos",
     featured: true,
     flagship: true,

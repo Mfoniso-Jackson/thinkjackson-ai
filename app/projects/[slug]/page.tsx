@@ -171,6 +171,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                       rel={item.url?.startsWith("http") ? "noreferrer" : undefined}
                       className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35"
                     >
+                      {item.date ? (
+                        <time className="font-mono text-xs uppercase tracking-[0.18em] text-signal" dateTime={item.date}>
+                          {item.date}
+                        </time>
+                      ) : null}
                       <h3 className="text-lg font-semibold text-white">{item.label}</h3>
                       <p className="mt-2 text-sm leading-6 text-steel">{item.description}</p>
                     </Link>

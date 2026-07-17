@@ -48,8 +48,8 @@ const repositoryEvidence: EvidenceArtifact[] = publicVentures.flatMap((venture) 
       id: `${venture.slug}-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
       title: item.label,
       category: venture.stage === "research" ? "research" : "production",
-      date: "2026-07-12",
-      type: "Public repository",
+      date: item.date ?? "2026-07-12",
+      type: item.label.toLowerCase().includes("release") ? "Public release" : "Public repository",
       ventureSlug: venture.slug,
       ventureName: venture.name,
       description: item.description,
@@ -119,6 +119,22 @@ export const evidenceMetrics = [
 ] satisfies EvidenceMetric[];
 
 export const timelineEvents = [
+  {
+    date: "2026-07-17",
+    title: "OmniQuantAI CoralOS updated after proof run",
+    category: "production",
+    description:
+      "The CoralOS repository now documents the judge-facing Financial Intelligence Network demo, including buyer/seller agent auction, deterministic verification, Solana devnet escrow, and testnet posture.",
+    href: "/projects/omniquantai"
+  },
+  {
+    date: "2026-07-16",
+    title: "OmniQuantAI public proof run released",
+    category: "production",
+    description:
+      "A public GitHub release records the current proof posture for the agent marketplace demo: research request, agent bids, winner selection, escrow deposit, intelligence delivery, verification, and payment release.",
+    href: "https://github.com/Mfoniso-Jackson/omniquantai-coralos/releases/tag/proof-2026-07-16"
+  },
   {
     date: "2026-07-12",
     title: "Evidence dashboard and investor operating layer added",
