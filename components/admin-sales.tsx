@@ -4,6 +4,7 @@ import { emptyPipelineMessage, getPipelineOverview } from "@/data/sales-dashboar
 import { pipelineStages } from "@/data/sales-config";
 
 export const adminSalesNav = [
+  { label: "Execution", href: "/admin/execution" },
   { label: "Overview", href: "/admin/sales" },
   { label: "Today", href: "/admin/sales/today" },
   { label: "Leads", href: "/admin/sales/leads" },

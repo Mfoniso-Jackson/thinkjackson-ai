@@ -12,7 +12,7 @@ function unauthorized(message = "Authentication required.") {
 }
 
 export function middleware(request: NextRequest) {
-  if (!request.nextUrl.pathname.startsWith("/admin/sales")) {
+  if (!request.nextUrl.pathname.startsWith("/admin/sales") && !request.nextUrl.pathname.startsWith("/admin/execution")) {
     return NextResponse.next();
   }
 
@@ -49,5 +49,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/sales/:path*"]
+  matcher: ["/admin/sales/:path*", "/admin/execution/:path*"]
 };

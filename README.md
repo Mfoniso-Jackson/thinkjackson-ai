@@ -19,6 +19,7 @@ The site presents Mfoniso as an AI engineer, researcher, and founder working acr
 - Local typed content data
 - SEO metadata, robots, and sitemap
 - Vercel-ready deployment
+- Private AI-assisted founder Execution OS
 
 ## Getting Started
 
@@ -43,6 +44,8 @@ npm run dev
 npm run build
 npm run start
 npm run lint
+npx tsc --noEmit
+npm test
 ```
 
 ## Content Model
@@ -78,3 +81,7 @@ Recommended production settings:
 - Output directory: `.next`
 
 Email currently points to `hello@thinkjackson.com`.
+
+## Execution OS
+
+The private AI-assisted daily mission workflow is available at `/admin/execution`. Apply the founder OS Supabase migration and configure the server-only variables documented in [`.env.example`](./.env.example). Architecture, privacy, and setup details are in [`docs/execution-os.md`](./docs/execution-os.md).
