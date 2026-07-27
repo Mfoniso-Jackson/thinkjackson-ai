@@ -25,9 +25,19 @@ export function VentureCard({ venture }: { venture: Venture }) {
           {venture.capitalObjectives.map((objective) => capitalObjectiveLabels[objective]).join(" / ")}
         </p>
       </div>
-      <Link href={`/projects/${venture.slug}`} className="mt-6 text-sm font-semibold text-signal hover:text-white">
-        View venture brief
-      </Link>
+      <div className="mt-6 flex flex-wrap gap-4 text-sm font-semibold">
+        <Link href={`/projects/${venture.slug}`} className="text-signal hover:text-white">
+          View venture brief
+        </Link>
+        <Link href={`/projects/${venture.slug}/deck`} className="text-signal hover:text-white">
+          Pitch deck
+        </Link>
+        {venture.websiteUrl ? (
+          <Link href={venture.websiteUrl} target="_blank" rel="noreferrer" className="text-signal hover:text-white">
+            Website
+          </Link>
+        ) : null}
+      </div>
     </article>
   );
 }

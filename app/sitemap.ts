@@ -20,6 +20,7 @@ const routes = [
   "/site-notice",
   "/rss.xml",
   ...publicVentures.map((venture) => `/projects/${venture.slug}`),
+  ...publicVentures.map((venture) => `/projects/${venture.slug}/deck`),
   ...writingPosts.map((post) => `/writing/${post.slug}`)
 ];
 

@@ -82,6 +82,14 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <Button href={`/contact?intent=investor&venture=${venture.slug}&sourcePage=/projects/${venture.slug}&campaign=${venture.slug}-hero-materials`}>
                   Request materials
                 </Button>
+                <Button href={`/projects/${venture.slug}/deck`} variant="secondary">
+                  View pitch deck
+                </Button>
+                {venture.websiteUrl ? (
+                  <Button href={venture.websiteUrl} variant="secondary">
+                    Visit website
+                  </Button>
+                ) : null}
                 {venture.repositoryUrl ? (
                   <Button href={venture.repositoryUrl} variant="secondary">
                     View repository
@@ -252,6 +260,51 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 ))}
               </div>
             </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-y border-line bg-graphite/60 py-20">
+        <Container>
+          <div className="grid gap-5 lg:grid-cols-3">
+            <Link
+              href={`/projects/${venture.slug}/deck`}
+              className="rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+            >
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Pitch deck</p>
+              <h2 className="mt-4 text-xl font-semibold text-white">Open the venture deck</h2>
+              <p className="mt-3 text-sm leading-6 text-steel">
+                A concise investor and partner narrative generated from the current venture brief.
+              </p>
+            </Link>
+            {venture.websiteUrl ? (
+              <Link
+                href={venture.websiteUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+              >
+                <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Website</p>
+                <h2 className="mt-4 text-xl font-semibold text-white">Visit project website</h2>
+                <p className="mt-3 text-sm leading-6 text-steel">
+                  Open the public product or research website for this project.
+                </p>
+              </Link>
+            ) : null}
+            {venture.demoUrl ? (
+              <Link
+                href={venture.demoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+              >
+                <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Demo</p>
+                <h2 className="mt-4 text-xl font-semibold text-white">Open project demo</h2>
+                <p className="mt-3 text-sm leading-6 text-steel">
+                  Inspect the current public demo surface where available.
+                </p>
+              </Link>
+            ) : null}
           </div>
         </Container>
       </section>
