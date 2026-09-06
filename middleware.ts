@@ -12,7 +12,11 @@ function unauthorized(message = "Authentication required.") {
 }
 
 export function middleware(request: NextRequest) {
-  if (!request.nextUrl.pathname.startsWith("/admin/sales") && !request.nextUrl.pathname.startsWith("/admin/execution")) {
+  if (
+    !request.nextUrl.pathname.startsWith("/admin/sales") &&
+    !request.nextUrl.pathname.startsWith("/admin/execution") &&
+    !request.nextUrl.pathname.startsWith("/admin/research")
+  ) {
     return NextResponse.next();
   }
 
@@ -49,5 +53,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/sales/:path*", "/admin/execution/:path*"]
+  matcher: ["/admin/sales/:path*", "/admin/execution/:path*", "/admin/research/:path*"]
 };

@@ -1,0 +1,99 @@
+import { z } from "zod";
+
+/**
+ * Node/relationship types an agent is allowed to touch in this first slice.
+ * Deliberately a subset of the full NodeType/RelationType unions in
+ * lib/graph/types.ts — Scout and Researcher can connect a discovery to an
+ * existing idea, territory, venture, person, or essay, but cannot invent
+ * new territories, question nodes, or predictions. That stays human work.
+ */
+export const connectableNodeTypes = ["idea", "territory", "venture", "person", "essay"] as const;
+export const proposableRelationTypes = ["discusses", "supports", "challenges", "related-to", "applies"] as const;
+export const epistemicStatuses = ["fact", "interpretation", "hypothesis", "prediction", "speculation"] as const;
+
+export const scoutOutputSchema = z.object({
+  title: z.string().min(5).max(200),
+  summary: z.string().min(20).max(800),
+  sourceType: z.enum(["article", "paper", "repo", "announcement", "interview", "other"]),
+  entities: z
+    .array(
+      z.object({
+        name: z.string().min(1).max(120),
+        kind: z.enum(["person", "company", "technology", "project"])
+      })
+    )
+    .max(10),
+  suggestedTerritorySlugs: z.array(z.string()).max(3),
+  importanceScore: z.number().int().min(1).max(10),
+  confidenceScore: z.number().int().min(1).max(10)
+});
+export type ScoutOutput = z.infer<typeof scoutOutputSchema>;
+
+export const researcherOutputSchema = z.object({
+  claims: z
+    .array(
+      z.object({
+        statement: z.string().min(10).max(400),
+        epistemicStatus: z.enum(epistemicStatuses),
+        evidence: z.string().max(300).optional()
+      })
+    )
+    .min(1)
+    .max(8),
+  proposedConnections: z
+    .array(
+      z.object({
+        targetType: z.enum(connectableNodeTypes),
+        targetSlug: z.string().min(1).max(120),
+        relationType: z.enum(proposableRelationTypes),
+        rationale: z.string().min(10).max(300)
+      })
+    )
+    .min(1)
+    .max(3),
+  openQuestion: z.string().min(10).max(300).optional()
+});
+export type ResearcherOutput = z.infer<typeof researcherOutputSchema>;
+
+export type LibrarianOutput = {
+  proposedNode: {
+    type: "resource";
+    slug: string;
+    title: string;
+    summary: string;
+    metadata: { url: string; sourceType: ScoutOutput["sourceType"]; entities: ScoutOutput["entities"] };
+  };
+  proposedRelationships: Array<{
+    toType: (typeof connectableNodeTypes)[number];
+    toSlug: string;
+    relationType: (typeof proposableRelationTypes)[number];
+    rationale: string;
+    confidence: number;
+  }>;
+  duplicateOfNodeId?: string;
+};
+
+export type ResearchCandidatePayload = {
+  url: string;
+  retrievedAt: string;
+  excerpt: string;
+  scout: ScoutOutput;
+  researcher?: ResearcherOutput;
+  librarian?: LibrarianOutput;
+};
+
+export type ResearchCandidateStatus = "discovered" | "investigating" | "verified" | "rejected" | "published";
+
+export type ResearchCandidate = {
+  id: string;
+  sourceId: string | null;
+  status: ResearchCandidateStatus;
+  title: string;
+  summary: string;
+  payload: ResearchCandidatePayload;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
+  rejectionReason: string | null;
+  createdAt: string;
+  updatedAt: string;
+};

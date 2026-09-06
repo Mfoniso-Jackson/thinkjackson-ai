@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { resolveRelated } from "@/lib/graph/resolve";
+import { resolveRelatedHybrid } from "@/lib/graph/hybrid";
 import { relationTypeLabels } from "@/lib/graph/types";
 import type { NodeRef } from "@/lib/graph/types";
 
@@ -27,8 +27,8 @@ function NodeLink({ item }: { item: { direction: string; relationType: string; r
  * force-opens that disclosure for visitors who've clearly gone deep this
  * session, but the collapsed state alone is a complete, working experience.
  */
-export function RelatedNodes({ nodeRef, heading = "Connected nodes" }: { nodeRef: NodeRef; heading?: string }) {
-  const related = resolveRelated(nodeRef);
+export async function RelatedNodes({ nodeRef, heading = "Connected nodes" }: { nodeRef: NodeRef; heading?: string }) {
+  const related = await resolveRelatedHybrid(nodeRef);
 
   if (related.length === 0) {
     return null;

@@ -62,3 +62,11 @@ export async function supabaseUpsert(table: string, row: Record<string, unknown>
   })) as unknown[];
   return rows[0];
 }
+
+export async function supabaseUpdate(table: string, filter: string, patch: Record<string, unknown>) {
+  const rows = (await supabaseRequest(`${table}?${filter}`, {
+    method: "PATCH",
+    body: JSON.stringify(patch)
+  })) as unknown[];
+  return rows[0];
+}

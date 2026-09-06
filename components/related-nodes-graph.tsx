@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { resolveRelated } from "@/lib/graph/resolve";
+import { resolveRelatedHybrid } from "@/lib/graph/hybrid";
 import { relationTypeLabels } from "@/lib/graph/types";
 import type { NodeRef } from "@/lib/graph/types";
 
@@ -18,8 +18,8 @@ const LINE_COLOR = "rgba(191, 219, 254, 0.22)";
  * "wide" breakpoint, not because this could fail, but because a radial
  * layout only reads well once there's enough width to breathe.
  */
-export function RelatedNodesGraph({ nodeRef, centerLabel }: { nodeRef: NodeRef; centerLabel: string }) {
-  const related = resolveRelated(nodeRef);
+export async function RelatedNodesGraph({ nodeRef, centerLabel }: { nodeRef: NodeRef; centerLabel: string }) {
+  const related = await resolveRelatedHybrid(nodeRef);
   if (related.length === 0) return null;
 
   const count = related.length;

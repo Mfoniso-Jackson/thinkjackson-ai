@@ -3,7 +3,6 @@ import { getPerson } from "@/data/people";
 import { getTerritory } from "@/data/territories";
 import { publicVentures } from "@/data/ventures";
 import { getWritingPost } from "@/lib/writing";
-import { relatedRefs } from "@/lib/graph/registry";
 import type { NodeRef } from "@/lib/graph/types";
 
 export type ResolvedNode = {
@@ -83,16 +82,4 @@ export function resolveNode(ref: NodeRef): ResolvedNode | undefined {
     default:
       return undefined;
   }
-}
-
-/**
- * The shared "look up every edge, resolve it, drop anything unresolved"
- * step used by both the card grid (related-nodes.tsx) and the graph view
- * (related-nodes-graph.tsx) — one place so the two presentations of the
- * same data can never quietly diverge.
- */
-export function resolveRelated(ref: NodeRef) {
-  return relatedRefs(ref)
-    .map((item) => ({ ...item, resolved: resolveNode(item.ref) }))
-    .filter((item): item is typeof item & { resolved: ResolvedNode } => item.resolved !== undefined);
 }
