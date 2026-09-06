@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: ProjectDeckPageProps): Promis
       canonical: `/projects/${venture.slug}/deck`
     },
     openGraph: {
-      title: `${venture.name} Pitch Deck | thinkjackson`,
+      title: `${venture.name} Pitch Deck | ThinkJackson`,
       description: venture.tagline,
       url: `https://thinkjackson.com/projects/${venture.slug}/deck`
     }

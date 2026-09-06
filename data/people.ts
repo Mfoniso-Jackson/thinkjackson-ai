@@ -16,7 +16,7 @@ export const people = [
   {
     slug: "mfoniso-jackson",
     name: "Mfoniso Jackson",
-    role: "Founder, thinkjackson",
+    role: "Founder, ThinkJackson",
     summary:
       "Builds AI-native systems that connect financial engineering, autonomous agents, reinforcement-learning research, Web3 coordination, and adaptive decision infrastructure.",
     believes: [

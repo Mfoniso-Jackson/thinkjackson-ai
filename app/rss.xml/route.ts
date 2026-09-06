@@ -30,7 +30,7 @@ export function GET() {
   const feed = `<?xml version="1.0" encoding="UTF-8" ?>
     <rss version="2.0">
       <channel>
-        <title>thinkjackson Writing</title>
+        <title>ThinkJackson Writing</title>
         <link>${siteUrl}/writing</link>
         <description>Research notes on AI systems, markets, agents, and human coordination by Mfoniso Jackson.</description>
         <language>en</language>

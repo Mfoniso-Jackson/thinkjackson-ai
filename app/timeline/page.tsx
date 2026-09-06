@@ -8,7 +8,7 @@ import { evidenceCategoryLabels, timelineEvents } from "@/data/evidence";
 export const metadata: Metadata = {
   title: "Execution Timeline",
   description:
-    "A chronological execution timeline for thinkjackson research, products, repositories, and platform releases.",
+    "A chronological execution timeline for ThinkJackson research, products, repositories, and platform releases.",
   alternates: {
     canonical: "/timeline"
   }

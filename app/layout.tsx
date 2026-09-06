@@ -9,8 +9,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://thinkjackson.com"),
   title: {
-    default: "Mfoniso Jackson | thinkjackson",
-    template: "%s | thinkjackson"
+    default: "Mfoniso Jackson | ThinkJackson",
+    template: "%s | ThinkJackson"
   },
   description:
     "An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible. The research and venture platform of Mfoniso Jackson.",
@@ -18,24 +18,24 @@ export const metadata: Metadata = {
     canonical: "/"
   },
   openGraph: {
-    title: "Mfoniso Jackson | thinkjackson",
+    title: "Mfoniso Jackson | ThinkJackson",
     description:
       "An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible.",
     url: "https://thinkjackson.com",
-    siteName: "thinkjackson",
+    siteName: "ThinkJackson",
     type: "website",
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "thinkjackson - mapping the emergence of intelligence"
+        alt: "ThinkJackson - mapping the emergence of intelligence"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mfoniso Jackson | thinkjackson",
+    title: "Mfoniso Jackson | ThinkJackson",
     description:
       "An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible.",
     images: ["/twitter-image"]
@@ -79,7 +79,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       {
         "@type": "WebSite",
         "@id": "https://thinkjackson.com/#website",
-        name: "thinkjackson",
+        name: "ThinkJackson",
         url: "https://thinkjackson.com",
         description:
           "An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible."

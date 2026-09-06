@@ -32,7 +32,7 @@ export function scoreLead(input: SalesLeadInput): ScoreResult {
     const weights = scoreWeights.investor;
     if (input.sectorsOfInterest?.toLowerCase().match(/ai|agent|fintech|web3|market|safety/)) {
       total += weights.thesisFit;
-      reasons.push("Sector interest overlaps the thinkjackson thesis.");
+      reasons.push("Sector interest overlaps the ThinkJackson thesis.");
     } else {
       missingInformation.push("Thesis fit or sectors of interest");
     }

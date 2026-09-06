@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The thinkjackson Sales OS turns the public site into a commercial operating loop:
+The ThinkJackson Sales OS turns the public site into a commercial operating loop:
 
 Authority -> Attention -> Lead capture -> Qualification -> Discovery -> Proposal -> Follow-up -> Commitment -> Delivery -> Evidence -> Referral -> More demand.
 

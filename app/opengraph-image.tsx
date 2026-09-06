@@ -37,7 +37,7 @@ export default function OpenGraphImage() {
         />
         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
           <div style={{ color: "#8be9d7", display: "flex", fontSize: 28, fontWeight: 700 }}>
-            thinkjackson
+            ThinkJackson
           </div>
           <div style={{ color: "#9fb3c8", display: "flex", fontSize: 22 }}>
             markets / agents / coordination

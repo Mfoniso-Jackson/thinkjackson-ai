@@ -1,6 +1,6 @@
-# thinkjackson Architecture
+# ThinkJackson Architecture
 
-thinkjackson is an evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible. The production surface is static-first Next.js with typed local content, MDX writing, Vercel Analytics, and explicit founder-input gaps for data that should not be fabricated.
+ThinkJackson is an evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible. The production surface is static-first Next.js with typed local content, MDX writing, Vercel Analytics, and explicit founder-input gaps for data that should not be fabricated.
 
 ## Core Layers
 

@@ -121,11 +121,11 @@ export const flagshipResearch = {
 } as const;
 
 export const launchPost = {
-  title: "Introducing thinkjackson",
+  title: "Introducing ThinkJackson",
   linkedin:
-    "I launched thinkjackson as a home for the work I am doing at the intersection of AI systems, markets, autonomous agents, safety, Web3 coordination, and portfolio intelligence.\n\nThe site is not meant to be a static portfolio. It is a research and builder platform: a place to develop ideas like computational superstition in reinforcement learning, portfolio intelligence as memory-bearing infrastructure, and coordination systems for machine economies.\n\nMy operating thesis is simple: the next important AI systems will not just be more capable. They will need to reason under uncertainty, remember risk, understand incentives, and help humans coordinate around complex economic decisions.\n\nIf you are building in financial engineering, agent architecture, AI safety, market intelligence, or coordination infrastructure, I would be glad to compare notes.\n\nhttps://thinkjackson.com",
+    "I launched ThinkJackson as a home for the work I am doing at the intersection of AI systems, markets, autonomous agents, safety, Web3 coordination, and portfolio intelligence.\n\nThe site is not meant to be a static portfolio. It is a research and builder platform: a place to develop ideas like computational superstition in reinforcement learning, portfolio intelligence as memory-bearing infrastructure, and coordination systems for machine economies.\n\nMy operating thesis is simple: the next important AI systems will not just be more capable. They will need to reason under uncertainty, remember risk, understand incentives, and help humans coordinate around complex economic decisions.\n\nIf you are building in financial engineering, agent architecture, AI safety, market intelligence, or coordination infrastructure, I would be glad to compare notes.\n\nhttps://thinkjackson.com",
   short:
-    "Launched thinkjackson: my research and builder platform for AI systems, markets, agents, and human coordination.\n\nWriting soon on computational superstition in RL, portfolio intelligence, autonomous trading agents, and machine economies.\n\nhttps://thinkjackson.com"
+    "Launched ThinkJackson: my research and builder platform for AI systems, markets, agents, and human coordination.\n\nWriting soon on computational superstition in RL, portfolio intelligence, autonomous trading agents, and machine economies.\n\nhttps://thinkjackson.com"
 } as const;
 
 export const focusItems = [

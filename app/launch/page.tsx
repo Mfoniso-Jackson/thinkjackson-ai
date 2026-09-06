@@ -4,7 +4,7 @@ import { launchPost } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Launch Post",
-  description: "Launch copy for introducing thinkjackson.",
+  description: "Launch copy for introducing ThinkJackson.",
   robots: {
     index: false,
     follow: false

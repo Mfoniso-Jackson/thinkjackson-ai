@@ -8,7 +8,7 @@ import { people } from "@/data/people";
 
 export const metadata: Metadata = {
   title: "People",
-  description: "The people network behind thinkjackson: who is building, what they research, and how it connects.",
+  description: "The people network behind ThinkJackson: who is building, what they research, and how it connects.",
   alternates: {
     canonical: "/people"
   }
@@ -26,7 +26,7 @@ export default function PeoplePage() {
                 The people shaping this thesis.
               </h1>
               <p className="mt-7 text-lg leading-8 text-steel">
-                thinkjackson prioritizes intellectual relevance over headcount. This network grows as real research
+                ThinkJackson prioritizes intellectual relevance over headcount. This network grows as real research
                 collaborators, podcast guests, and co-builders join — not before.
               </p>
             </div>

@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
       canonical: `/projects/${venture.slug}`
     },
     openGraph: {
-      title: `${venture.name} | thinkjackson`,
+      title: `${venture.name} | ThinkJackson`,
       description: venture.tagline,
       url: `https://thinkjackson.com/projects/${venture.slug}`
     }

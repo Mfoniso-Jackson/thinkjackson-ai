@@ -79,7 +79,7 @@ export const evidenceMetrics = [
     value: String(publicVentures.length),
     category: "production",
     status: "verified",
-    description: "Investor-readable system pages currently published on thinkjackson."
+    description: "Investor-readable system pages currently published on ThinkJackson."
   },
   {
     label: "Verified public artifacts",
@@ -140,7 +140,7 @@ export const timelineEvents = [
     title: "Evidence dashboard and investor operating layer added",
     category: "production",
     description:
-      "thinkjackson moved beyond a portfolio site into an evidence-first platform with explicit proof, risks, asks, and diligence pathways.",
+      "ThinkJackson moved beyond a portfolio site into an evidence-first platform with explicit proof, risks, asks, and diligence pathways.",
     href: "/evidence"
   },
   {

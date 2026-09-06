@@ -1,6 +1,6 @@
 # Content Publishing Guide
 
-thinkjackson should publish content that makes the venture thesis inspectable. Avoid generic founder updates. Each post should clarify an original idea, explain a system, document a product decision, or create evidence for diligence.
+ThinkJackson should publish content that makes the venture thesis inspectable. Avoid generic founder updates. Each post should clarify an original idea, explain a system, document a product decision, or create evidence for diligence.
 
 ## Writing Types
 

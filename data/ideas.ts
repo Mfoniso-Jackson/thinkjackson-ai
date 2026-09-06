@@ -18,7 +18,7 @@ export const transIntelligence = {
     "Intelligence is transitioning from being primarily embodied in individual humans to being distributed across humans, machines, autonomous agents, networks, markets, and institutions.",
   chain: ["Human", "Machine", "Agent", "Network", "Market", "Institution", "Ecosystem"] as const,
   summary:
-    "Trans-Intelligence is the thesis that connects thinkjackson's five research territories. It is not a claim that any one of these layers has arrived. It is a claim about direction: capability that once required an embodied human mind is increasingly produced by systems distributed across machines, agents, markets, and institutions. The five territories are where that transition is currently observable, and their overlaps are where it becomes interesting.",
+    "Trans-Intelligence is the thesis that connects ThinkJackson's five research territories. It is not a claim that any one of these layers has arrived. It is a claim about direction: capability that once required an embodied human mind is increasingly produced by systems distributed across machines, agents, markets, and institutions. The five territories are where that transition is currently observable, and their overlaps are where it becomes interesting.",
   status: "interpretation" as EpistemicStatus
 } as const;
 

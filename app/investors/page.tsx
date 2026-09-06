@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     canonical: "/investors"
   },
   openGraph: {
-    title: "Investor Brief | thinkjackson",
+    title: "Investor Brief | ThinkJackson",
     description:
       "A venture and research platform for adaptive intelligence infrastructure across markets, risk, trust, and coordination.",
     url: "https://thinkjackson.com/investors"
@@ -37,7 +37,7 @@ export default function InvestorsPage() {
                 Adaptive intelligence infrastructure for markets, risk, trust, and economic coordination.
               </h1>
               <p className="mt-7 max-w-4xl text-lg leading-8 text-steel">
-                thinkjackson is the public front door to Mfoniso Jackson&apos;s venture and research platform.
+                ThinkJackson is the public front door to Mfoniso Jackson&apos;s venture and research platform.
                 The portfolio spans financial intelligence, autonomous agents, quant infrastructure,
                 property operations, worker recognition, incident intelligence, and AI safety research.
               </p>

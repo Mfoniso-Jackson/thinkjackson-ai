@@ -35,7 +35,7 @@ export function Footer() {
     <footer className="border-t border-line bg-ink/80">
       <Container className="grid gap-10 py-12 md:grid-cols-[1.2fr_0.7fr_0.7fr_0.9fr]">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">thinkjackson</p>
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">ThinkJackson</p>
           <p className="mt-3 max-w-xl text-sm leading-6 text-steel">
             An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence
             makes possible. Research, ideas, and ventures by Mfoniso Jackson.
@@ -103,7 +103,7 @@ export function Footer() {
 
       <div className="border-t border-line">
         <Container className="flex flex-col gap-3 py-5 text-xs text-steel/80 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} thinkjackson. All rights reserved.</p>
+          <p>© {year} ThinkJackson. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-white">
               Privacy

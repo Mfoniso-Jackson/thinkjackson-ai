@@ -11,7 +11,7 @@ import { territories } from "@/data/territories";
 export const metadata: Metadata = {
   title: "Ideas",
   description:
-    "The idea map behind thinkjackson: Trans-Intelligence, the five research territories, and the concepts that connect research, ventures, and writing.",
+    "The idea map behind ThinkJackson: Trans-Intelligence, the five research territories, and the concepts that connect research, ventures, and writing.",
   alternates: {
     canonical: "/ideas"
   }

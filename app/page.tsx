@@ -17,7 +17,7 @@ import { writingPosts } from "@/lib/writing";
 export const metadata: Metadata = {
   title: "Mapping the Emergence of Intelligence",
   description:
-    "thinkjackson is an evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible.",
+    "ThinkJackson is an evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible.",
   alternates: {
     canonical: "/"
   }
@@ -33,13 +33,13 @@ export default function Home() {
           <div className="max-w-5xl">
             <Reveal>
               <p className="font-mono text-sm uppercase tracking-[0.3em] text-signal">
-                thinkjackson · Intelligence Observatory
+                ThinkJackson · Intelligence Observatory
               </p>
               <h1 className="mt-6 text-balance text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
                 An evolving map of the emergence of intelligence.
               </h1>
               <p className="mt-7 max-w-4xl text-lg leading-8 text-steel sm:text-xl">
-                {transIntelligence.definition} thinkjackson investigates that transition through research, essays,
+                {transIntelligence.definition} ThinkJackson investigates that transition through research, essays,
                 a podcast, and ventures built as live experiments inside the thesis — not as a separate startup
                 portfolio.
               </p>

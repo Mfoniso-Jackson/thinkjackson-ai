@@ -92,7 +92,7 @@ export default async function WritingDetailPage({ params }: WritingPageProps) {
                 </nav>
                 <div className="mt-6 border-t border-line pt-5">
                   <p className="text-sm leading-6 text-steel">
-                    Part of the thinkjackson writing system on AI systems for
+                    Part of the ThinkJackson writing system on AI systems for
                     markets, agents, and human coordination.
                   </p>
                 </div>

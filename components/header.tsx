@@ -9,7 +9,7 @@ export function Header() {
         <Link
           href="/"
           className="group inline-flex min-w-0 items-center gap-3 rounded-md focus:outline-none focus:ring-2 focus:ring-signal"
-          aria-label="thinkjackson home"
+          aria-label="ThinkJackson home"
         >
           <span className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg border border-signal/45 bg-graphite shadow-[0_0_32px_rgba(139,233,215,0.16)] transition group-hover:border-signal">
             <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-signal to-transparent" />
@@ -20,8 +20,8 @@ export function Header() {
           </span>
           <span className="min-w-0">
             <span className="flex items-baseline text-[15px] font-semibold leading-none tracking-normal text-white">
-              <span>think</span>
-              <span className="text-signal">jackson</span>
+              <span>Think</span>
+              <span className="text-signal">Jackson</span>
             </span>
             <span className="mt-1 hidden font-mono text-[10px] uppercase tracking-[0.22em] text-steel/80 lg:block">
               intelligence observatory

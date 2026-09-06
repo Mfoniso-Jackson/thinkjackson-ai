@@ -16,7 +16,7 @@ const categories: EvidenceCategory[] = ["production", "research", "market", "fin
 export const metadata: Metadata = {
   title: "Evidence Dashboard",
   description:
-    "A source-backed dashboard of public proof-of-work, repositories, writing, and founder input gaps for thinkjackson.",
+    "A source-backed dashboard of public proof-of-work, repositories, writing, and founder input gaps for ThinkJackson.",
   alternates: {
     canonical: "/evidence"
   }
@@ -36,7 +36,7 @@ export default function EvidencePage() {
                 Public proof, separated from ambition.
               </h1>
               <p className="mt-7 text-lg leading-8 text-steel">
-                This page is the diligence layer for thinkjackson: repositories, essays, system briefs, and
+                This page is the diligence layer for ThinkJackson: repositories, essays, system briefs, and
                 explicit source-data gaps. Metrics stay blank until they can be backed by a public artifact,
                 analytics export, customer log, or founder-approved record.
               </p>
