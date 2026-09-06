@@ -42,7 +42,7 @@ export default function PeoplePage() {
               <Reveal key={person.slug} delay={index * 0.04}>
                 <Link
                   href={`/people/${person.slug}`}
-                  className="block h-full rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+                  className="block h-full rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35 active:border-signal/50"
                 >
                   <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">{person.role}</p>
                   <h3 className="mt-3 text-2xl font-semibold text-white">{person.name}</h3>

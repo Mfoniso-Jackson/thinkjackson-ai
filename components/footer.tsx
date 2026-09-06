@@ -2,31 +2,8 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { SocialIcon } from "@/components/social-icons";
+import { navGroups } from "@/data/nav-groups";
 import { socialLinks } from "@/data/site";
-
-const footerGroups = [
-  {
-    heading: "Explore",
-    links: [
-      { label: "Ideas", href: "/ideas" },
-      { label: "Research", href: "/research" },
-      { label: "People", href: "/people" },
-      { label: "Podcast", href: "/podcast" },
-      { label: "Ventures", href: "/projects" },
-      { label: "Writing", href: "/writing" }
-    ]
-  },
-  {
-    heading: "Company",
-    links: [
-      { label: "Founder", href: "/about" },
-      { label: "Investor Brief", href: "/investors" },
-      { label: "Evidence", href: "/evidence" },
-      { label: "Timeline", href: "/timeline" },
-      { label: "Contact", href: "/contact" }
-    ]
-  }
-] as const;
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -50,13 +27,13 @@ export function Footer() {
           </div>
         </div>
 
-        {footerGroups.map((group) => (
+        {navGroups.map((group) => (
           <nav key={group.heading} aria-label={`Footer: ${group.heading}`}>
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-steel">{group.heading}</p>
             <ul className="mt-4 space-y-3">
               {group.links.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-steel hover:text-white">
+                  <Link href={link.href} className="text-sm text-steel hover:text-white active:text-white">
                     {link.label}
                   </Link>
                 </li>
@@ -73,7 +50,7 @@ export function Footer() {
                 {"href" in item ? (
                   <Link
                     href={item.href}
-                    className="inline-flex items-center gap-1.5 text-sm text-signal hover:text-white"
+                    className="inline-flex items-center gap-1.5 text-sm text-signal hover:text-white active:text-white"
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`${item.label} profile`}
@@ -93,7 +70,7 @@ export function Footer() {
               </li>
             ))}
             <li>
-              <Link href="/rss.xml" className="text-sm text-steel hover:text-white">
+              <Link href="/rss.xml" className="text-sm text-steel hover:text-white active:text-white">
                 RSS
               </Link>
             </li>
@@ -105,10 +82,10 @@ export function Footer() {
         <Container className="flex flex-col gap-3 py-5 text-xs text-steel/80 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} ThinkJackson. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-white">
+            <Link href="/privacy" className="hover:text-white active:text-white">
               Privacy
             </Link>
-            <Link href="/site-notice" className="hover:text-white">
+            <Link href="/site-notice" className="hover:text-white active:text-white">
               Site notice
             </Link>
           </div>

@@ -19,7 +19,7 @@ export default function ComputationalSuperstitionPage() {
       <section className="py-24 sm:py-32">
         <Container>
           <Reveal>
-            <Link href="/research" className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white">
+            <Link href="/research" className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white active:text-white">
               Research
             </Link>
             <div className="mt-8 max-w-5xl">

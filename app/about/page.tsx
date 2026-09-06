@@ -76,7 +76,7 @@ export default function AboutPage() {
                   <Link
                     key={venture.slug}
                     href={`/projects/${venture.slug}`}
-                    className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35"
+                    className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50"
                   >
                     <h3 className="text-lg font-semibold text-white">{venture.name}</h3>
                     <p className="mt-2 text-sm leading-6 text-steel">{venture.tagline}</p>
@@ -102,7 +102,7 @@ export default function AboutPage() {
                     href={item.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-lg border border-line bg-white/[0.035] p-5 text-sm font-semibold text-signal hover:text-white"
+                    className="rounded-lg border border-line bg-white/[0.035] p-5 text-sm font-semibold text-signal hover:text-white active:text-white"
                   >
                     {"handle" in item ? item.handle : item.label}
                   </Link>

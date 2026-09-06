@@ -83,7 +83,7 @@ export default function ResearchPage() {
           </SectionHeading>
           <Link
             href="/research/computational-superstition"
-            className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white"
+            className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white active:text-white"
           >
             Read the flagship research brief
           </Link>

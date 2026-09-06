@@ -49,7 +49,7 @@ export default function Home() {
                   Read the research
                 </Button>
               </div>
-              <Link href="/ideas/trans-intelligence" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white">
+              <Link href="/ideas/trans-intelligence" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white active:text-white">
                 Read the Trans-Intelligence thesis
               </Link>
             </Reveal>
@@ -70,7 +70,7 @@ export default function Home() {
               <Reveal key={territory.slug} delay={index * 0.04}>
                 <Link
                   href={`/ideas#${territory.slug}`}
-                  className="block h-full rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+                  className="block h-full rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35 active:border-signal/50"
                 >
                   <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">{territory.name}</p>
                   <p className="mt-3 text-sm leading-6 text-steel">{territory.definition}</p>
@@ -97,7 +97,7 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-8">
-            <Link href={`/projects/${flagshipVenture.slug}`} className="text-sm font-semibold text-signal hover:text-white">
+            <Link href={`/projects/${flagshipVenture.slug}`} className="text-sm font-semibold text-signal hover:text-white active:text-white">
               {flagshipVenture.name} is the current flagship experiment →
             </Link>
           </div>
@@ -129,7 +129,7 @@ export default function Home() {
             <SectionHeading eyebrow="Podcast" title={podcast.name}>
               <p className="text-lg font-semibold text-signal">{podcast.tagline}</p>
               <p className="mt-4">{podcast.thesis}</p>
-              <Link href="/podcast" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white">
+              <Link href="/podcast" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white active:text-white">
                 See the show
               </Link>
             </SectionHeading>
@@ -154,10 +154,10 @@ export default function Home() {
             <SectionHeading eyebrow="Founder" title="Why this founder, why these problems.">
               <p>{founderProfile.thesis}</p>
               <div className="mt-5 flex flex-wrap gap-3 text-sm font-semibold">
-                <Link href="/people/mfoniso-jackson" className="text-signal hover:text-white">
+                <Link href="/people/mfoniso-jackson" className="text-signal hover:text-white active:text-white">
                   View founder node
                 </Link>
-                <Link href="/investors" className="text-signal hover:text-white">
+                <Link href="/investors" className="text-signal hover:text-white active:text-white">
                   Read the investor brief
                 </Link>
               </div>

@@ -48,7 +48,7 @@ export default async function WritingDetailPage({ params }: WritingPageProps) {
       <article className="py-24 sm:py-32">
         <Container>
           <Reveal>
-            <Link href="/writing" className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white">
+            <Link href="/writing" className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white active:text-white">
               Writing
             </Link>
             <div className="mt-8 max-w-4xl">
@@ -84,7 +84,7 @@ export default async function WritingDetailPage({ params }: WritingPageProps) {
                     <Link
                       key={section}
                       href={`#section-${index + 1}`}
-                      className="block text-sm leading-6 text-steel transition hover:text-white"
+                      className="block text-sm leading-6 text-steel transition hover:text-white active:text-white"
                     >
                       {section}
                     </Link>

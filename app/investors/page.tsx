@@ -115,7 +115,7 @@ export default function InvestorsPage() {
                     {venture.capitalObjectives.map((objective) => capitalObjectiveLabels[objective]).join(" / ")}
                   </div>
                   <div className="bg-ink p-4">
-                    <Link href={`/projects/${venture.slug}`} className="font-semibold text-signal hover:text-white">
+                    <Link href={`/projects/${venture.slug}`} className="font-semibold text-signal hover:text-white active:text-white">
                       Brief
                     </Link>
                   </div>
@@ -129,7 +129,7 @@ export default function InvestorsPage() {
                   <h3 className="mt-3 text-xl font-semibold text-white">{venture.name}</h3>
                   <p className="mt-2 text-sm leading-6 text-steel">{venture.targetCustomer}</p>
                   <p className="mt-3 text-sm text-white">{venture.statusLabel}</p>
-                  <Link href={`/projects/${venture.slug}`} className="mt-4 inline-flex font-semibold text-signal hover:text-white">
+                  <Link href={`/projects/${venture.slug}`} className="mt-4 inline-flex font-semibold text-signal hover:text-white active:text-white">
                     Read brief
                   </Link>
                 </div>
@@ -178,7 +178,7 @@ export default function InvestorsPage() {
                   href={item.url ?? `/projects/${venture.slug}`}
                   target={item.url?.startsWith("http") ? "_blank" : undefined}
                   rel={item.url?.startsWith("http") ? "noreferrer" : undefined}
-                  className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35"
+                  className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50"
                 >
                   <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">{venture.name}</p>
                   <h3 className="mt-3 text-lg font-semibold text-white">{item.label}</h3>

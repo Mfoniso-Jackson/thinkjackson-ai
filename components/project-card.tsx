@@ -26,7 +26,7 @@ export function ProjectCard({
       <p className="mt-3 flex-1 text-sm leading-6 text-steel">{summary}</p>
       <Link
         href={href}
-        className="mt-6 text-sm font-semibold text-signal hover:text-white"
+        className="mt-6 text-sm font-semibold text-signal hover:text-white active:text-white"
         aria-label={`Read more about ${title}`}
       >
         View system brief

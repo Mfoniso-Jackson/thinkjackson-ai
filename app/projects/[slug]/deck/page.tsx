@@ -88,7 +88,7 @@ export default async function ProjectDeckPage({ params }: ProjectDeckPageProps) 
     <main className="py-20 sm:py-24">
       <Container>
         <Reveal>
-          <Link href={`/projects/${venture.slug}`} className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white">
+          <Link href={`/projects/${venture.slug}`} className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white active:text-white">
             Back to venture brief
           </Link>
           <div className="mt-8 max-w-5xl">
@@ -169,7 +169,7 @@ export default async function ProjectDeckPage({ params }: ProjectDeckPageProps) 
                   href={item.url ?? `/projects/${venture.slug}`}
                   target={item.url?.startsWith("http") ? "_blank" : undefined}
                   rel={item.url?.startsWith("http") ? "noreferrer" : undefined}
-                  className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35"
+                  className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50"
                 >
                   {item.date ? (
                     <time className="font-mono text-xs uppercase tracking-[0.18em] text-signal" dateTime={item.date}>

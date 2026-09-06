@@ -62,7 +62,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       <section className="py-24 sm:py-32">
         <Container>
           <Reveal>
-            <Link href="/projects" className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white">
+            <Link href="/projects" className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white active:text-white">
               Ventures
             </Link>
             <div className="mt-8 max-w-5xl">
@@ -177,7 +177,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                       href={item.url ?? `/projects/${venture.slug}`}
                       target={item.url?.startsWith("http") ? "_blank" : undefined}
                       rel={item.url?.startsWith("http") ? "noreferrer" : undefined}
-                      className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35"
+                      className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50"
                     >
                       {item.date ? (
                         <time className="font-mono text-xs uppercase tracking-[0.18em] text-signal" dateTime={item.date}>
@@ -249,7 +249,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               {relatedPosts.length > 0 ? (
                 <div className="mt-6 grid gap-4">
                   {relatedPosts.map((post) => (
-                    <Link key={post!.href} href={post!.href} className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35">
+                    <Link key={post!.href} href={post!.href} className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50">
                       <h3 className="text-lg font-semibold text-white">{post!.title}</h3>
                       <p className="mt-2 text-sm leading-6 text-steel">{post!.summary}</p>
                     </Link>
@@ -274,7 +274,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <div className="grid gap-5 lg:grid-cols-3">
             <Link
               href={`/projects/${venture.slug}/deck`}
-              className="rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+              className="rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35 active:border-signal/50"
             >
               <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Pitch deck</p>
               <h2 className="mt-4 text-xl font-semibold text-white">Open the venture deck</h2>
@@ -287,7 +287,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 href={venture.websiteUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+                className="rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35 active:border-signal/50"
               >
                 <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Website</p>
                 <h2 className="mt-4 text-xl font-semibold text-white">Visit project website</h2>
@@ -301,7 +301,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 href={venture.demoUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+                className="rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35 active:border-signal/50"
               >
                 <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">Demo</p>
                 <h2 className="mt-4 text-xl font-semibold text-white">Open project demo</h2>

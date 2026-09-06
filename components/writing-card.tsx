@@ -27,7 +27,7 @@ export function WritingCard({
         <span>{readingTime}</span>
       </div>
       <h3 className="mt-4 text-xl font-semibold leading-7 text-white">
-        <Link href={href} className="hover:text-signal">
+        <Link href={href} className="hover:text-signal active:text-signal">
           {title}
         </Link>
       </h3>
@@ -39,7 +39,7 @@ export function WritingCard({
           </span>
         ))}
       </div>
-      <Link href={href} className="mt-6 inline-flex text-sm font-semibold text-signal hover:text-white">
+      <Link href={href} className="mt-6 inline-flex text-sm font-semibold text-signal hover:text-white active:text-white">
         Read field note
       </Link>
     </Card>

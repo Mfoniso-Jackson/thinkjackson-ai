@@ -93,7 +93,7 @@ export default function EvidencePage() {
                           href={artifact.url ?? "/evidence"}
                           target={artifact.url?.startsWith("http") ? "_blank" : undefined}
                           rel={artifact.url?.startsWith("http") ? "noreferrer" : undefined}
-                          className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35"
+                          className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50"
                         >
                           <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-steel">
                             <time dateTime={artifact.date}>{artifact.date}</time>

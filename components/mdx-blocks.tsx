@@ -61,7 +61,7 @@ export function References({
               href={item.href}
               target="_blank"
               rel="noreferrer"
-              className="text-base font-semibold text-signal hover:text-white"
+              className="text-base font-semibold text-signal hover:text-white active:text-white"
             >
               {item.title}
             </Link>

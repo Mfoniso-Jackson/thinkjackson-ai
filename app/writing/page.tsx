@@ -60,7 +60,7 @@ export default function WritingPage() {
                   <span>{featuredPost.readingTime}</span>
                 </div>
                 <h2 className="mt-5 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                  <Link href={`/writing/${featuredPost.slug}`} className="hover:text-signal">
+                  <Link href={`/writing/${featuredPost.slug}`} className="hover:text-signal active:text-signal">
                     {featuredPost.title}
                   </Link>
                 </h2>
@@ -75,7 +75,7 @@ export default function WritingPage() {
                 <div className="mt-auto pt-10">
                   <Link
                     href={`/writing/${featuredPost.slug}`}
-                    className="inline-flex rounded-md border border-signal/40 px-4 py-2 text-sm font-semibold text-signal transition hover:border-signal hover:bg-signal/10 hover:text-white"
+                    className="inline-flex rounded-md border border-signal/40 px-4 py-2 text-sm font-semibold text-signal transition hover:border-signal hover:bg-signal/10 hover:text-white active:text-white"
                   >
                     Read the essay
                   </Link>

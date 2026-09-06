@@ -63,7 +63,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
                 <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">Direct email</p>
                 <Link
                   href="mailto:hello@thinkjackson.com"
-                  className="mt-4 block text-2xl font-semibold text-white hover:text-signal"
+                  className="mt-4 block text-2xl font-semibold text-white hover:text-signal active:text-signal"
                 >
                   hello@thinkjackson.com
                 </Link>
@@ -81,7 +81,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
                         href={item.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-3 text-xl font-semibold text-white hover:text-signal"
+                        className="inline-flex items-center gap-3 text-xl font-semibold text-white hover:text-signal active:text-signal"
                       >
                         <span className="grid h-10 w-10 place-items-center rounded-lg border border-signal/35 bg-signal/10 text-signal">
                           <SocialIcon kind={item.kind} className="h-5 w-5" />

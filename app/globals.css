@@ -40,6 +40,19 @@ body {
   text-wrap: balance;
 }
 
+.reveal-pending {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.55s ease-out var(--reveal-delay, 0s),
+    transform 0.55s ease-out var(--reveal-delay, 0s);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

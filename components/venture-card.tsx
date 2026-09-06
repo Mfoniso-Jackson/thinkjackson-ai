@@ -26,14 +26,14 @@ export function VentureCard({ venture }: { venture: Venture }) {
         </p>
       </div>
       <div className="mt-6 flex flex-wrap gap-4 text-sm font-semibold">
-        <Link href={`/projects/${venture.slug}`} className="text-signal hover:text-white">
+        <Link href={`/projects/${venture.slug}`} className="text-signal hover:text-white active:text-white">
           View venture brief
         </Link>
-        <Link href={`/projects/${venture.slug}/deck`} className="text-signal hover:text-white">
+        <Link href={`/projects/${venture.slug}/deck`} className="text-signal hover:text-white active:text-white">
           Pitch deck
         </Link>
         {venture.websiteUrl ? (
-          <Link href={venture.websiteUrl} target="_blank" rel="noreferrer" className="text-signal hover:text-white">
+          <Link href={venture.websiteUrl} target="_blank" rel="noreferrer" className="text-signal hover:text-white active:text-white">
             Website
           </Link>
         ) : null}

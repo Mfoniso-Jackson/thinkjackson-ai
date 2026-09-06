@@ -43,7 +43,7 @@ export default function IdeasPage() {
               </div>
               <Link
                 href="/ideas/trans-intelligence"
-                className="mt-6 inline-flex text-sm font-semibold text-signal hover:text-white"
+                className="mt-6 inline-flex text-sm font-semibold text-signal hover:text-white active:text-white"
               >
                 Read the full thesis
               </Link>

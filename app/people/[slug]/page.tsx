@@ -40,7 +40,7 @@ export default async function PersonPage({ params }: PersonPageProps) {
       <section className="py-24 sm:py-32">
         <Container>
           <Reveal>
-            <Link href="/people" className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white">
+            <Link href="/people" className="font-mono text-xs uppercase tracking-[0.24em] text-signal hover:text-white active:text-white">
               People
             </Link>
             <div className="mt-8 max-w-4xl">
@@ -50,7 +50,7 @@ export default async function PersonPage({ params }: PersonPageProps) {
               </h1>
               <p className="mt-7 max-w-3xl text-lg leading-8 text-steel">{person.summary}</p>
               {slug === "mfoniso-jackson" ? (
-                <Link href="/about" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white">
+                <Link href="/about" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white active:text-white">
                   Read the full founder profile
                 </Link>
               ) : null}

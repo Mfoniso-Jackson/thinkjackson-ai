@@ -36,7 +36,7 @@ export function RelatedNodes({ nodeRef, heading = "Connected nodes" }: { nodeRef
           <Link
             key={`${item.direction}-${item.relationType}-${item.resolved!.href}`}
             href={item.resolved!.href}
-            className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35"
+            className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50"
           >
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-steel">
               {relationLabels[item.relationType] ?? item.relationType}

@@ -13,7 +13,7 @@ export function IdeaCard({ idea }: { idea: Idea }) {
   return (
     <Link
       href={`/ideas/${idea.slug}`}
-      className="flex h-full flex-col rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+      className="flex h-full flex-col rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35 active:border-signal/50"
     >
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-md border border-line px-2 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-steel">
