@@ -9,16 +9,16 @@ import type { NodeRef, RelationRecord } from "@/lib/graph/types";
 import type { ResolvedNode } from "@/lib/graph/resolve";
 
 /**
- * The whole-graph Map, unlike RelatedNodesGraph's one-node-and-its-neighbors
- * view, has to lay out every node ThinkJackson has (static and
- * agent-published) at once — currently around 40 nodes and 90 edges. A
- * single radial ring at that scale is unreadable, so nodes are clustered by
- * the research territory they're closest to (by hop count through the real
- * relationship graph, not a separate hand-maintained mapping), and each
- * cluster gets its own small radial layout around its territory node. Edges
- * are drawn from the real relationship data, so a connection that crosses
- * two territories is visible as a long line crossing the canvas — which is
- * the point: those crossing lines are what "Trans-Intelligence" is about.
+ * Builds the whole ThinkJackson graph (static + agent-published) as plain,
+ * serializable data for a client-side force-directed layout — the physics
+ * simulation computes node positions in the browser, so this module only
+ * needs to answer "what exists and what connects to what," not "where does
+ * it go." The one thing still computed here is clusterSlug (the research
+ * territory a node is closest to), kept purely for node coloring: ideas use
+ * their own declared territorySlugs directly (real authored data), and
+ * everything else falls back to nearest territory/idea by real graph
+ * distance (BFS) — a tie-break by array order would otherwise systematically
+ * overload whichever territory sorts first.
  */
 
 type DynamicRelationRow = {
@@ -45,42 +45,29 @@ async function fetchDynamicRelations(): Promise<RelationRecord[]> {
   }
 }
 
-export type MapNode = {
-  ref: NodeRef;
-  resolved: ResolvedNode;
+export type GraphNode = {
+  id: string;
+  type: NodeRef["type"];
+  title: string;
+  href: string;
+  eyebrow: string;
   clusterSlug: string;
-  x: number;
-  y: number;
 };
 
-export type MapEdge = {
+export type GraphLink = {
+  source: string;
+  target: string;
   relationType: string;
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
 };
 
-export type MapCluster = {
-  slug: string;
-  label: string;
-  x: number;
-  y: number;
-  isTerritory: boolean;
+export type GraphStructure = {
+  nodes: GraphNode[];
+  links: GraphLink[];
 };
 
-export type MapData = {
-  nodes: MapNode[];
-  edges: MapEdge[];
-  clusters: MapCluster[];
-  canvasSize: number;
-};
-
-export const MAP_NODE_WIDTH = 152;
-const NODE_WIDTH = MAP_NODE_WIDTH;
 const UNCATEGORIZED = "uncategorized";
 
-export async function buildMapData(): Promise<MapData> {
+export async function buildGraphStructure(): Promise<GraphStructure> {
   const dynamicRelations = await fetchDynamicRelations();
   const allRelations = [...staticRelations, ...dynamicRelations];
 
@@ -109,16 +96,6 @@ export async function buildMapData(): Promise<MapData> {
     adjacency.get(toKey)!.add(fromKey);
   }
 
-  /**
-   * Ideas already declare their own territory membership (territorySlugs in
-   * data/ideas.ts) — that's real authored data, not something to re-derive.
-   * Using it directly (an idea's first listed territory) avoids the failure
-   * mode of a BFS tie-break: a multi-territory idea would otherwise always
-   * resolve to whichever territory happens to sort first in the territories
-   * array, systematically overloading one cluster. Only node types with no
-   * declared territory (ventures, essays, resources, questions, etc.) fall
-   * back to "nearest territory or idea by real graph distance."
-   */
   const clusterOf = new Map<string, string>();
   const queue: string[] = [];
   for (const t of territories) {
@@ -148,95 +125,29 @@ export async function buildMapData(): Promise<MapData> {
     }
   }
 
-  const clusterMembers = new Map<string, string[]>();
-  for (const key of resolvedByKey.keys()) {
-    const cluster = clusterOf.get(key) ?? UNCATEGORIZED;
-    if (!clusterMembers.has(cluster)) clusterMembers.set(cluster, []);
-    clusterMembers.get(cluster)!.push(key);
-  }
-
-  const orderedClusterSlugs = [
-    ...territories.map((t) => t.slug).filter((slug) => clusterMembers.has(slug)),
-    ...(clusterMembers.has(UNCATEGORIZED) ? [UNCATEGORIZED] : [])
-  ];
-
-  /**
-   * A cluster's ring has to be big enough that its own members' boxes don't
-   * overlap each other: circumference needed is roughly memberCount * (box
-   * width + gap), so radius follows from that directly rather than a fixed
-   * cap — a cap here is exactly what produced the overlapping mess in the
-   * first real render (one territory absorbed most of the graph and its
-   * ring was capped far below what 15+ nodes need).
-   */
-  const NODE_GAP = 28;
-  const clusterLocalRadius = new Map(
-    orderedClusterSlugs.map((slug) => {
-      const membersExcludingAnchor = clusterMembers.get(slug)!.length - 1;
-      const radius = (Math.max(membersExcludingAnchor, 1) * (NODE_WIDTH + NODE_GAP)) / (2 * Math.PI);
-      return [slug, Math.max(70, radius)];
-    })
-  );
-  const maxLocalRadius = Math.max(...clusterLocalRadius.values(), 70);
-
-  // Outer ring radius has to keep adjacent clusters' rings from overlapping
-  // each other too: the chord between neighboring cluster anchors must clear
-  // both their local radii plus a node width of breathing room.
-  const clusterCount = orderedClusterSlugs.length;
-  const angularGap = clusterCount > 1 ? 2 * Math.sin(Math.PI / clusterCount) : 1;
-  const outerRadius = Math.max(340, (maxLocalRadius * 2 + NODE_WIDTH + 100) / angularGap);
-  const canvasSize = outerRadius * 2 + maxLocalRadius * 2 + NODE_WIDTH + 80;
-  const center = canvasSize / 2;
-
-  const positions = new Map<string, { x: number; y: number }>();
-  const clusters: MapCluster[] = [];
-
-  orderedClusterSlugs.forEach((slug, clusterIndex) => {
-    const angle = (2 * Math.PI * clusterIndex) / orderedClusterSlugs.length - Math.PI / 2;
-    const anchorX = center + outerRadius * Math.cos(angle);
-    const anchorY = center + outerRadius * Math.sin(angle);
-
-    const territoryKey = slug === UNCATEGORIZED ? undefined : refKey({ type: "territory", slug });
-    const isTerritory = territoryKey !== undefined && resolvedByKey.has(territoryKey);
-    clusters.push({
-      slug,
-      label: isTerritory ? resolvedByKey.get(territoryKey!)!.title : "Other",
-      x: anchorX,
-      y: anchorY,
-      isTerritory
-    });
-
-    if (isTerritory) positions.set(territoryKey!, { x: anchorX, y: anchorY });
-
-    const others = clusterMembers.get(slug)!.filter((key) => key !== territoryKey);
-    const localRadius = clusterLocalRadius.get(slug)!;
-    others.forEach((key, index) => {
-      const localAngle = others.length > 0 ? (2 * Math.PI * index) / others.length : 0;
-      positions.set(key, {
-        x: anchorX + localRadius * Math.cos(localAngle),
-        y: anchorY + localRadius * Math.sin(localAngle)
-      });
-    });
-  });
-
-  const nodes: MapNode[] = [...resolvedByKey.entries()].map(([key, resolved]) => {
+  const nodes: GraphNode[] = [...resolvedByKey.entries()].map(([key, resolved]) => {
     const ref = refByKey.get(key)!;
-    const pos = positions.get(key) ?? { x: center, y: center };
-    return { ref, resolved, clusterSlug: clusterOf.get(key) ?? UNCATEGORIZED, x: pos.x, y: pos.y };
+    return {
+      id: key,
+      type: ref.type,
+      title: resolved.title,
+      href: resolved.href,
+      eyebrow: resolved.eyebrow,
+      clusterSlug: clusterOf.get(key) ?? UNCATEGORIZED
+    };
   });
 
-  const seenEdgeKeys = new Set<string>();
-  const edges: MapEdge[] = [];
+  const seenLinkKeys = new Set<string>();
+  const links: GraphLink[] = [];
   for (const relation of allRelations) {
     const fromKey = refKey(relation.from);
     const toKey = refKey(relation.to);
-    const fromPos = positions.get(fromKey);
-    const toPos = positions.get(toKey);
-    if (!fromPos || !toPos) continue;
-    const edgeKey = [fromKey, toKey].sort().join("|");
-    if (seenEdgeKeys.has(edgeKey)) continue;
-    seenEdgeKeys.add(edgeKey);
-    edges.push({ relationType: relation.type, x1: fromPos.x, y1: fromPos.y, x2: toPos.x, y2: toPos.y });
+    if (!resolvedByKey.has(fromKey) || !resolvedByKey.has(toKey)) continue;
+    const linkKey = [fromKey, toKey].sort().join("|");
+    if (seenLinkKeys.has(linkKey)) continue;
+    seenLinkKeys.add(linkKey);
+    links.push({ source: fromKey, target: toKey, relationType: relation.type });
   }
 
-  return { nodes, edges, clusters, canvasSize };
+  return { nodes, links };
 }
