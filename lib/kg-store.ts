@@ -72,6 +72,38 @@ export async function listPublishedNodesByType(type: string): Promise<PublishedN
   }
 }
 
+/** Every published node across all types, most recent first — the public Observatory's activity feed. */
+export async function listAllPublishedNodes(limit = 50): Promise<PublishedNode[]> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const rows = (await supabaseRequest(
+      `kg_nodes?status=eq.published&select=*&order=created_at.desc&limit=${limit}`
+    )) as Array<{ id: string; type: string; slug: string; title: string; summary: string; metadata: Record<string, unknown>; created_at: string }>;
+    return rows.map((row) => ({
+      id: row.id,
+      type: row.type,
+      slug: row.slug,
+      title: row.title,
+      summary: row.summary,
+      metadata: row.metadata,
+      createdAt: row.created_at
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/** Every kg_relationships row is agent-authored (see the table's own default created_by), so a plain count is a real, honest "connections discovered" figure without needing a filter. */
+export async function countPublishedRelationships(): Promise<number> {
+  if (!isSupabaseConfigured()) return 0;
+  try {
+    const rows = (await supabaseRequest("kg_relationships?select=id&limit=1000")) as Array<{ id: string }>;
+    return rows.length;
+  } catch {
+    return 0;
+  }
+}
+
 export async function findSourceByUrl(url: string): Promise<SourceRow | undefined> {
   const rows = (await supabaseRequest(`kg_sources?url=eq.${encodeURIComponent(url)}&select=*&limit=1`)) as SourceRow[];
   return rows[0];
