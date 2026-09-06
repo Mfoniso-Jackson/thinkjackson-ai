@@ -1,4 +1,4 @@
-import type { LibrarianOutput, ResearcherOutput, ScoutOutput } from "@/lib/kg-types";
+import type { DiscoverableNodeType, LibrarianOutput, ResearcherOutput, ScoutOutput } from "@/lib/kg-types";
 import { slugify } from "@/lib/utils";
 
 /**
@@ -11,12 +11,28 @@ import { slugify } from "@/lib/utils";
  * A future Librarian that does real duplicate-cluster detection across many
  * nodes is a legitimate reason to revisit this.
  */
+
+/**
+ * "repo" maps to "technology" rather than getting its own node type — a
+ * discovered code repository is more usefully modeled as a technology
+ * ThinkJackson is tracking than as its own category. "article",
+ * "announcement", "interview", and "other" all stay the generic "resource"
+ * shape: nothing about those formats implies a more specific kg_nodes type.
+ */
+function sourceTypeToNodeType(sourceType: ScoutOutput["sourceType"]): DiscoverableNodeType {
+  if (sourceType === "paper") return "paper";
+  if (sourceType === "repo") return "technology";
+  if (sourceType === "dataset") return "dataset";
+  if (sourceType === "experiment") return "experiment";
+  return "resource";
+}
+
 export function runLibrarian(params: { url: string; scout: ScoutOutput; researcher: ResearcherOutput }): LibrarianOutput {
   const slug = (slugify(params.scout.title).slice(0, 80) || slugify(params.url)).replace(/-+$/, "");
 
   const output: LibrarianOutput = {
     proposedNode: {
-      type: "resource",
+      type: sourceTypeToNodeType(params.scout.sourceType),
       slug,
       title: params.scout.title,
       summary: params.scout.summary,

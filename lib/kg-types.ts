@@ -11,10 +11,19 @@ export const connectableNodeTypes = ["idea", "territory", "venture", "person", "
 export const proposableRelationTypes = ["discusses", "supports", "challenges", "related-to", "applies"] as const;
 export const epistemicStatuses = ["fact", "interpretation", "hypothesis", "prediction", "speculation"] as const;
 
+export const scoutSourceTypes = ["article", "paper", "repo", "announcement", "interview", "dataset", "experiment", "other"] as const;
+
+/**
+ * The kg_nodes type a discovery becomes is derived from this classification,
+ * not a separate field the Researcher or Librarian has to also get right —
+ * one source of truth for "what kind of thing is this" that both Scout's
+ * self-report and the eventual published node agree on. See
+ * sourceTypeToNodeType in lib/agents/librarian.ts.
+ */
 export const scoutOutputSchema = z.object({
   title: z.string().min(5).max(200),
   summary: z.string().min(20).max(800),
-  sourceType: z.enum(["article", "paper", "repo", "announcement", "interview", "other"]),
+  sourceType: z.enum(scoutSourceTypes),
   entities: z
     .array(
       z.object({
@@ -55,9 +64,12 @@ export const researcherOutputSchema = z.object({
 });
 export type ResearcherOutput = z.infer<typeof researcherOutputSchema>;
 
+export const discoverableNodeTypes = ["resource", "paper", "technology", "dataset", "experiment"] as const;
+export type DiscoverableNodeType = (typeof discoverableNodeTypes)[number];
+
 export type LibrarianOutput = {
   proposedNode: {
-    type: "resource";
+    type: DiscoverableNodeType;
     slug: string;
     title: string;
     summary: string;

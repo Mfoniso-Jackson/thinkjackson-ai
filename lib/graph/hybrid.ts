@@ -33,10 +33,17 @@ type KgNodeRow = {
   metadata: { url?: string };
 };
 
+const dynamicNodeEyebrows: Record<string, string> = {
+  question: "Open question",
+  prediction: "Prediction",
+  paper: "Discovered paper",
+  technology: "Discovered technology",
+  dataset: "Discovered dataset",
+  experiment: "Discovered experiment"
+};
+
 function dynamicNodeEyebrow(type: string): string {
-  if (type === "question") return "Open question";
-  if (type === "prediction") return "Prediction";
-  return "Discovered resource";
+  return dynamicNodeEyebrows[type] ?? "Discovered resource";
 }
 
 function dynamicNodeHref(ref: NodeRef, row: KgNodeRow): string {
