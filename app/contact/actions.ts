@@ -1,8 +1,9 @@
 "use server";
 
-import { scoreLead } from "@/lib/sales-scoring";
+import { insertSalesLead } from "@/lib/sales-store";
 import type { LeadIntent, SalesLeadInput } from "@/lib/sales-types";
 import { validateSalesLead } from "@/lib/sales-validation";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 export type SalesLeadState = {
   status: "idle" | "success" | "error";
@@ -97,9 +98,7 @@ export async function submitSalesLead(_previousState: SalesLeadState, formData: 
     };
   }
 
-  const webhookUrl = process.env.SALES_LEAD_WEBHOOK_URL ?? process.env.INVESTOR_LEAD_WEBHOOK_URL;
-
-  if (!webhookUrl) {
+  if (!isSupabaseConfigured()) {
     return {
       status: "error",
       message:
@@ -107,25 +106,9 @@ export async function submitSalesLead(_previousState: SalesLeadState, formData: 
     };
   }
 
-  const response = await fetch(webhookUrl, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      ...(process.env.SALES_LEAD_WEBHOOK_SECRET
-        ? { authorization: `Bearer ${process.env.SALES_LEAD_WEBHOOK_SECRET}` }
-        : process.env.INVESTOR_LEAD_WEBHOOK_SECRET
-          ? { authorization: `Bearer ${process.env.INVESTOR_LEAD_WEBHOOK_SECRET}` }
-          : {})
-    },
-    body: JSON.stringify({
-      ...input,
-      qualification: scoreLead(input),
-      submittedAt: new Date().toISOString(),
-      status: "new"
-    })
-  });
-
-  if (!response.ok) {
+  try {
+    await insertSalesLead(input);
+  } catch {
     return {
       status: "error",
       message: "The request could not be submitted. Please email hello@thinkjackson.com with the same context."

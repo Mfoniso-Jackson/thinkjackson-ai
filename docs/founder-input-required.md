@@ -26,9 +26,8 @@ Use conservative public wording until these are confirmed.
 
 ## Investor lead handling
 
-- Configure `INVESTOR_LEAD_WEBHOOK_URL` before treating the investor form as a production lead pipeline.
-- Optionally configure `INVESTOR_LEAD_WEBHOOK_SECRET`.
-- Decide whether leads should eventually be stored in Supabase, a CRM, email automation, or a private data room workflow.
+- Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in Vercel before treating the investor form as a production lead pipeline — it now inserts directly into `public.sales_leads`, the same table the general contact form uses.
+- The admin sales dashboard (`/admin/sales/*`) does not read from `sales_leads` yet — leads are captured, but there's no UI to browse them beyond Supabase's own table view.
 
 ## Legal and compliance
 
@@ -44,7 +43,6 @@ Use conservative public wording until these are confirmed.
 - Provide a verified scheduling link.
 - Provide a verified email sender and notification recipient.
 - Set `ADMIN_SALES_PASSWORD` in Vercel.
-- Decide whether `SALES_LEAD_WEBHOOK_URL` points to Supabase, Zapier, Make, Airtable, HubSpot, or a custom endpoint.
 - Confirm pilot offers and pricing ranges.
 - Confirm qualification score thresholds.
 - Confirm lead notification rules.

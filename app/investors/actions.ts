@@ -1,12 +1,41 @@
 "use server";
 
 import { validateInvestorLead, type InvestorLeadInput } from "@/lib/investor-form";
+import { insertSalesLead } from "@/lib/sales-store";
+import type { SalesLeadInput } from "@/lib/sales-types";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 export type InvestorLeadState = {
   status: "idle" | "success" | "error";
   message: string;
   errors?: Record<string, string>;
 };
+
+/**
+ * The investor form is a specialised entry point into the same sales_leads
+ * pipeline the general contact form uses — the table's `intent` column and
+ * scoreLead's investor-specific scoring already exist for exactly this.
+ */
+function toSalesLeadInput(input: InvestorLeadInput): SalesLeadInput {
+  return {
+    fullName: input.fullName,
+    email: input.email,
+    organisation: input.organisation,
+    role: input.role,
+    intent: "investor",
+    ventureSlug: input.venturesOfInterest.join(", "),
+    message: input.message,
+    preferredNextStep: input.involvementType,
+    consent: input.consent,
+    website: input.website,
+    sourcePage: "/investors",
+    investorType: input.investorType,
+    chequeSize: input.chequeRange,
+    sectorsOfInterest: input.areasOfInterest,
+    preferredInvolvement: input.involvementType,
+    requestInvestorMaterials: true
+  };
+}
 
 export async function submitInvestorLead(_previousState: InvestorLeadState, formData: FormData): Promise<InvestorLeadState> {
   const venturesOfInterest = formData.getAll("venturesOfInterest").map(String);
@@ -35,9 +64,7 @@ export async function submitInvestorLead(_previousState: InvestorLeadState, form
     };
   }
 
-  const webhookUrl = process.env.INVESTOR_LEAD_WEBHOOK_URL;
-
-  if (!webhookUrl) {
+  if (!isSupabaseConfigured()) {
     return {
       status: "error",
       message:
@@ -45,23 +72,9 @@ export async function submitInvestorLead(_previousState: InvestorLeadState, form
     };
   }
 
-  const response = await fetch(webhookUrl, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      ...(process.env.INVESTOR_LEAD_WEBHOOK_SECRET
-        ? { authorization: `Bearer ${process.env.INVESTOR_LEAD_WEBHOOK_SECRET}` }
-        : {})
-    },
-    body: JSON.stringify({
-      ...input,
-      sourcePage: "/investors",
-      submittedAt: new Date().toISOString(),
-      status: "new"
-    })
-  });
-
-  if (!response.ok) {
+  try {
+    await insertSalesLead(toSalesLeadInput(input));
+  } catch {
     return {
       status: "error",
       message:

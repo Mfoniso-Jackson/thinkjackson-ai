@@ -32,16 +32,14 @@
 
 ## Investor lead pipeline
 
-- The site has no database backend today.
-- `app/investors/actions.ts` validates submissions on the server and posts to `INVESTOR_LEAD_WEBHOOK_URL` when configured.
-- If no webhook is configured, the form returns a safe error directing the sender to `hello@thinkjackson.com`.
+- `app/investors/actions.ts` validates submissions on the server, maps them into the same `SalesLeadInput` shape the general contact form uses (intent: "investor"), and inserts into `public.sales_leads` in Supabase via `lib/sales-store.ts`.
+- If Supabase isn't configured, the form returns a safe error directing the sender to `hello@thinkjackson.com`.
 - Honeypot spam protection is included via a hidden `website` field.
-- No service-role key or private credential is exposed to the client.
+- No service-role key or private credential is exposed to the client — the insert happens entirely in the server action.
 
 ## Environment variables
 
-- `INVESTOR_LEAD_WEBHOOK_URL`: secure server-side webhook endpoint for investor lead routing.
-- `INVESTOR_LEAD_WEBHOOK_SECRET`: optional bearer token for the webhook.
+- `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY`: required for the form to persist leads. See docs/sales-operating-system.md.
 
 ## Database migrations
 

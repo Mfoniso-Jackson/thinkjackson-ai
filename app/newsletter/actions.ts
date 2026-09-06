@@ -1,6 +1,7 @@
 "use server";
 
 import { validateNewsletterSignup, type NewsletterSignupInput } from "@/lib/newsletter-form";
+import { isSupabaseConfigured, supabaseUpsert } from "@/lib/supabase";
 
 export type NewsletterSignupState = {
   status: "idle" | "success" | "error";
@@ -27,9 +28,7 @@ export async function submitNewsletterSignup(
     };
   }
 
-  const webhookUrl = process.env.NEWSLETTER_WEBHOOK_URL;
-
-  if (!webhookUrl) {
+  if (!isSupabaseConfigured()) {
     return {
       status: "error",
       message: "Signal capture is not configured yet. Please email hello@thinkjackson.com to be added manually."
@@ -38,22 +37,13 @@ export async function submitNewsletterSignup(
 
   const sourcePage = String(formData.get("sourcePage") ?? "/");
 
-  const response = await fetch(webhookUrl, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      ...(process.env.NEWSLETTER_WEBHOOK_SECRET
-        ? { authorization: `Bearer ${process.env.NEWSLETTER_WEBHOOK_SECRET}` }
-        : {})
-    },
-    body: JSON.stringify({
-      email: input.email,
-      sourcePage,
-      submittedAt: new Date().toISOString()
-    })
-  });
-
-  if (!response.ok) {
+  try {
+    await supabaseUpsert(
+      "newsletter_subscribers",
+      { email: input.email, source_page: sourcePage, status: "subscribed" },
+      "email"
+    );
+  } catch {
     return {
       status: "error",
       message: "The signup could not be submitted. Please email hello@thinkjackson.com."

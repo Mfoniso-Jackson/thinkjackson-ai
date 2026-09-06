@@ -28,8 +28,8 @@ It is designed for founder-led sales across investors, pilot customers, partners
 3. The form adds referrer and UTM context.
 4. Server-side validation, honeypot, and rate limiting run.
 5. The lead is scored transparently.
-6. The payload is sent to `SALES_LEAD_WEBHOOK_URL` or fails safely with an email fallback.
-7. A future CRM store can turn the lead into an opportunity with a next action.
+6. The payload is inserted into `public.sales_leads` in Supabase, or fails safely with an email fallback if Supabase isn't configured.
+7. A future CRM store can turn the lead into an opportunity with a next action. Note: `data/sales-dashboard.ts` (the admin pipeline UI) does not read from `sales_leads` yet — leads are captured, but the dashboard itself is still a static placeholder.
 
 ## Security Model
 
@@ -45,10 +45,7 @@ It is designed for founder-led sales across investors, pilot customers, partners
 
 - `ADMIN_SALES_PASSWORD`: required to access admin routes.
 - `ADMIN_SALES_USERNAME`: optional, defaults to `mfoniso`.
-- `SALES_LEAD_WEBHOOK_URL`: private lead ingestion endpoint.
-- `SALES_LEAD_WEBHOOK_SECRET`: optional bearer token.
-- `INVESTOR_LEAD_WEBHOOK_URL`: fallback for existing investor route.
-- `INVESTOR_LEAD_WEBHOOK_SECRET`: fallback bearer token.
+- `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY`: required for the contact and investor forms to write to `public.sales_leads`. The service role key, not the anon/publishable one — every table here has RLS locked to `service_role`.
 
 ## Pipeline Rules
 
