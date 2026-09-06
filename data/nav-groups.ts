@@ -3,6 +3,7 @@ export const navGroups = [
     heading: "Explore",
     links: [
       { label: "Ideas", href: "/ideas" },
+      { label: "Map", href: "/map" },
       { label: "Research", href: "/research" },
       { label: "Questions", href: "/questions" },
       { label: "Predictions", href: "/predictions" },
