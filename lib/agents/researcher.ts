@@ -4,6 +4,8 @@ import { researcherOutputSchema, type ScoutOutput } from "@/lib/kg-types";
 import { ideas } from "@/data/ideas";
 import { territories } from "@/data/territories";
 import { publicVentures } from "@/data/ventures";
+import { people } from "@/data/people";
+import { writingPosts } from "@/lib/writing";
 
 const researcherJsonSchema = {
   type: "object",
@@ -45,33 +47,32 @@ const researcherJsonSchema = {
   }
 };
 
-const systemPrompt = `You are the Researcher inside ThinkJackson's research pipeline. You receive one source's extracted text, a Scout's initial read of it, and a whitelist of ThinkJackson's existing ideas, territories, and ventures. Extract the specific claims the source actually makes and label each one honestly: fact (directly stated and verifiable from the text), interpretation (a reasonable synthesis of what's stated), hypothesis (something the source proposes testing), prediction (a claim about a future outcome), or speculation (an interesting possibility the text does not sufficiently support). Never upgrade a claim's confidence beyond what the text itself supports. Then propose 1-3 connections from this source to items in the provided whitelist ONLY — every targetSlug you return must be copied exactly from the whitelist, never invented. If nothing in the whitelist genuinely relates, propose the single closest one honestly labeled as a weak related-to connection rather than fabricating a stronger one. Optionally note one open question this source raises that isn't yet answered.`;
+const systemPrompt = `You are the Researcher inside ThinkJackson's research pipeline. You receive one source's extracted text, a Scout's initial read of it, and a whitelist of ThinkJackson's existing ideas, territories, ventures, people, and essays. Extract the specific claims the source actually makes and label each one honestly: fact (directly stated and verifiable from the text), interpretation (a reasonable synthesis of what's stated), hypothesis (something the source proposes testing), prediction (a claim about a future outcome), or speculation (an interesting possibility the text does not sufficiently support). Never upgrade a claim's confidence beyond what the text itself supports. Then propose 1-3 connections from this source to items in the provided whitelist ONLY — every targetSlug you return must be copied exactly from the whitelist, never invented. If nothing in the whitelist genuinely relates, propose the single closest one honestly labeled as a weak related-to connection rather than fabricating a stronger one. Optionally note one open question this source raises that isn't yet answered.`;
 
 export type ResearchableContext = {
   ideas: Array<{ slug: string; title: string; summary: string }>;
   territories: Array<{ slug: string; name: string }>;
   ventures: Array<{ slug: string; name: string; tagline: string }>;
+  people: Array<{ slug: string; name: string; role: string }>;
+  essays: Array<{ slug: string; title: string; excerpt: string }>;
 };
 
 export function getResearchableContext(): ResearchableContext {
   return {
     ideas: ideas.map((idea) => ({ slug: idea.slug, title: idea.title, summary: idea.summary })),
     territories: territories.map((territory) => ({ slug: territory.slug, name: territory.name })),
-    ventures: publicVentures.map((venture) => ({ slug: venture.slug, name: venture.name, tagline: venture.tagline }))
+    ventures: publicVentures.map((venture) => ({ slug: venture.slug, name: venture.name, tagline: venture.tagline })),
+    people: people.map((person) => ({ slug: person.slug, name: person.name, role: person.role })),
+    essays: writingPosts.map((post) => ({ slug: post.slug, title: post.title, excerpt: post.excerpt }))
   };
 }
 
-/**
- * People and essay whitelists aren't provided to the Researcher in v1 (the
- * person/essay data files are smaller and less obviously matched from an
- * external source), so a proposed connection to either type can never be
- * verified yet and is always rejected here — not because the schema
- * forbids it, but because there's nothing real to check it against.
- */
 export function isKnownTarget(targetType: string, targetSlug: string, context: ResearchableContext): boolean {
   if (targetType === "idea") return context.ideas.some((idea) => idea.slug === targetSlug);
   if (targetType === "territory") return context.territories.some((territory) => territory.slug === targetSlug);
   if (targetType === "venture") return context.ventures.some((venture) => venture.slug === targetSlug);
+  if (targetType === "person") return context.people.some((person) => person.slug === targetSlug);
+  if (targetType === "essay") return context.essays.some((essay) => essay.slug === targetSlug);
   return false;
 }
 

@@ -221,3 +221,46 @@ export async function logAgentAction(entry: {
     // Observability must never break the pipeline it's observing.
   }
 }
+
+export type AgentLogEntry = {
+  id: string;
+  agent: string;
+  researchCandidateId: string | null;
+  model: string | null;
+  latencyMs: number | null;
+  requestSuccess: boolean;
+  schemaValid: boolean | null;
+  errorCode: string | null;
+  createdAt: string;
+};
+
+/** Real rows only — an empty or short list here is a normal, honest state for an admin tool, not something to pad out. */
+export async function listAgentLogs(limit = 100): Promise<AgentLogEntry[]> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const rows = (await supabaseRequest(`agent_logs?select=*&order=created_at.desc&limit=${limit}`)) as Array<{
+      id: string;
+      agent: string;
+      research_candidate_id: string | null;
+      model: string | null;
+      latency_ms: number | null;
+      request_success: boolean;
+      schema_valid: boolean | null;
+      error_code: string | null;
+      created_at: string;
+    }>;
+    return rows.map((row) => ({
+      id: row.id,
+      agent: row.agent,
+      researchCandidateId: row.research_candidate_id,
+      model: row.model,
+      latencyMs: row.latency_ms,
+      requestSuccess: row.request_success,
+      schemaValid: row.schema_valid,
+      errorCode: row.error_code,
+      createdAt: row.created_at
+    }));
+  } catch {
+    return [];
+  }
+}
