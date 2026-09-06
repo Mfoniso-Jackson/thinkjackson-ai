@@ -7,9 +7,10 @@ import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { SalesCtaGroup } from "@/components/sales-cta";
+import { RelatedNodes } from "@/components/related-nodes";
 import { capitalObjectiveLabels, publicVentures } from "@/data/ventures";
-import { getWritingPost } from "@/lib/writing";
-import { formatDate } from "@/lib/utils";
+import { secondDegreeRefs } from "@/lib/graph/registry";
+import { resolveNode } from "@/lib/graph/resolve";
 import { verifiedEvidence } from "@/lib/venture-validation";
 
 type ProjectPageProps = {
@@ -50,10 +51,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     notFound();
   }
 
-  const relatedWriting = ["computational-superstition-rl", "massifx"].includes(venture.slug)
-    ? ["computational-superstition-in-reinforcement-learning", "portfolio-intelligence-is-not-a-dashboard"]
-    : ["machine-economies-need-coordination-primitives", "portfolio-intelligence-is-not-a-dashboard"];
-  const relatedPosts = relatedWriting.map((postSlug) => getWritingPost(postSlug)).filter((post) => post !== undefined);
+  const relatedPosts = secondDegreeRefs({ type: "venture", slug: venture.slug }, "essay")
+    .map((ref) => resolveNode(ref))
+    .filter((node) => node !== undefined);
   const evidence = verifiedEvidence(venture);
 
   return (
@@ -246,21 +246,26 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             </SectionHeading>
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">Related writing</p>
-              <div className="mt-6 grid gap-4">
-                {relatedPosts.map((post) => (
-                  <Link key={post.slug} href={`/writing/${post.slug}`} className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35">
-                    <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-steel">
-                      <time dateTime={post.date}>{formatDate(post.date)}</time>
-                      <span aria-hidden="true">/</span>
-                      <span>{post.readingTime}</span>
-                    </div>
-                    <h3 className="mt-3 text-lg font-semibold text-white">{post.title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-steel">{post.excerpt}</p>
-                  </Link>
-                ))}
-              </div>
+              {relatedPosts.length > 0 ? (
+                <div className="mt-6 grid gap-4">
+                  {relatedPosts.map((post) => (
+                    <Link key={post!.href} href={post!.href} className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35">
+                      <h3 className="text-lg font-semibold text-white">{post!.title}</h3>
+                      <p className="mt-2 text-sm leading-6 text-steel">{post!.summary}</p>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-6 text-sm leading-6 text-steel">No essays are indexed against this venture yet.</p>
+              )}
             </div>
           </div>
+        </Container>
+      </section>
+
+      <section className="py-20">
+        <Container>
+          <RelatedNodes nodeRef={{ type: "venture", slug: venture.slug }} heading="This venture in the idea graph" />
         </Container>
       </section>
 

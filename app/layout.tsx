@@ -13,14 +13,14 @@ export const metadata: Metadata = {
     template: "%s | thinkjackson"
   },
   description:
-    "AI systems for markets, agents, and human coordination. The personal platform of Mfoniso Jackson.",
+    "An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible. The research and venture platform of Mfoniso Jackson.",
   alternates: {
     canonical: "/"
   },
   openGraph: {
     title: "Mfoniso Jackson | thinkjackson",
     description:
-      "AI systems for markets, agents, and human coordination.",
+      "An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible.",
     url: "https://thinkjackson.com",
     siteName: "thinkjackson",
     type: "website",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "thinkjackson - AI systems for markets, agents, and human coordination"
+        alt: "thinkjackson - mapping the emergence of intelligence"
       }
     ]
   },
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Mfoniso Jackson | thinkjackson",
     description:
-      "AI systems for markets, agents, and human coordination.",
+      "An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible.",
     images: ["/twitter-image"]
   },
   icons: {
@@ -66,12 +66,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         ],
         knowsAbout: [
           "Artificial intelligence",
+          "Autonomous agents",
+          "Agent economy",
           "Financial engineering",
           "Reinforcement learning",
-          "Autonomous agents",
           "AI safety",
           "Portfolio intelligence",
-          "Web3 coordination"
+          "Web3 coordination",
+          "Economic coordination"
         ]
       },
       {
@@ -79,7 +81,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         "@id": "https://thinkjackson.com/#website",
         name: "thinkjackson",
         url: "https://thinkjackson.com",
-        description: "AI systems for markets, agents, and human coordination."
+        description:
+          "An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible."
       }
     ]
   };

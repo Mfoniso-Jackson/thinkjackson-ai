@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
+import { NewsletterForm } from "@/components/newsletter-form";
 import { SocialIcon } from "@/components/social-icons";
 import { navigation, socialLinks } from "@/data/site";
 
@@ -12,13 +13,17 @@ export function Footer() {
             thinkjackson
           </p>
           <p className="mt-3 max-w-xl text-sm leading-6 text-steel">
-            AI systems for markets, agents, and human coordination. Research,
-            product architecture, and founder-grade execution by Mfoniso Jackson.
+            An evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence
+            makes possible. Research, ideas, and ventures by Mfoniso Jackson.
           </p>
           <p className="mt-4 max-w-xl text-xs leading-5 text-steel/80">
             Informational only. Nothing on this site is financial advice, investment advice,
             brokerage activity, or an offer to sell securities.
           </p>
+          <div className="mt-6 max-w-sm">
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-steel">The Intelligence Brief</p>
+            <NewsletterForm sourcePage="/footer" className="mt-3" />
+          </div>
         </div>
         <nav className="flex flex-wrap gap-x-4 gap-y-3 md:justify-end" aria-label="Footer navigation">
           {navigation.map((item) => (
@@ -26,8 +31,11 @@ export function Footer() {
               {item.label}
             </Link>
           ))}
-          <Link href="/projects" className="text-sm text-steel hover:text-white">
-            Ventures
+          <Link href="/about" className="text-sm text-steel hover:text-white">
+            Founder
+          </Link>
+          <Link href="/evidence" className="text-sm text-steel hover:text-white">
+            Evidence
           </Link>
           <Link href="/timeline" className="text-sm text-steel hover:text-white">
             Timeline

@@ -7,14 +7,17 @@ import { SectionHeading } from "@/components/section-heading";
 import { SalesCtaGroup } from "@/components/sales-cta";
 import { VentureCard } from "@/components/venture-card";
 import { WritingCard } from "@/components/writing-card";
-import { capabilityThesis, capitalObjectiveLabels, flagshipVenture, founderProfile, publicVentures } from "@/data/ventures";
+import { NewsletterForm } from "@/components/newsletter-form";
+import { flagshipVenture, founderProfile, publicVentures } from "@/data/ventures";
+import { territories } from "@/data/territories";
+import { transIntelligence } from "@/data/ideas";
+import { podcast } from "@/data/podcast";
 import { writingPosts } from "@/lib/writing";
-import { verifiedEvidence } from "@/lib/venture-validation";
 
 export const metadata: Metadata = {
-  title: "AI Venture Builder",
+  title: "Mapping the Emergence of Intelligence",
   description:
-    "Mfoniso Jackson builds adaptive intelligence infrastructure for markets, risk, autonomous agents, and economic coordination.",
+    "thinkjackson is an evolving map of the emergence of intelligence, and a laboratory for discovering what that emergence makes possible.",
   alternates: {
     canonical: "/"
   }
@@ -22,7 +25,6 @@ export const metadata: Metadata = {
 
 export default function Home() {
   const featuredVentures = publicVentures.filter((venture) => venture.featured);
-  const activeObjectives = publicVentures.filter((venture) => venture.capitalObjectives[0] !== "not-raising").slice(0, 4);
 
   return (
     <>
@@ -31,24 +33,24 @@ export default function Home() {
           <div className="max-w-5xl">
             <Reveal>
               <p className="font-mono text-sm uppercase tracking-[0.3em] text-signal">
-                Mfoniso Jackson · AI Engineer and Venture Builder
+                thinkjackson · Intelligence Observatory
               </p>
               <h1 className="mt-6 text-balance text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
-                Building adaptive intelligence infrastructure for markets, risk and economic coordination.
+                An evolving map of the emergence of intelligence.
               </h1>
               <p className="mt-7 max-w-4xl text-lg leading-8 text-steel sm:text-xl">
-                thinkjackson is the research and venture platform behind AI-native systems spanning financial
-                intelligence, autonomous agents, risk infrastructure, property operations, worker recognition,
-                incident intelligence, and adaptive-agent safety.
+                {transIntelligence.definition} thinkjackson investigates that transition through research, essays,
+                a podcast, and ventures built as live experiments inside the thesis — not as a separate startup
+                portfolio.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <Button href="/projects">Explore the Venture Portfolio</Button>
-                <Button href="/investors" variant="secondary">
-                  Read the Investor Brief
+                <Button href="/ideas">Explore the ideas</Button>
+                <Button href="/research" variant="secondary">
+                  Read the research
                 </Button>
               </div>
-              <Link href="/research" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white">
-                Explore the research thesis
+              <Link href="/ideas/trans-intelligence" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white">
+                Read the Trans-Intelligence thesis
               </Link>
             </Reveal>
           </div>
@@ -57,65 +59,22 @@ export default function Home() {
 
       <section id="thesis" className="border-y border-line bg-graphite/70 py-20">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-            <SectionHeading eyebrow="Capital thesis" title="One technical thesis. Multiple high-value markets.">
-              <p>
-                The ventures are connected by a reusable capability stack for environments where capital, risk,
-                trust, incentives, and autonomous agents interact.
-              </p>
-            </SectionHeading>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {capabilityThesis.map((capability) => (
-                <div key={capability} className="rounded-lg border border-line bg-white/[0.035] p-4 text-sm font-medium text-white">
-                  {capability}
-                </div>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-20">
-        <Container>
-          <SectionHeading eyebrow="Flagship opportunity" title={flagshipVenture.name}>
-            <p>{flagshipVenture.investmentThesis}</p>
+          <SectionHeading eyebrow="Five research territories" title="Not rigid categories. Where they overlap is where it gets interesting.">
+            <p>
+              Every idea, essay, venture, and conversation on this site sits inside one or more of these territories.
+              The overlaps between them are where Trans-Intelligence becomes observable.
+            </p>
           </SectionHeading>
-          <div className="mt-10 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="rounded-lg border border-line bg-white/[0.035] p-7">
-              <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">{flagshipVenture.category}</p>
-              <h3 className="mt-4 text-3xl font-semibold text-white">{flagshipVenture.tagline}</h3>
-              <p className="mt-5 text-base leading-8 text-steel">{flagshipVenture.problem}</p>
-              <p className="mt-5 text-base leading-8 text-white">{flagshipVenture.solution}</p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <Button href={`/projects/${flagshipVenture.slug}`}>Full venture page</Button>
-                <Button href="/investors#request" variant="secondary">
-                  Request investor materials
-                </Button>
-              </div>
-            </div>
-            <div className="grid gap-4">
-              {[
-                ["Stage", flagshipVenture.statusLabel],
-                ["Current objective", flagshipVenture.currentAsk],
-                ["Next milestone", flagshipVenture.nextMilestone]
-              ].map(([label, value]) => (
-                <div key={label} className="rounded-lg border border-line bg-ink/70 p-5">
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">{label}</p>
-                  <p className="mt-3 text-sm leading-6 text-steel">{value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      <section className="border-y border-line bg-graphite/60 py-20">
-        <Container>
-          <SectionHeading eyebrow="Venture portfolio" title="Disciplined systems, not a startup directory." />
-          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {featuredVentures.map((venture, index) => (
-              <Reveal key={venture.slug} delay={index * 0.04}>
-                <VentureCard venture={venture} />
+          <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {territories.map((territory, index) => (
+              <Reveal key={territory.slug} delay={index * 0.04}>
+                <Link
+                  href={`/ideas#${territory.slug}`}
+                  className="block h-full rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35"
+                >
+                  <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">{territory.name}</p>
+                  <p className="mt-3 text-sm leading-6 text-steel">{territory.definition}</p>
+                </Link>
               </Reveal>
             ))}
           </div>
@@ -124,9 +83,84 @@ export default function Home() {
 
       <section className="py-20">
         <Container>
+          <SectionHeading eyebrow="Ventures as experiments" title="Systems that test the thesis, not a startup directory.">
+            <p>
+              Each venture is a live experiment inside one or more research territories: a way of finding out whether
+              an idea about agents, markets, risk, trust, or coordination survives contact with a real system.
+            </p>
+          </SectionHeading>
+          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {featuredVentures.map((venture, index) => (
+              <Reveal key={venture.slug} delay={index * 0.04}>
+                <VentureCard venture={venture} />
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-8">
+            <Link href={`/projects/${flagshipVenture.slug}`} className="text-sm font-semibold text-signal hover:text-white">
+              {flagshipVenture.name} is the current flagship experiment →
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-y border-line bg-graphite/60 py-20">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+            <SectionHeading eyebrow="Proof of work" title="Research before claims.">
+              <p>
+                Computational superstition studies how reinforcement-learning agents preserve proxy rituals after
+                reward conditions shift. It is the clearest current example of the thesis: agent behavior, emergence,
+                and what happens once a pattern outlives the reason it existed.
+              </p>
+            </SectionHeading>
+            <div className="grid gap-4">
+              {writingPosts.slice(0, 2).map((post) => (
+                <WritingCard key={post.slug} {...post} />
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-20">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+            <SectionHeading eyebrow="Podcast" title={podcast.name}>
+              <p className="text-lg font-semibold text-signal">{podcast.tagline}</p>
+              <p className="mt-4">{podcast.thesis}</p>
+              <Link href="/podcast" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white">
+                See the show
+              </Link>
+            </SectionHeading>
+            <div className="rounded-lg border border-line bg-white/[0.035] p-7">
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-signal">The Intelligence Brief</p>
+              <h3 className="mt-4 text-2xl font-semibold text-white">
+                Signal. Thesis. Experiment. Research. Question. Build.
+              </h3>
+              <p className="mt-4 text-sm leading-6 text-steel">
+                A recurring dispatch from the research territories: what we tested, what we learned, and what
+                remains unresolved.
+              </p>
+              <NewsletterForm sourcePage="/" className="mt-6" />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-y border-line bg-graphite/60 py-20">
+        <Container>
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-            <SectionHeading eyebrow="Founder advantage" title="Why this founder, why these problems, why now.">
+            <SectionHeading eyebrow="Founder" title="Why this founder, why these problems.">
               <p>{founderProfile.thesis}</p>
+              <div className="mt-5 flex flex-wrap gap-3 text-sm font-semibold">
+                <Link href="/people/mfoniso-jackson" className="text-signal hover:text-white">
+                  View founder node
+                </Link>
+                <Link href="/investors" className="text-signal hover:text-white">
+                  Read the investor brief
+                </Link>
+              </div>
             </SectionHeading>
             <div className="grid gap-4">
               {founderProfile.verifiedFacts.map((fact) => (
@@ -139,94 +173,12 @@ export default function Home() {
         </Container>
       </section>
 
-      <section className="border-y border-line bg-graphite/60 py-20">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-2">
-            <SectionHeading eyebrow="Research moat" title="Adaptive-agent research as technical differentiation.">
-              <p>
-                Computational superstition research studies proxy persistence, false correlation, and behavior that
-                remains stable after reward conditions change. For market agents and decision systems, that becomes
-                a practical lens for regime change, risk memory, and safer adaptation.
-              </p>
-            </SectionHeading>
-            <div className="grid gap-3">
-              {[
-                "More robust autonomous agents",
-                "Better detection of false correlations",
-                "Safer strategy adaptation under regime change",
-                "Improved interpretability of decision systems",
-                "Defensible technical knowledge across the venture portfolio"
-              ].map((item) => (
-                <div key={item} className="rounded-lg border border-line bg-white/[0.035] p-4 text-sm text-white">
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-20">
-        <Container>
-          <SectionHeading eyebrow="Execution evidence" title="Public proof-of-work." />
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
-            {publicVentures.flatMap((venture) =>
-              verifiedEvidence(venture).slice(0, 1).map((item) => (
-                <Link
-                  key={`${venture.slug}-${item.label}`}
-                  href={item.url ?? `/projects/${venture.slug}`}
-                  target={item.url?.startsWith("http") ? "_blank" : undefined}
-                  rel={item.url?.startsWith("http") ? "noreferrer" : undefined}
-                  className="rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35"
-                >
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">{venture.name}</p>
-                  <h3 className="mt-3 text-lg font-semibold text-white">{item.label}</h3>
-                  <p className="mt-2 text-sm leading-6 text-steel">{item.description}</p>
-                </Link>
-              ))
-            )}
-          </div>
-        </Container>
-      </section>
-
-      <section className="border-y border-line bg-graphite/60 py-20">
-        <Container>
-          <SectionHeading eyebrow="Current capital objectives" title="What aligned counterparties can help unlock." />
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {activeObjectives.map((venture) => (
-              <div key={venture.slug} className="rounded-lg border border-line bg-white/[0.035] p-5">
-                <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">{venture.name}</p>
-                <h3 className="mt-3 text-xl font-semibold text-white">
-                  {venture.capitalObjectives.map((objective) => capitalObjectiveLabels[objective]).join(" / ")}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-steel">{venture.currentAsk}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-20">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-            <SectionHeading eyebrow="Selected writing" title="Research notes investors can inspect.">
-              <p>Writing is part of the diligence path: it shows the technical thesis behind the venture portfolio.</p>
-            </SectionHeading>
-            <div className="grid gap-5">
-              {writingPosts.slice(0, 2).map((post) => (
-                <WritingCard key={post.slug} {...post} />
-              ))}
-            </div>
-          </div>
-        </Container>
-      </section>
-
       <section className="border-t border-line bg-graphite/70 py-20">
         <Container>
           <SalesCtaGroup
             sourcePage="/"
-            title="Interested in the systems being built?"
-            description="Aligned investors, grant organisations, strategic partners, pilot customers, and domain experts can request the appropriate public or confidential path."
+            title="Explore further, or start a conversation."
+            description="Researchers, builders, investors, and grant organisations can request the appropriate public or confidential path."
           />
         </Container>
       </section>

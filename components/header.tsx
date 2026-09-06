@@ -24,7 +24,7 @@ export function Header() {
               <span className="text-signal">jackson</span>
             </span>
             <span className="mt-1 hidden font-mono text-[10px] uppercase tracking-[0.22em] text-steel/80 lg:block">
-              machine intelligence
+              intelligence observatory
             </span>
           </span>
         </Link>
