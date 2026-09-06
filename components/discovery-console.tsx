@@ -166,6 +166,22 @@ function CandidateCard({
         <p className="mt-3 text-xs text-steel">Rejected: {candidate.rejectionReason}</p>
       ) : null}
 
+      {librarian?.proposedPredictions && librarian.proposedPredictions.length > 0 ? (
+        <div className="mt-4 rounded-md border border-volt/40 bg-volt/[0.06] p-4">
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-volt">
+            {candidate.status === "published" ? "Published" : "Approving this publishes"} {librarian.proposedPredictions.length} public prediction
+            {librarian.proposedPredictions.length === 1 ? "" : "s"}
+          </p>
+          <div className="mt-3 grid gap-2">
+            {librarian.proposedPredictions.map((prediction) => (
+              <p key={prediction.slug} className="text-sm leading-6 text-white">
+                &ldquo;{prediction.title}&rdquo;
+              </p>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
       {researcher ? (
         <details className="mt-4">
           <summary className="cursor-pointer text-xs font-semibold text-signal">

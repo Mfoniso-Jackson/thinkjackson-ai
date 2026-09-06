@@ -33,6 +33,18 @@ type KgNodeRow = {
   metadata: { url?: string };
 };
 
+function dynamicNodeEyebrow(type: string): string {
+  if (type === "question") return "Open question";
+  if (type === "prediction") return "Prediction";
+  return "Discovered resource";
+}
+
+function dynamicNodeHref(ref: NodeRef, row: KgNodeRow): string {
+  if (ref.type === "question") return `/questions/${ref.slug}`;
+  if (ref.type === "prediction") return `/predictions/${ref.slug}`;
+  return row.metadata?.url ?? "#";
+}
+
 export async function relatedRefsHybrid(ref: NodeRef, nodeType?: NodeRef["type"]): Promise<RelatedNode[]> {
   const staticResults = staticRelatedRefs(ref, nodeType);
   if (!isSupabaseConfigured()) return staticResults;
@@ -81,9 +93,9 @@ export async function resolveNodeHybrid(ref: NodeRef): Promise<ResolvedNode | un
     return {
       ref,
       title: row.title,
-      eyebrow: ref.type === "question" ? "Open question" : "Discovered resource",
+      eyebrow: dynamicNodeEyebrow(ref.type),
       summary: row.summary,
-      href: ref.type === "question" ? `/questions/${ref.slug}` : (row.metadata?.url ?? "#")
+      href: dynamicNodeHref(ref, row)
     };
   } catch {
     return undefined;

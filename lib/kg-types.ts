@@ -83,6 +83,21 @@ export type LibrarianOutput = {
     title: string;
     generatedByTargets: Array<{ toType: (typeof connectableNodeTypes)[number]; toSlug: string }>;
   };
+  /**
+   * One entry per claim the Researcher labeled "prediction" — the brief is
+   * explicit that predictions stay human-authority, not agent-authority, so
+   * this is a proposal like everything else here: nothing here is a real
+   * ledger entry until the same human Approve action that publishes the
+   * resource node also publishes these. probability/resolutionDate/outcome
+   * are left unset rather than guessed — a human adds those later, if ever.
+   */
+  proposedPredictions?: Array<{
+    type: "prediction";
+    slug: string;
+    title: string;
+    rationale?: string;
+    generatedByTargets: Array<{ toType: (typeof connectableNodeTypes)[number]; toSlug: string }>;
+  }>;
   duplicateOfNodeId?: string;
 };
 

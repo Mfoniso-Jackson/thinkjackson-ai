@@ -6,7 +6,10 @@ import { writingPosts } from "@/lib/writing";
 import { listPublishedNodesByType } from "@/lib/kg-store";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const questions = await listPublishedNodesByType("question");
+  const [questions, predictions] = await Promise.all([
+    listPublishedNodesByType("question"),
+    listPublishedNodesByType("prediction")
+  ]);
 
   const routes = [
     "",
@@ -16,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/research",
     "/research/computational-superstition",
     "/questions",
+    "/predictions",
     "/people",
     "/podcast",
     "/projects",
@@ -34,7 +38,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...publicVentures.map((venture) => `/projects/${venture.slug}`),
     ...publicVentures.map((venture) => `/projects/${venture.slug}/deck`),
     ...writingPosts.map((post) => `/writing/${post.slug}`),
-    ...questions.map((question) => `/questions/${question.slug}`)
+    ...questions.map((question) => `/questions/${question.slug}`),
+    ...predictions.map((prediction) => `/predictions/${prediction.slug}`)
   ];
 
   return routes.map((route) => ({

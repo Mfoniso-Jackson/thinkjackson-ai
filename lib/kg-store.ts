@@ -184,6 +184,37 @@ export async function publishResearchCandidate(id: string, reviewedBy: string) {
     }
   }
 
+  for (const prediction of librarian.proposedPredictions ?? []) {
+    await supabaseInsert("kg_nodes", {
+      type: prediction.type,
+      slug: prediction.slug,
+      title: prediction.title,
+      summary: prediction.title,
+      metadata: {
+        rationale: prediction.rationale ?? null,
+        sourceUrl: candidate.payload.url,
+        probability: null,
+        resolutionDate: null,
+        outcome: null,
+        resolutionStatus: "unresolved"
+      },
+      created_by: "agent:librarian"
+    });
+
+    for (const target of prediction.generatedByTargets) {
+      await supabaseInsert("kg_relationships", {
+        from_type: prediction.type,
+        from_slug: prediction.slug,
+        relation_type: "derived-from",
+        to_type: target.toType,
+        to_slug: target.toSlug,
+        confidence: null,
+        source_id: candidate.sourceId,
+        created_by: "agent:librarian"
+      });
+    }
+  }
+
   if (candidate.sourceId) {
     await supabaseUpdate("kg_sources", `id=eq.${candidate.sourceId}`, { human_verified: true });
   }

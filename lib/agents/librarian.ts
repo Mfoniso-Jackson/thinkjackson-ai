@@ -44,5 +44,19 @@ export function runLibrarian(params: { url: string; scout: ScoutOutput; research
     };
   }
 
+  const predictionClaims = params.researcher.claims.filter((claim) => claim.epistemicStatus === "prediction");
+  if (predictionClaims.length > 0) {
+    output.proposedPredictions = predictionClaims.map((claim, index) => ({
+      type: "prediction" as const,
+      slug: (slugify(claim.statement).slice(0, 80) || `${slug}-prediction-${index}`).replace(/-+$/, ""),
+      title: claim.statement,
+      rationale: claim.evidence,
+      generatedByTargets: params.researcher.proposedConnections.map((connection) => ({
+        toType: connection.targetType,
+        toSlug: connection.targetSlug
+      }))
+    }));
+  }
+
   return output;
 }
