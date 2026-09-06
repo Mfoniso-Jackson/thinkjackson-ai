@@ -53,6 +53,14 @@ export type Lead = {
   preferredNextStep?: string;
   status: LeadStatus;
   notes?: string;
+  message?: string;
+  qualification?: {
+    total: number;
+    band: QualificationBand;
+    reasons: string[];
+    missingInformation: string[];
+    recommendedNextAction: string;
+  };
 };
 
 export type Opportunity = {
