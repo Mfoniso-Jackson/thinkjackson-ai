@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
 import { RelatedNodes } from "@/components/related-nodes";
+import { RelatedNodesGraph } from "@/components/related-nodes-graph";
 import { SessionTrail } from "@/components/session-trail";
 import { CTASection } from "@/components/cta-section";
 import { getIdea, ideas, transIntelligence } from "@/data/ideas";
@@ -106,7 +107,15 @@ export default async function IdeaDetailPage({ params }: IdeaPageProps) {
 
       <section className="py-20">
         <Container>
-          <RelatedNodes nodeRef={{ type: "idea", slug: idea.slug }} heading="Connected across the graph" />
+          <div className="wide:hidden">
+            <RelatedNodes nodeRef={{ type: "idea", slug: idea.slug }} heading="Connected across the graph" />
+          </div>
+          <div className="hidden wide:block">
+            <p className="mb-8 text-center font-mono text-xs uppercase tracking-[0.28em] text-signal">
+              Connected across the graph
+            </p>
+            <RelatedNodesGraph nodeRef={{ type: "idea", slug: idea.slug }} centerLabel={idea.title} />
+          </div>
           <div className="mt-8">
             <SessionTrail node={{ type: "idea", slug: idea.slug, title: idea.title, href: `/ideas/${idea.slug}` }} />
           </div>
@@ -159,10 +168,21 @@ function TransIntelligencePage() {
 
       <section className="py-20">
         <Container>
-          <RelatedNodes
-            nodeRef={{ type: "idea", slug: transIntelligence.slug }}
-            heading="Where the thesis is observable now"
-          />
+          <div className="wide:hidden">
+            <RelatedNodes
+              nodeRef={{ type: "idea", slug: transIntelligence.slug }}
+              heading="Where the thesis is observable now"
+            />
+          </div>
+          <div className="hidden wide:block">
+            <p className="mb-8 text-center font-mono text-xs uppercase tracking-[0.28em] text-signal">
+              Where the thesis is observable now
+            </p>
+            <RelatedNodesGraph
+              nodeRef={{ type: "idea", slug: transIntelligence.slug }}
+              centerLabel={transIntelligence.title}
+            />
+          </div>
           <div className="mt-8">
             <SessionTrail
               node={{

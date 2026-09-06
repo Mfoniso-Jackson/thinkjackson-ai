@@ -8,6 +8,7 @@ import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { SalesCtaGroup } from "@/components/sales-cta";
 import { RelatedNodes } from "@/components/related-nodes";
+import { RelatedNodesGraph } from "@/components/related-nodes-graph";
 import { SessionTrail } from "@/components/session-trail";
 import { capitalObjectiveLabels, publicVentures } from "@/data/ventures";
 import { secondDegreeRefs } from "@/lib/graph/registry";
@@ -266,7 +267,15 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
       <section className="py-20">
         <Container>
-          <RelatedNodes nodeRef={{ type: "venture", slug: venture.slug }} heading="This venture in the idea graph" />
+          <div className="wide:hidden">
+            <RelatedNodes nodeRef={{ type: "venture", slug: venture.slug }} heading="This venture in the idea graph" />
+          </div>
+          <div className="hidden wide:block">
+            <p className="mb-8 text-center font-mono text-xs uppercase tracking-[0.28em] text-signal">
+              This venture in the idea graph
+            </p>
+            <RelatedNodesGraph nodeRef={{ type: "venture", slug: venture.slug }} centerLabel={venture.name} />
+          </div>
           <div className="mt-8">
             <SessionTrail node={{ type: "venture", slug: venture.slug, title: venture.name, href: `/projects/${venture.slug}` }} />
           </div>
