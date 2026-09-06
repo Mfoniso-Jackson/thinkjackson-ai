@@ -12,3 +12,4 @@ dist
 *.log
 *.tsbuildinfo
 .DS_Store
+.env*

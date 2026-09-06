@@ -7,6 +7,7 @@ import { runLibrarian } from "@/lib/agents/librarian";
 import {
   createResearchCandidate,
   createSource,
+  findActiveCandidateBySourceId,
   findSourceByUrl,
   getResearchCandidate,
   listResearchCandidates,
@@ -49,10 +50,14 @@ export async function runDiscoveryPipeline(url: string): Promise<ActionResult<Re
     return { ok: false, error: "Enter a valid http/https URL." };
   }
 
+  let existingSource;
   try {
-    const existing = await findSourceByUrl(parsedUrl);
-    if (existing) {
-      return { ok: false, error: "This URL has already been discovered. Check the candidates list below." };
+    existingSource = await findSourceByUrl(parsedUrl);
+    if (existingSource) {
+      const activeCandidate = await findActiveCandidateBySourceId(existingSource.id);
+      if (activeCandidate) {
+        return { ok: false, error: "This URL has already been discovered. Check the candidates list below." };
+      }
     }
   } catch (error) {
     return { ok: false, error: friendlyStoreError(error) };
@@ -77,12 +82,14 @@ export async function runDiscoveryPipeline(url: string): Promise<ActionResult<Re
   };
 
   try {
-    const source = await createSource({
-      url: parsedUrl,
-      sourceType: scoutResult.output.sourceType,
-      title: scoutResult.output.title,
-      excerpt: scoutResult.source.text
-    });
+    const source =
+      existingSource ??
+      (await createSource({
+        url: parsedUrl,
+        sourceType: scoutResult.output.sourceType,
+        title: scoutResult.output.title,
+        excerpt: scoutResult.source.text
+      }));
 
     candidate = await createResearchCandidate({
       sourceId: source.id,

@@ -68,6 +68,20 @@ export async function findSourceByUrl(url: string): Promise<SourceRow | undefine
   return rows[0];
 }
 
+/**
+ * A source only blocks rediscovery while it has a candidate still in play
+ * (anything but "rejected"). A source whose only candidate was rejected —
+ * e.g. Scout succeeded but Researcher then hit a transient error — should
+ * be retryable, not permanently locked out just because Scout's fetch
+ * already happened once.
+ */
+export async function findActiveCandidateBySourceId(sourceId: string): Promise<ResearchCandidate | undefined> {
+  const rows = (await supabaseRequest(
+    `research_candidates?source_id=eq.${sourceId}&status=neq.rejected&select=*&limit=1`
+  )) as CandidateRow[];
+  return rows[0] ? toCandidate(rows[0]) : undefined;
+}
+
 export async function createSource(input: { url: string; sourceType: string; title: string; excerpt: string }) {
   return (await supabaseInsert("kg_sources", {
     url: input.url,
