@@ -3,7 +3,6 @@ import { Analytics } from "@vercel/analytics/react";
 import type { ReactNode } from "react";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
-import { ExecutionCommandPalette } from "@/components/execution-command-palette";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -101,7 +100,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <Analytics />
-        <ExecutionCommandPalette />
       </body>
     </html>
   );

@@ -117,7 +117,11 @@ export function InvestorLeadForm() {
       {state.errors?.consent ? <span className="mt-2 block text-xs text-volt">{state.errors.consent}</span> : null}
 
       {state.message ? (
-        <p className={`mt-5 rounded-md border p-3 text-sm ${state.status === "success" ? "border-signal/40 text-signal" : "border-volt/40 text-volt"}`}>
+        <p
+          role="status"
+          aria-live="polite"
+          className={`mt-5 rounded-md border p-3 text-sm ${state.status === "success" ? "border-signal/40 text-signal" : "border-volt/40 text-volt"}`}
+        >
           {state.message}
         </p>
       ) : null}
