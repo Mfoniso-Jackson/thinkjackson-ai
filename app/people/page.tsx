@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Container } from "@/components/container";
+import { NodeCard } from "@/components/node-card";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { CTASection } from "@/components/cta-section";
@@ -40,14 +40,13 @@ export default function PeoplePage() {
           <div className="mt-10 grid gap-5 md:grid-cols-2">
             {people.map((person, index) => (
               <Reveal key={person.slug} delay={index * 0.04}>
-                <Link
+                <NodeCard
                   href={`/people/${person.slug}`}
-                  className="block h-full rounded-lg border border-line bg-white/[0.035] p-6 transition hover:border-signal/35 active:border-signal/50"
-                >
-                  <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">{person.role}</p>
-                  <h3 className="mt-3 text-2xl font-semibold text-white">{person.name}</h3>
-                  <p className="mt-3 text-sm leading-6 text-steel">{person.summary}</p>
-                </Link>
+                  eyebrow={person.role}
+                  title={person.name}
+                  summary={person.summary}
+                  titleSize="lg"
+                />
               </Reveal>
             ))}
           </div>

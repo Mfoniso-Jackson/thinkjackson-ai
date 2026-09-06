@@ -8,6 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        // Additive only — sm/md/lg/xl/2xl keep their defaults. "wide" is the
+        // large-desktop tier from the responsive review, for surfaces (the
+        // future graph view) that specifically need more than 1280px, not a
+        // replacement for the existing xl/2xl usage across the site.
+        wide: "1440px"
+      },
       colors: {
         ink: "#05070b",
         graphite: "#0a0f18",

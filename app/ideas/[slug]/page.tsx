@@ -7,15 +7,7 @@ import { RelatedNodes } from "@/components/related-nodes";
 import { CTASection } from "@/components/cta-section";
 import { getIdea, ideas, transIntelligence } from "@/data/ideas";
 import { getTerritory } from "@/data/territories";
-import type { EpistemicStatus } from "@/lib/graph/types";
-
-const statusLabels: Record<EpistemicStatus, string> = {
-  fact: "Fact",
-  interpretation: "Interpretation",
-  hypothesis: "Hypothesis",
-  prediction: "Prediction",
-  speculation: "Speculation"
-};
+import { epistemicStatusLabels } from "@/lib/graph/types";
 
 type IdeaPageProps = {
   params: Promise<{ slug: string }>;
@@ -69,7 +61,7 @@ export default async function IdeaDetailPage({ params }: IdeaPageProps) {
             </Link>
             <div className="mt-8 max-w-4xl">
               <span className="rounded-md border border-line bg-white/5 px-3 py-2 font-mono text-xs text-steel">
-                {statusLabels[idea.status]}
+                {epistemicStatusLabels[idea.status]}
               </span>
               <p className="mt-7 font-mono text-sm uppercase tracking-[0.3em] text-signal">{idea.eyebrow}</p>
               <h1 className="mt-5 text-balance text-5xl font-semibold tracking-tight text-white sm:text-6xl">

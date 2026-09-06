@@ -42,6 +42,14 @@ export type RelationRecord = {
 
 export type EpistemicStatus = "fact" | "interpretation" | "hypothesis" | "prediction" | "speculation";
 
+export const epistemicStatusLabels: Record<EpistemicStatus, string> = {
+  fact: "Fact",
+  interpretation: "Interpretation",
+  hypothesis: "Hypothesis",
+  prediction: "Prediction",
+  speculation: "Speculation"
+};
+
 export function refEquals(a: NodeRef, b: NodeRef) {
   return a.type === b.type && a.slug === b.slug;
 }

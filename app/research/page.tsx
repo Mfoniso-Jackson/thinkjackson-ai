@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/container";
 import { CTASection } from "@/components/cta-section";
-import { IdeaCard } from "@/components/idea-card";
+import { NodeCard } from "@/components/node-card";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { ideasByTerritory } from "@/data/ideas";
 import { territories } from "@/data/territories";
+import { epistemicStatusLabels } from "@/lib/graph/types";
 
 export const metadata: Metadata = {
   title: "Research",
@@ -107,7 +108,14 @@ export default function ResearchPage() {
               <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {territoryIdeas.map((idea, index) => (
                   <Reveal key={idea.slug} delay={index * 0.04}>
-                    <IdeaCard idea={idea} />
+                    <NodeCard
+                      href={`/ideas/${idea.slug}`}
+                      eyebrow={idea.eyebrow}
+                      title={idea.title}
+                      summary={idea.summary}
+                      badge={epistemicStatusLabels[idea.status]}
+                      footer={idea.signal}
+                    />
                   </Reveal>
                 ))}
               </div>

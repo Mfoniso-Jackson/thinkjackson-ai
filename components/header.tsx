@@ -30,7 +30,7 @@ export function Header() {
             </span>
           </span>
         </Link>
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
           {navigation.map((item) => (
             <Link
               key={item.href}
@@ -43,12 +43,12 @@ export function Header() {
         </nav>
         <Link
           href="/investors"
-          className="hidden rounded-md bg-signal px-3.5 py-2 text-sm font-semibold text-ink transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-signal sm:inline-flex"
+          className="hidden rounded-md bg-signal px-3.5 py-2 text-sm font-semibold text-ink transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-signal lg:inline-flex"
         >
           Investor Brief
         </Link>
       </Container>
-      <details className="group border-t border-line md:hidden">
+      <details className="group border-t border-line lg:hidden">
         <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between px-5 text-sm font-medium text-white marker:content-none [&::-webkit-details-marker]:hidden">
           <span>Menu</span>
           <span aria-hidden="true" className="text-steel transition group-open:rotate-180">
