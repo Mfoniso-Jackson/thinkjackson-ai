@@ -133,6 +133,11 @@ function CandidateCard({
           <span className={`inline-flex rounded-md border px-2 py-1 font-mono text-[11px] uppercase tracking-[0.1em] ${statusStyles[candidate.status]}`}>
             {candidate.status}
           </span>
+          {candidate.payload.discoveryMethod === "autonomous" ? (
+            <span className="ml-2 inline-flex rounded-md border border-signal/40 bg-signal/10 px-2 py-1 font-mono text-[11px] uppercase tracking-[0.1em] text-signal">
+              found autonomously
+            </span>
+          ) : null}
           <h3 className="mt-3 text-lg font-semibold text-white">{candidate.title}</h3>
           <a href={candidate.payload.url} target="_blank" rel="noreferrer" className="text-xs text-signal hover:text-white">
             {candidate.payload.url}

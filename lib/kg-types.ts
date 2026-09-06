@@ -134,6 +134,15 @@ export type ResearchCandidatePayload = {
   scout: ScoutOutput;
   researcher?: ResearcherOutput;
   librarian?: LibrarianOutput;
+  /**
+   * "autonomous" when the URL came from the scheduled web-search cron
+   * rather than a human pasting it in — surfaced in the admin review queue
+   * so the reviewer knows whether a person or the system found this,
+   * matching the site's general provenance-over-polish stance. Omitted
+   * (not defaulted to "manual") for candidates created before this field
+   * existed, rather than guessing their origin.
+   */
+  discoveryMethod?: "manual" | "autonomous";
 };
 
 export type ResearchCandidateStatus = "discovered" | "investigating" | "verified" | "rejected" | "published";
