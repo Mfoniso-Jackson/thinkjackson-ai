@@ -81,9 +81,9 @@ export async function resolveNodeHybrid(ref: NodeRef): Promise<ResolvedNode | un
     return {
       ref,
       title: row.title,
-      eyebrow: "Discovered resource",
+      eyebrow: ref.type === "question" ? "Open question" : "Discovered resource",
       summary: row.summary,
-      href: row.metadata?.url ?? "#"
+      href: ref.type === "question" ? `/questions/${ref.slug}` : (row.metadata?.url ?? "#")
     };
   } catch {
     return undefined;

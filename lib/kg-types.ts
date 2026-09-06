@@ -70,6 +70,19 @@ export type LibrarianOutput = {
     rationale: string;
     confidence: number;
   }>;
+  /**
+   * Only present when the Researcher surfaced an open question. It becomes
+   * its own kg_nodes row (type: "question"), generated-by the same targets
+   * the resource node connects to — not folded into the resource's summary,
+   * because questions are meant to accumulate and be browsed on their own,
+   * not disappear inside whatever discovered them.
+   */
+  proposedQuestion?: {
+    type: "question";
+    slug: string;
+    title: string;
+    generatedByTargets: Array<{ toType: (typeof connectableNodeTypes)[number]; toSlug: string }>;
+  };
   duplicateOfNodeId?: string;
 };
 

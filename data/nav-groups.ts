@@ -4,6 +4,7 @@ export const navGroups = [
     links: [
       { label: "Ideas", href: "/ideas" },
       { label: "Research", href: "/research" },
+      { label: "Questions", href: "/questions" },
       { label: "People", href: "/people" },
       { label: "Podcast", href: "/podcast" },
       { label: "Ventures", href: "/projects" },

@@ -196,18 +196,29 @@ function CandidateCard({
                   </div>
                 ))}
               </div>
-              {researcher.openQuestion ? (
-                <p className="mt-3 text-xs italic leading-5 text-steel">Open question: {researcher.openQuestion}</p>
-              ) : null}
             </div>
           </div>
         </details>
       ) : null}
 
-      {librarian && candidate.status !== "verified" ? (
-        <p className="mt-3 text-xs text-steel">
-          Published node: <span className="text-white">{librarian.proposedNode.type}:{librarian.proposedNode.slug}</span>
-        </p>
+      {librarian ? (
+        <div className="mt-4 rounded-md border border-line bg-ink/40 p-3 text-xs leading-5 text-steel">
+          <p>
+            {candidate.status === "published" ? "Published" : "Will publish"} node:{" "}
+            <span className="font-mono text-white">
+              {librarian.proposedNode.type}:{librarian.proposedNode.slug}
+            </span>
+          </p>
+          {librarian.proposedQuestion ? (
+            <p className="mt-1">
+              {candidate.status === "published" ? "Also published" : "Will also publish"} question node:{" "}
+              <span className="font-mono text-white">
+                {librarian.proposedQuestion.type}:{librarian.proposedQuestion.slug}
+              </span>{" "}
+              — &quot;{librarian.proposedQuestion.title}&quot;
+            </p>
+          ) : null}
+        </div>
       ) : null}
     </div>
   );

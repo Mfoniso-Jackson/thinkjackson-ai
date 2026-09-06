@@ -14,7 +14,7 @@ import { slugify } from "@/lib/utils";
 export function runLibrarian(params: { url: string; scout: ScoutOutput; researcher: ResearcherOutput }): LibrarianOutput {
   const slug = (slugify(params.scout.title).slice(0, 80) || slugify(params.url)).replace(/-+$/, "");
 
-  return {
+  const output: LibrarianOutput = {
     proposedNode: {
       type: "resource",
       slug,
@@ -30,4 +30,19 @@ export function runLibrarian(params: { url: string; scout: ScoutOutput; research
       confidence: params.scout.confidenceScore / 10
     }))
   };
+
+  if (params.researcher.openQuestion) {
+    const questionSlug = (slugify(params.researcher.openQuestion).slice(0, 80) || `${slug}-question`).replace(/-+$/, "");
+    output.proposedQuestion = {
+      type: "question",
+      slug: questionSlug,
+      title: params.researcher.openQuestion,
+      generatedByTargets: params.researcher.proposedConnections.map((connection) => ({
+        toType: connection.targetType,
+        toSlug: connection.targetSlug
+      }))
+    };
+  }
+
+  return output;
 }

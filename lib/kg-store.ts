@@ -41,6 +41,28 @@ function toCandidate(row: CandidateRow): ResearchCandidate {
   };
 }
 
+export type PublishedNode = {
+  type: string;
+  slug: string;
+  title: string;
+  summary: string;
+  metadata: Record<string, unknown>;
+  createdAt: string;
+};
+
+/** Real, agent-published nodes of one type — used by public pages like /questions that list a whole node type rather than resolving one ref at a time. */
+export async function listPublishedNodesByType(type: string): Promise<PublishedNode[]> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const rows = (await supabaseRequest(
+      `kg_nodes?type=eq.${type}&status=eq.published&select=*&order=created_at.desc&limit=100`
+    )) as Array<{ type: string; slug: string; title: string; summary: string; metadata: Record<string, unknown>; created_at: string }>;
+    return rows.map((row) => ({ type: row.type, slug: row.slug, title: row.title, summary: row.summary, metadata: row.metadata, createdAt: row.created_at }));
+  } catch {
+    return [];
+  }
+}
+
 export async function findSourceByUrl(url: string): Promise<SourceRow | undefined> {
   const rows = (await supabaseRequest(`kg_sources?url=eq.${encodeURIComponent(url)}&select=*&limit=1`)) as SourceRow[];
   return rows[0];
@@ -136,6 +158,30 @@ export async function publishResearchCandidate(id: string, reviewedBy: string) {
       source_id: candidate.sourceId,
       created_by: "agent:librarian"
     });
+  }
+
+  if (librarian.proposedQuestion) {
+    await supabaseInsert("kg_nodes", {
+      type: librarian.proposedQuestion.type,
+      slug: librarian.proposedQuestion.slug,
+      title: librarian.proposedQuestion.title,
+      summary: librarian.proposedQuestion.title,
+      metadata: { raisedByUrl: candidate.payload.url },
+      created_by: "agent:librarian"
+    });
+
+    for (const target of librarian.proposedQuestion.generatedByTargets) {
+      await supabaseInsert("kg_relationships", {
+        from_type: librarian.proposedQuestion.type,
+        from_slug: librarian.proposedQuestion.slug,
+        relation_type: "generated-by",
+        to_type: target.toType,
+        to_slug: target.toSlug,
+        confidence: null,
+        source_id: candidate.sourceId,
+        created_by: "agent:librarian"
+      });
+    }
   }
 
   if (candidate.sourceId) {
