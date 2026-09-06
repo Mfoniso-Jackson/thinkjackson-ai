@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
 import { RelatedNodes } from "@/components/related-nodes";
+import { SessionTrail } from "@/components/session-trail";
 import { CTASection } from "@/components/cta-section";
 import { getIdea, ideas, transIntelligence } from "@/data/ideas";
 import { getTerritory } from "@/data/territories";
@@ -106,6 +107,9 @@ export default async function IdeaDetailPage({ params }: IdeaPageProps) {
       <section className="py-20">
         <Container>
           <RelatedNodes nodeRef={{ type: "idea", slug: idea.slug }} heading="Connected across the graph" />
+          <div className="mt-8">
+            <SessionTrail node={{ type: "idea", slug: idea.slug, title: idea.title, href: `/ideas/${idea.slug}` }} />
+          </div>
         </Container>
       </section>
 
@@ -159,6 +163,16 @@ function TransIntelligencePage() {
             nodeRef={{ type: "idea", slug: transIntelligence.slug }}
             heading="Where the thesis is observable now"
           />
+          <div className="mt-8">
+            <SessionTrail
+              node={{
+                type: "idea",
+                slug: transIntelligence.slug,
+                title: transIntelligence.title,
+                href: `/ideas/${transIntelligence.slug}`
+              }}
+            />
+          </div>
         </Container>
       </section>
 

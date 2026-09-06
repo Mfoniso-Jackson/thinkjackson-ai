@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
@@ -8,6 +7,8 @@ import { SalesCtaGroup } from "@/components/sales-cta";
 import { VentureCard } from "@/components/venture-card";
 import { WritingCard } from "@/components/writing-card";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { ReferrerAwareHeroCtas } from "@/components/referrer-aware-hero-ctas";
+import { ReturningVisitorNote } from "@/components/returning-visitor-note";
 import { flagshipVenture, founderProfile, publicVentures } from "@/data/ventures";
 import { territories } from "@/data/territories";
 import { transIntelligence } from "@/data/ideas";
@@ -31,6 +32,7 @@ export default function Home() {
       <section className="relative overflow-hidden py-24 sm:py-32 lg:py-40">
         <Container>
           <div className="max-w-5xl">
+            <ReturningVisitorNote />
             <Reveal>
               <p className="font-mono text-sm uppercase tracking-[0.3em] text-signal">
                 ThinkJackson · Intelligence Observatory
@@ -43,12 +45,7 @@ export default function Home() {
                 a podcast, and ventures built as live experiments inside the thesis — not as a separate startup
                 portfolio.
               </p>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <Button href="/ideas">Explore the ideas</Button>
-                <Button href="/research" variant="secondary">
-                  Read the research
-                </Button>
-              </div>
+              <ReferrerAwareHeroCtas />
               <Link href="/ideas/trans-intelligence" className="mt-5 inline-flex text-sm font-semibold text-signal hover:text-white active:text-white">
                 Read the Trans-Intelligence thesis
               </Link>

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
 import { RelatedNodes } from "@/components/related-nodes";
+import { SessionTrail } from "@/components/session-trail";
 import { CTASection } from "@/components/cta-section";
 import { getPerson, people } from "@/data/people";
 
@@ -75,6 +76,9 @@ export default async function PersonPage({ params }: PersonPageProps) {
       <section className="py-20">
         <Container>
           <RelatedNodes nodeRef={{ type: "person", slug: person.slug }} heading="Connected across the graph" />
+          <div className="mt-8">
+            <SessionTrail node={{ type: "person", slug: person.slug, title: person.name, href: `/people/${person.slug}` }} />
+          </div>
         </Container>
       </section>
 

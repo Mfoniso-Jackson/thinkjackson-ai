@@ -19,33 +19,63 @@ const relationLabels: Record<string, string> = {
   "belongs-to": "Part of"
 };
 
+const VISIBLE_BY_DEFAULT = 4;
+
+function NodeLink({ item }: { item: { direction: string; relationType: string; resolved: { href: string; title: string; summary: string } } }) {
+  return (
+    <Link
+      href={item.resolved.href}
+      className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50"
+    >
+      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-steel">
+        {relationLabels[item.relationType] ?? item.relationType}
+      </p>
+      <h3 className="mt-2 text-base font-semibold text-white">{item.resolved.title}</h3>
+      <p className="mt-2 text-sm leading-6 text-steel">{item.resolved.summary}</p>
+    </Link>
+  );
+}
+
+/**
+ * Renders visible-without-JS: the first few connections ship as real HTML,
+ * and anything beyond that sits inside a native <details> disclosure — no
+ * script required to reach it. components/session-trail.tsx progressively
+ * force-opens that disclosure for visitors who've clearly gone deep this
+ * session, but the collapsed state alone is a complete, working experience.
+ */
 export function RelatedNodes({ nodeRef, heading = "Connected nodes" }: { nodeRef: NodeRef; heading?: string }) {
   const related = relatedRefs(nodeRef)
     .map((item) => ({ ...item, resolved: resolveNode(item.ref) }))
-    .filter((item) => item.resolved !== undefined);
+    .filter((item): item is typeof item & { resolved: NonNullable<typeof item.resolved> } => item.resolved !== undefined);
 
   if (related.length === 0) {
     return null;
   }
 
+  const visible = related.slice(0, VISIBLE_BY_DEFAULT);
+  const rest = related.slice(VISIBLE_BY_DEFAULT);
+
   return (
-    <div>
+    <div data-node-ref={`${nodeRef.type}:${nodeRef.slug}`}>
       <p className="font-mono text-xs uppercase tracking-[0.28em] text-signal">{heading}</p>
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        {related.map((item) => (
-          <Link
-            key={`${item.direction}-${item.relationType}-${item.resolved!.href}`}
-            href={item.resolved!.href}
-            className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50"
-          >
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-steel">
-              {relationLabels[item.relationType] ?? item.relationType}
-            </p>
-            <h3 className="mt-2 text-base font-semibold text-white">{item.resolved!.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-steel">{item.resolved!.summary}</p>
-          </Link>
+        {visible.map((item) => (
+          <NodeLink key={`${item.direction}-${item.relationType}-${item.resolved.href}`} item={item} />
         ))}
       </div>
+      {rest.length > 0 ? (
+        <details data-related-more className="mt-3 group">
+          <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 py-2 text-sm font-semibold text-signal marker:content-none [&::-webkit-details-marker]:hidden">
+            <span className="group-open:hidden">Show {rest.length} more connection{rest.length === 1 ? "" : "s"}</span>
+            <span className="hidden group-open:inline">Show fewer connections</span>
+          </summary>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            {rest.map((item) => (
+              <NodeLink key={`${item.direction}-${item.relationType}-${item.resolved.href}`} item={item} />
+            ))}
+          </div>
+        </details>
+      ) : null}
     </div>
   );
 }
