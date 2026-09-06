@@ -1,12 +1,15 @@
 import "server-only";
 
 /**
- * Generalizes the fetch-based OpenAI Responses API call already proven in
- * lib/ai/mission-provider.ts into a reusable shape for any agent that needs
- * one structured, schema-validated output from one input. Scout, Researcher,
- * and future agents are thin callers of this — not separate integrations.
- * Swapping providers later means changing this one function, not every
- * agent that calls it.
+ * Generalizes structured, schema-validated LLM calls into one reusable
+ * shape any agent can call — Scout, Researcher, and future agents are thin
+ * callers of this, not separate integrations. Swapping or adding a
+ * provider means changing this one function, not every agent that calls
+ * it. Two providers are wired in: Gemini (via Google's OpenAI-compatible
+ * endpoint) and OpenAI directly. If GEMINI_API_KEY is set, Gemini is used;
+ * otherwise it falls back to OpenAI. That's a deliberate simple default,
+ * not a general multi-provider router — revisit if a third provider or
+ * per-call provider choice is ever actually needed.
  */
 export type StructuredAgentCall<TOutput> = {
   agentName: string;
@@ -25,12 +28,72 @@ export type AgentCallResult<TOutput> = {
   usage?: Record<string, unknown>;
 };
 
-export async function callStructuredAgent<TOutput>(call: StructuredAgentCall<TOutput>): Promise<AgentCallResult<TOutput>> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    throw new Error(`${call.agentName} is not configured. Set OPENAI_API_KEY.`);
-  }
+type ChatCompletionsPayload = {
+  choices?: Array<{ message?: { content?: string } }>;
+  usage?: Record<string, unknown>;
+};
 
+/**
+ * Both Gemini's OpenAI-compatible endpoint and OpenAI's own Chat Completions
+ * API return the same { choices: [{ message: { content } }], usage } shape,
+ * so one function serves both — only the base URL, API key header, default
+ * model, and rate-limit-error wording differ.
+ */
+async function callChatCompletions<TOutput>(
+  call: StructuredAgentCall<TOutput>,
+  config: { baseUrl: string; apiKey: string; defaultModel: string; authHeader: (key: string) => Record<string, string> }
+): Promise<AgentCallResult<TOutput>> {
+  const model = call.model ?? config.defaultModel;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 45_000);
+  const started = Date.now();
+
+  try {
+    const response = await fetch(config.baseUrl, {
+      method: "POST",
+      signal: controller.signal,
+      headers: { "content-type": "application/json", ...config.authHeader(config.apiKey) },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: call.systemPrompt },
+          { role: "user", content: JSON.stringify(call.input) }
+        ],
+        response_format: {
+          type: "json_schema",
+          json_schema: { name: call.schemaName, strict: true, schema: call.jsonSchema }
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const retry = response.headers.get("retry-after");
+      if (response.status === 429) {
+        throw new Error(`${call.agentName} is rate limited.${retry ? ` Retry after ${retry} seconds.` : " Please retry shortly."}`);
+      }
+      const body = await response.text().catch(() => "");
+      throw new Error(`${call.agentName} request failed (${response.status}). ${body.slice(0, 200)}`.trim());
+    }
+
+    const payload = (await response.json()) as ChatCompletionsPayload;
+    const text = payload.choices?.[0]?.message?.content;
+    if (!text) {
+      throw new Error(`${call.agentName} returned an empty response. Please retry.`);
+    }
+
+    const output = call.parse(JSON.parse(text));
+    return { output, model, latencyMs: Date.now() - started, usage: payload.usage };
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      throw new Error(`${call.agentName} timed out. Please retry.`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function callOpenAIResponses<TOutput>(call: StructuredAgentCall<TOutput>, apiKey: string): Promise<AgentCallResult<TOutput>> {
   const model = call.model ?? process.env.AGENT_MODEL ?? "gpt-5.6-luna";
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 45_000);
@@ -78,4 +141,23 @@ export async function callStructuredAgent<TOutput>(call: StructuredAgentCall<TOu
   } finally {
     clearTimeout(timeout);
   }
+}
+
+export async function callStructuredAgent<TOutput>(call: StructuredAgentCall<TOutput>): Promise<AgentCallResult<TOutput>> {
+  const geminiKey = process.env.GEMINI_API_KEY;
+  if (geminiKey) {
+    return callChatCompletions(call, {
+      baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+      apiKey: geminiKey,
+      defaultModel: process.env.GEMINI_MODEL ?? "gemini-3.6-flash",
+      authHeader: (key) => ({ authorization: `Bearer ${key}` })
+    });
+  }
+
+  const openaiKey = process.env.OPENAI_API_KEY;
+  if (openaiKey) {
+    return callOpenAIResponses(call, openaiKey);
+  }
+
+  throw new Error(`${call.agentName} is not configured. Set GEMINI_API_KEY or OPENAI_API_KEY.`);
 }
