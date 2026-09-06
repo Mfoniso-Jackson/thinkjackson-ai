@@ -5,11 +5,15 @@ import "server-only";
  * shape any agent can call — Scout, Researcher, and future agents are thin
  * callers of this, not separate integrations. Swapping or adding a
  * provider means changing this one function, not every agent that calls
- * it. Two providers are wired in: Gemini (via Google's OpenAI-compatible
- * endpoint) and OpenAI directly. If GEMINI_API_KEY is set, Gemini is used;
- * otherwise it falls back to OpenAI. That's a deliberate simple default,
- * not a general multi-provider router — revisit if a third provider or
- * per-call provider choice is ever actually needed.
+ * it.
+ *
+ * Three providers are wired in — Gemini, Grok (xAI), and OpenAI — tried in
+ * that order, each only if its API key is configured. If one provider's
+ * call fails for any reason (rate limit, transient 5xx, etc.), the next
+ * configured provider is tried automatically within the same call, rather
+ * than requiring a human to notice and retry. Gemini's free tier is the
+ * cheapest default; Grok and OpenAI are paid fallbacks for when it's
+ * exhausted or down.
  */
 export type StructuredAgentCall<TOutput> = {
   agentName: string;
@@ -143,21 +147,63 @@ async function callOpenAIResponses<TOutput>(call: StructuredAgentCall<TOutput>, 
   }
 }
 
-export async function callStructuredAgent<TOutput>(call: StructuredAgentCall<TOutput>): Promise<AgentCallResult<TOutput>> {
+type ProviderAttempt<TOutput> = { name: string; run: () => Promise<AgentCallResult<TOutput>> };
+
+function configuredProviders<TOutput>(call: StructuredAgentCall<TOutput>): ProviderAttempt<TOutput>[] {
+  const attempts: ProviderAttempt<TOutput>[] = [];
+
   const geminiKey = process.env.GEMINI_API_KEY;
   if (geminiKey) {
-    return callChatCompletions(call, {
-      baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
-      apiKey: geminiKey,
-      defaultModel: process.env.GEMINI_MODEL ?? "gemini-3.6-flash",
-      authHeader: (key) => ({ authorization: `Bearer ${key}` })
+    attempts.push({
+      name: "Gemini",
+      run: () =>
+        callChatCompletions(call, {
+          baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+          apiKey: geminiKey,
+          defaultModel: process.env.GEMINI_MODEL ?? "gemini-3.6-flash",
+          authHeader: (key) => ({ authorization: `Bearer ${key}` })
+        })
+    });
+  }
+
+  const xaiKey = process.env.XAI_API_KEY;
+  if (xaiKey) {
+    attempts.push({
+      name: "Grok",
+      run: () =>
+        callChatCompletions(call, {
+          baseUrl: "https://api.x.ai/v1/chat/completions",
+          apiKey: xaiKey,
+          defaultModel: process.env.XAI_MODEL ?? "grok-4.6",
+          authHeader: (key) => ({ authorization: `Bearer ${key}` })
+        })
     });
   }
 
   const openaiKey = process.env.OPENAI_API_KEY;
   if (openaiKey) {
-    return callOpenAIResponses(call, openaiKey);
+    attempts.push({ name: "OpenAI", run: () => callOpenAIResponses(call, openaiKey) });
   }
 
-  throw new Error(`${call.agentName} is not configured. Set GEMINI_API_KEY or OPENAI_API_KEY.`);
+  return attempts;
+}
+
+export async function callStructuredAgent<TOutput>(call: StructuredAgentCall<TOutput>): Promise<AgentCallResult<TOutput>> {
+  const attempts = configuredProviders(call);
+  if (attempts.length === 0) {
+    throw new Error(`${call.agentName} is not configured. Set GEMINI_API_KEY, XAI_API_KEY, or OPENAI_API_KEY.`);
+  }
+
+  let lastError: unknown;
+  for (const attempt of attempts) {
+    try {
+      return await attempt.run();
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  const summary = attempts.map((a) => a.name).join(" -> ");
+  const detail = lastError instanceof Error ? lastError.message : String(lastError);
+  throw new Error(`${call.agentName} failed on every configured provider (${summary}). Last error: ${detail}`);
 }
