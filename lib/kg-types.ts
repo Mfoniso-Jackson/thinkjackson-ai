@@ -110,7 +110,21 @@ export type LibrarianOutput = {
     rationale?: string;
     generatedByTargets: Array<{ toType: (typeof connectableNodeTypes)[number]; toSlug: string }>;
   }>;
-  duplicateOfNodeId?: string;
+  /**
+   * Set when the proposed node's title looks like a near-duplicate of an
+   * already-published node of the same type — a deterministic title-overlap
+   * check the Librarian runs itself (see findPossibleDuplicate in
+   * lib/agents/librarian.ts), not a judgment call worth an AI call for.
+   * Never blocks publishing: the human reviewing this candidate sees the
+   * warning and decides, same as every other proposal here.
+   */
+  possibleDuplicate?: {
+    nodeId: string;
+    type: string;
+    slug: string;
+    title: string;
+    similarity: number;
+  };
 };
 
 export type ResearchCandidatePayload = {

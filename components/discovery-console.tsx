@@ -166,6 +166,19 @@ function CandidateCard({
         <p className="mt-3 text-xs text-steel">Rejected: {candidate.rejectionReason}</p>
       ) : null}
 
+      {librarian?.possibleDuplicate ? (
+        <div className="mt-4 rounded-md border border-volt/40 bg-volt/[0.06] p-4">
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-volt">Possible duplicate</p>
+          <p className="mt-2 text-sm leading-6 text-white">
+            This looks similar to an existing published node:{" "}
+            <span className="font-mono text-xs text-steel">
+              {librarian.possibleDuplicate.type}:{librarian.possibleDuplicate.slug}
+            </span>{" "}
+            — &ldquo;{librarian.possibleDuplicate.title}&rdquo; ({Math.round(librarian.possibleDuplicate.similarity * 100)}% title overlap).
+          </p>
+        </div>
+      ) : null}
+
       {librarian?.proposedPredictions && librarian.proposedPredictions.length > 0 ? (
         <div className="mt-4 rounded-md border border-volt/40 bg-volt/[0.06] p-4">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-volt">

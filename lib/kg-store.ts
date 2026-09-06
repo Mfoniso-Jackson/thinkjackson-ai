@@ -42,6 +42,7 @@ function toCandidate(row: CandidateRow): ResearchCandidate {
 }
 
 export type PublishedNode = {
+  id: string;
   type: string;
   slug: string;
   title: string;
@@ -50,14 +51,22 @@ export type PublishedNode = {
   createdAt: string;
 };
 
-/** Real, agent-published nodes of one type — used by public pages like /questions that list a whole node type rather than resolving one ref at a time. */
+/** Real, agent-published nodes of one type — used by public pages like /questions that list a whole node type rather than resolving one ref at a time, and by the Librarian's duplicate check before proposing a new node of the same type. */
 export async function listPublishedNodesByType(type: string): Promise<PublishedNode[]> {
   if (!isSupabaseConfigured()) return [];
   try {
     const rows = (await supabaseRequest(
       `kg_nodes?type=eq.${type}&status=eq.published&select=*&order=created_at.desc&limit=100`
-    )) as Array<{ type: string; slug: string; title: string; summary: string; metadata: Record<string, unknown>; created_at: string }>;
-    return rows.map((row) => ({ type: row.type, slug: row.slug, title: row.title, summary: row.summary, metadata: row.metadata, createdAt: row.created_at }));
+    )) as Array<{ id: string; type: string; slug: string; title: string; summary: string; metadata: Record<string, unknown>; created_at: string }>;
+    return rows.map((row) => ({
+      id: row.id,
+      type: row.type,
+      slug: row.slug,
+      title: row.title,
+      summary: row.summary,
+      metadata: row.metadata,
+      createdAt: row.created_at
+    }));
   } catch {
     return [];
   }

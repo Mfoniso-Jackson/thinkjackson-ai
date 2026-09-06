@@ -3,13 +3,14 @@
 import { requireExecutionOwner } from "@/lib/execution-auth";
 import { runScout } from "@/lib/agents/scout";
 import { runResearcher } from "@/lib/agents/researcher";
-import { runLibrarian } from "@/lib/agents/librarian";
+import { runLibrarian, sourceTypeToNodeType } from "@/lib/agents/librarian";
 import {
   createResearchCandidate,
   createSource,
   findActiveCandidateBySourceId,
   findSourceByUrl,
   getResearchCandidate,
+  listPublishedNodesByType,
   listResearchCandidates,
   logAgentAction,
   publishResearchCandidate,
@@ -128,7 +129,13 @@ export async function runDiscoveryPipeline(url: string): Promise<ActionResult<Re
   }
 
   try {
-    const librarianOutput = runLibrarian({ url: parsedUrl, scout: scoutResult.output, researcher: researcherResult.output });
+    const existingNodesOfType = await listPublishedNodesByType(sourceTypeToNodeType(scoutResult.output.sourceType));
+    const librarianOutput = runLibrarian({
+      url: parsedUrl,
+      scout: scoutResult.output,
+      researcher: researcherResult.output,
+      existingNodesOfType
+    });
     await logAgentAction({ agent: "librarian", researchCandidateId: candidate.id, requestSuccess: true, schemaValid: true });
 
     candidate = await updateResearchCandidate(candidate.id, {
