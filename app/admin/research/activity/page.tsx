@@ -22,8 +22,8 @@ export default async function ResearchActivityPage() {
     <div className="grid gap-10">
       <AdminPageHeader eyebrow="Observability" title="Agent activity.">
         <p>
-          Every Scout, Researcher, and Librarian call logs here — model, latency, and whether it succeeded — the
-          same way the founder execution OS already logs its own AI calls. Nothing on this page is estimated.
+          Every call through the AI Runtime logs here — Scout, Researcher, Librarian, and daily mission generation —
+          model, provider, latency, and whether it succeeded. Nothing on this page is estimated.
         </p>
       </AdminPageHeader>
 

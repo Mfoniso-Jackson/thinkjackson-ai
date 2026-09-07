@@ -1,5 +1,5 @@
 import "server-only";
-import { callStructuredAgent } from "@/lib/ai/agent-provider";
+import { generate } from "@/lib/ai/runtime";
 import { fetchSourceText } from "@/lib/agents/fetch-source";
 import { scoutOutputSchema, scoutSourceTypes } from "@/lib/kg-types";
 import { territories } from "@/data/territories";
@@ -9,8 +9,8 @@ const scoutJsonSchema = {
   additionalProperties: false,
   required: ["title", "summary", "sourceType", "entities", "suggestedTerritorySlugs", "importanceScore", "confidenceScore"],
   properties: {
-    title: { type: "string" },
-    summary: { type: "string" },
+    title: { type: "string", minLength: 5, maxLength: 200 },
+    summary: { type: "string", minLength: 20, maxLength: 800 },
     sourceType: { type: "string", enum: scoutSourceTypes },
     entities: {
       type: "array",
@@ -20,7 +20,7 @@ const scoutJsonSchema = {
         additionalProperties: false,
         required: ["name", "kind"],
         properties: {
-          name: { type: "string" },
+          name: { type: "string", minLength: 1, maxLength: 120 },
           kind: { type: "string", enum: ["person", "company", "technology", "project"] }
         }
       }
@@ -36,18 +36,20 @@ const systemPrompt = `You are the Scout inside ThinkJackson's research pipeline,
 export async function runScout(url: string) {
   const source = await fetchSourceText(url);
 
-  const result = await callStructuredAgent({
-    agentName: "Scout",
-    schemaName: "scout_output",
-    jsonSchema: scoutJsonSchema,
-    systemPrompt,
-    input: {
-      url,
-      extractedText: source.text,
-      availableTerritories: territories.map((t) => ({ slug: t.slug, name: t.name, definition: t.definition }))
+  const result = await generate(
+    {
+      task: "structured-agent",
+      agentName: "Scout",
+      jsonSchema: { name: "scout_output", schema: scoutJsonSchema },
+      systemPrompt,
+      input: {
+        url,
+        extractedText: source.text,
+        availableTerritories: territories.map((t) => ({ slug: t.slug, name: t.name, definition: t.definition }))
+      }
     },
-    parse: (raw) => scoutOutputSchema.parse(raw)
-  });
+    (raw) => scoutOutputSchema.parse(raw)
+  );
 
   return { source, output: result.output, model: result.model, latencyMs: result.latencyMs, usage: result.usage };
 }

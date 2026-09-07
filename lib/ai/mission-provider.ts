@@ -1,4 +1,5 @@
 import "server-only";
+import { generate } from "@/lib/ai/runtime";
 import { missionSchema, type GeneratedMission, type GenerationInput, type ProjectContext } from "@/lib/execution-types";
 
 export type MissionGenerationRequest = { input: GenerationInput; project: ProjectContext; adjustment?: string; field?: keyof GeneratedMission; currentMission?: GeneratedMission };
@@ -21,32 +22,33 @@ const schema = {
 
 const systemPrompt = `You are the AI Chief of Staff inside a founder execution operating system. Act as a product strategist, execution coach, and venture risk analyst—not a motivational assistant. Convert project context, strategic risks, available time, energy, recent work, and bottlenecks into exactly one high-leverage daily mission. Reduce the largest unresolved business risk and produce visible evidence. Prefer customer, revenue, retention, distribution, product, then technical evidence. Do not default to code. Use one measurable outcome and no more than three tasks. Every task starts with a strong action verb. Fit the mission inside the available time. Explicitly state what to ignore. The reasoningSummary is a short user-facing rationale only; never reveal hidden reasoning.`;
 
-class OpenAIMissionProvider implements MissionProvider {
+/**
+ * Previously its own standalone OpenAI-only fetch — a real single point of
+ * failure, exactly the "dependent on one provider" problem the AI Runtime
+ * exists to avoid. Now a thin caller of the shared runtime, same as Scout
+ * and Researcher: same registry, same failover, same telemetry.
+ */
+class RuntimeMissionProvider implements MissionProvider {
   async generate(request: MissionGenerationRequest): Promise<MissionGenerationResult> {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) throw new Error("AI mission generation is not configured. Set OPENAI_API_KEY.");
-    const model = process.env.AI_MISSION_MODEL ?? "gpt-5.6-luna";
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30_000);
-    const started = Date.now();
-    try {
-      const response = await fetch("https://api.openai.com/v1/responses", { method: "POST", signal: controller.signal, headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" }, body: JSON.stringify({ model, store: false, instructions: systemPrompt, input: JSON.stringify({ project: request.project, today: request.input, adjustment: request.adjustment, regenerateField: request.field, currentMission: request.currentMission }), text: { format: { type: "json_schema", name: "daily_mission", strict: true, schema } } }) });
-      if (!response.ok) {
-        const retry = response.headers.get("retry-after");
-        if (response.status === 429) throw new Error(`AI generation is rate limited.${retry ? ` Retry after ${retry} seconds.` : " Please retry shortly."}`);
-        throw new Error(`AI provider request failed (${response.status}). Please retry.`);
+    const result = await generate(
+      {
+        task: "mission",
+        agentName: "Mission",
+        jsonSchema: { name: "daily_mission", schema },
+        systemPrompt,
+        input: { project: request.project, today: request.input, adjustment: request.adjustment, regenerateField: request.field, currentMission: request.currentMission }
+      },
+      (raw) => {
+        const parsed = missionSchema.safeParse(raw);
+        if (!parsed.success) throw new Error("The AI response did not match the mission schema. Please regenerate.");
+        return parsed.data;
       }
-      const payload = await response.json() as { output_text?: string; output?: Array<{ content?: Array<{ type?: string; text?: string }> }>; usage?: Record<string, unknown> };
-      const text = payload.output_text ?? payload.output?.flatMap((item) => item.content ?? []).find((item) => item.type === "output_text")?.text;
-      if (!text) throw new Error("The AI provider returned an empty response. Please retry.");
-      const parsed = missionSchema.safeParse(JSON.parse(text));
-      if (!parsed.success) throw new Error("The AI response did not match the mission schema. Please regenerate.");
-      return { mission: parsed.data, model, latencyMs: Date.now() - started, usage: payload.usage };
-    } catch (error) {
-      if (error instanceof DOMException && error.name === "AbortError") throw new Error("AI generation timed out. Please retry.");
-      throw error;
-    } finally { clearTimeout(timeout); }
+    );
+
+    return { mission: result.output, model: result.model, latencyMs: result.latencyMs, usage: result.usage };
   }
 }
 
-export function getMissionProvider(): MissionProvider { return new OpenAIMissionProvider(); }
+export function getMissionProvider(): MissionProvider {
+  return new RuntimeMissionProvider();
+}

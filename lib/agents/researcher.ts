@@ -1,5 +1,5 @@
 import "server-only";
-import { callStructuredAgent } from "@/lib/ai/agent-provider";
+import { generate } from "@/lib/ai/runtime";
 import { researcherOutputSchema, type ScoutOutput } from "@/lib/kg-types";
 import { ideas } from "@/data/ideas";
 import { territories } from "@/data/territories";
@@ -21,9 +21,9 @@ const researcherJsonSchema = {
         additionalProperties: false,
         required: ["statement", "epistemicStatus"],
         properties: {
-          statement: { type: "string" },
+          statement: { type: "string", minLength: 10, maxLength: 400 },
           epistemicStatus: { type: "string", enum: ["fact", "interpretation", "hypothesis", "prediction", "speculation"] },
-          evidence: { type: "string" }
+          evidence: { type: "string", maxLength: 300 }
         }
       }
     },
@@ -37,13 +37,13 @@ const researcherJsonSchema = {
         required: ["targetType", "targetSlug", "relationType", "rationale"],
         properties: {
           targetType: { type: "string", enum: ["idea", "territory", "venture", "person", "essay"] },
-          targetSlug: { type: "string" },
+          targetSlug: { type: "string", minLength: 1, maxLength: 120 },
           relationType: { type: "string", enum: ["discusses", "supports", "challenges", "related-to", "applies"] },
-          rationale: { type: "string" }
+          rationale: { type: "string", minLength: 10, maxLength: 300 }
         }
       }
     },
-    openQuestion: { type: "string" }
+    openQuestion: { type: "string", minLength: 10, maxLength: 300 }
   }
 };
 
@@ -76,17 +76,20 @@ export function isKnownTarget(targetType: string, targetSlug: string, context: R
   return false;
 }
 
-export async function runResearcher(params: { url: string; excerpt: string; scout: ScoutOutput }) {
+export async function runResearcher(params: { url: string; excerpt: string; scout: ScoutOutput; correlationId?: string }) {
   const context = getResearchableContext();
 
-  const result = await callStructuredAgent({
-    agentName: "Researcher",
-    schemaName: "researcher_output",
-    jsonSchema: researcherJsonSchema,
-    systemPrompt,
-    input: { url: params.url, extractedText: params.excerpt, scoutSummary: params.scout, whitelist: context },
-    parse: (raw) => researcherOutputSchema.parse(raw)
-  });
+  const result = await generate(
+    {
+      task: "structured-agent",
+      agentName: "Researcher",
+      jsonSchema: { name: "researcher_output", schema: researcherJsonSchema },
+      systemPrompt,
+      input: { url: params.url, extractedText: params.excerpt, scoutSummary: params.scout, whitelist: context },
+      correlationId: params.correlationId
+    },
+    (raw) => researcherOutputSchema.parse(raw)
+  );
 
   const verifiedConnections = result.output.proposedConnections.filter((connection) =>
     isKnownTarget(connection.targetType, connection.targetSlug, context)

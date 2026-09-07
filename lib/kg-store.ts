@@ -290,6 +290,8 @@ export async function logAgentAction(entry: {
   requestSuccess: boolean;
   schemaValid?: boolean;
   errorCode?: string;
+  taskType?: string;
+  estimatedCostUsd?: number;
 }) {
   if (!isSupabaseConfigured()) return;
   try {
@@ -301,7 +303,9 @@ export async function logAgentAction(entry: {
       token_usage: entry.tokenUsage ?? {},
       request_success: entry.requestSuccess,
       schema_valid: entry.schemaValid ?? null,
-      error_code: entry.errorCode?.slice(0, 200) ?? null
+      error_code: entry.errorCode?.slice(0, 200) ?? null,
+      task_type: entry.taskType ?? null,
+      estimated_cost_usd: entry.estimatedCostUsd ?? 0
     });
   } catch {
     // Observability must never break the pipeline it's observing.
@@ -317,6 +321,8 @@ export type AgentLogEntry = {
   requestSuccess: boolean;
   schemaValid: boolean | null;
   errorCode: string | null;
+  taskType: string | null;
+  estimatedCostUsd: number;
   createdAt: string;
 };
 
@@ -333,6 +339,8 @@ export async function listAgentLogs(limit = 100): Promise<AgentLogEntry[]> {
       request_success: boolean;
       schema_valid: boolean | null;
       error_code: string | null;
+      task_type: string | null;
+      estimated_cost_usd: number | null;
       created_at: string;
     }>;
     return rows.map((row) => ({
@@ -344,9 +352,44 @@ export async function listAgentLogs(limit = 100): Promise<AgentLogEntry[]> {
       requestSuccess: row.request_success,
       schemaValid: row.schema_valid,
       errorCode: row.error_code,
+      taskType: row.task_type,
+      estimatedCostUsd: row.estimated_cost_usd ?? 0,
       createdAt: row.created_at
     }));
   } catch {
     return [];
+  }
+}
+
+/**
+ * Today's total agent_logs rows (UTC day) — the cost guard's daily request
+ * ceiling reads this instead of maintaining a separate counter table,
+ * since traffic today is low enough that a query is cheaper than the
+ * bookkeeping a counter would need.
+ */
+export async function countAgentActionsToday(): Promise<number> {
+  if (!isSupabaseConfigured()) return 0;
+  try {
+    const startOfDay = new Date();
+    startOfDay.setUTCHours(0, 0, 0, 0);
+    const rows = (await supabaseRequest(`agent_logs?select=id&created_at=gte.${startOfDay.toISOString()}&limit=10000`)) as Array<{ id: string }>;
+    return rows.length;
+  } catch {
+    return 0;
+  }
+}
+
+/** Sum of estimated_cost_usd across today's (UTC) agent_logs rows — the cost guard's daily budget ceiling. */
+export async function totalCostTodayUsd(): Promise<number> {
+  if (!isSupabaseConfigured()) return 0;
+  try {
+    const startOfDay = new Date();
+    startOfDay.setUTCHours(0, 0, 0, 0);
+    const rows = (await supabaseRequest(
+      `agent_logs?select=estimated_cost_usd&created_at=gte.${startOfDay.toISOString()}&limit=10000`
+    )) as Array<{ estimated_cost_usd: number | null }>;
+    return rows.reduce((sum, row) => sum + (row.estimated_cost_usd ?? 0), 0);
+  } catch {
+    return 0;
   }
 }

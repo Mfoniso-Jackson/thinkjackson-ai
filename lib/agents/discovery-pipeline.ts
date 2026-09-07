@@ -56,11 +56,11 @@ export async function discoverFromUrl(url: string, discoveryMethod: "manual" | "
 
   let scoutResult;
   try {
+    // The AI Runtime logs every provider attempt itself (lib/ai/fallback.ts)
+    // — no manual logAgentAction call needed here anymore.
     scoutResult = await runScout(parsedUrl);
-    await logAgentAction({ agent: "scout", model: scoutResult.model, latencyMs: scoutResult.latencyMs, tokenUsage: scoutResult.usage, requestSuccess: true, schemaValid: true });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Scout failed.";
-    await logAgentAction({ agent: "scout", requestSuccess: false, errorCode: message });
     return { ok: false, error: message };
   }
 
@@ -98,19 +98,14 @@ export async function discoverFromUrl(url: string, discoveryMethod: "manual" | "
 
   let researcherResult;
   try {
-    researcherResult = await runResearcher({ url: parsedUrl, excerpt: scoutResult.source.text, scout: scoutResult.output });
-    await logAgentAction({
-      agent: "researcher",
-      researchCandidateId: candidate.id,
-      model: researcherResult.model,
-      latencyMs: researcherResult.latencyMs,
-      tokenUsage: researcherResult.usage,
-      requestSuccess: true,
-      schemaValid: true
+    researcherResult = await runResearcher({
+      url: parsedUrl,
+      excerpt: scoutResult.source.text,
+      scout: scoutResult.output,
+      correlationId: candidate.id
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Researcher failed.";
-    await logAgentAction({ agent: "researcher", researchCandidateId: candidate.id, requestSuccess: false, errorCode: message });
     try {
       await rejectResearchCandidate(candidate.id, "agent:researcher", message);
     } catch {
