@@ -1,5 +1,6 @@
 import "server-only";
 import { generate } from "@/lib/ai/runtime";
+import { assertFieldNotTruncated } from "@/lib/agents/text-guard";
 import { researcherOutputSchema, type ScoutOutput } from "@/lib/kg-types";
 import { ideas } from "@/data/ideas";
 import { territories } from "@/data/territories";
@@ -7,6 +8,15 @@ import { publicVentures } from "@/data/ventures";
 import { people } from "@/data/people";
 import { writingPosts } from "@/lib/writing";
 
+/**
+ * statement/evidence/rationale/openQuestion maxLength here is deliberately
+ * higher than the Zod caps in lib/kg-types.ts (400/300/300/300) — see
+ * text-guard.ts. The Zod parse is the real business-logic enforcement; this
+ * schema only needs to keep the model far enough from a hard wall that a
+ * provider's structured-output mode doesn't truncate mid-sentence trying to
+ * hit it exactly. targetSlug is untouched: it's copied verbatim from the
+ * whitelist, not free text a model composes toward a length limit.
+ */
 const researcherJsonSchema = {
   type: "object",
   additionalProperties: false,
@@ -21,9 +31,9 @@ const researcherJsonSchema = {
         additionalProperties: false,
         required: ["statement", "epistemicStatus"],
         properties: {
-          statement: { type: "string", minLength: 10, maxLength: 400 },
+          statement: { type: "string", minLength: 10, maxLength: 500 },
           epistemicStatus: { type: "string", enum: ["fact", "interpretation", "hypothesis", "prediction", "speculation"] },
-          evidence: { type: "string", maxLength: 300 }
+          evidence: { type: "string", maxLength: 375 }
         }
       }
     },
@@ -39,15 +49,15 @@ const researcherJsonSchema = {
           targetType: { type: "string", enum: ["idea", "territory", "venture", "person", "essay"] },
           targetSlug: { type: "string", minLength: 1, maxLength: 120 },
           relationType: { type: "string", enum: ["discusses", "supports", "challenges", "related-to", "applies"] },
-          rationale: { type: "string", minLength: 10, maxLength: 300 }
+          rationale: { type: "string", minLength: 10, maxLength: 375 }
         }
       }
     },
-    openQuestion: { type: "string", minLength: 10, maxLength: 300 }
+    openQuestion: { type: "string", minLength: 10, maxLength: 375 }
   }
 };
 
-const systemPrompt = `You are the Researcher inside ThinkJackson's research pipeline. You receive one source's extracted text, a Scout's initial read of it, and a whitelist of ThinkJackson's existing ideas, territories, ventures, people, and essays. Extract the specific claims the source actually makes and label each one honestly: fact (directly stated and verifiable from the text), interpretation (a reasonable synthesis of what's stated), hypothesis (something the source proposes testing), prediction (a claim about a future outcome), or speculation (an interesting possibility the text does not sufficiently support). Never upgrade a claim's confidence beyond what the text itself supports. Then propose 1-3 connections from this source to items in the provided whitelist ONLY — every targetSlug you return must be copied exactly from the whitelist, never invented. If nothing in the whitelist genuinely relates, propose the single closest one honestly labeled as a weak related-to connection rather than fabricating a stronger one. Optionally note one open question this source raises that isn't yet answered.`;
+const systemPrompt = `You are the Researcher inside ThinkJackson's research pipeline. You receive one source's extracted text, a Scout's initial read of it, and a whitelist of ThinkJackson's existing ideas, territories, ventures, people, and essays. Extract the specific claims the source actually makes and label each one honestly: fact (directly stated and verifiable from the text), interpretation (a reasonable synthesis of what's stated), hypothesis (something the source proposes testing), prediction (a claim about a future outcome), or speculation (an interesting possibility the text does not sufficiently support). Never upgrade a claim's confidence beyond what the text itself supports. Then propose 1-3 connections from this source to items in the provided whitelist ONLY — every targetSlug you return must be copied exactly from the whitelist, never invented. If nothing in the whitelist genuinely relates, propose the single closest one honestly labeled as a weak related-to connection rather than fabricating a stronger one. Optionally note one open question this source raises that isn't yet answered. Keep every statement, evidence, and rationale field well under its stated length limit, and always finish each as a complete sentence — never let one run up to a length limit.`;
 
 export type ResearchableContext = {
   ideas: Array<{ slug: string; title: string; summary: string }>;
@@ -88,7 +98,22 @@ export async function runResearcher(params: { url: string; excerpt: string; scou
       input: { url: params.url, extractedText: params.excerpt, scoutSummary: params.scout, whitelist: context },
       correlationId: params.correlationId
     },
-    (raw) => researcherOutputSchema.parse(raw)
+    (raw) => {
+      const output = researcherOutputSchema.parse(raw);
+      output.claims.forEach((claim, i) => {
+        assertFieldNotTruncated(`Researcher claim[${i}].statement`, claim.statement, researcherJsonSchema.properties.claims.items.properties.statement.maxLength);
+        assertFieldNotTruncated(`Researcher claim[${i}].evidence`, claim.evidence, researcherJsonSchema.properties.claims.items.properties.evidence.maxLength);
+      });
+      output.proposedConnections.forEach((connection, i) => {
+        assertFieldNotTruncated(
+          `Researcher proposedConnections[${i}].rationale`,
+          connection.rationale,
+          researcherJsonSchema.properties.proposedConnections.items.properties.rationale.maxLength
+        );
+      });
+      assertFieldNotTruncated("Researcher openQuestion", output.openQuestion, researcherJsonSchema.properties.openQuestion.maxLength);
+      return output;
+    }
   );
 
   const verifiedConnections = result.output.proposedConnections.filter((connection) =>
