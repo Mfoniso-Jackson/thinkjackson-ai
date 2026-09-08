@@ -16,6 +16,17 @@ import type { ResearchCandidate, ResearchCandidatePayload } from "@/lib/kg-types
 
 export type PipelineResult = { ok: true; data: ResearchCandidate } | { ok: false; error: string };
 
+/**
+ * Below this Scout importance score, an autonomously-found candidate is
+ * auto-rejected right after Scout instead of proceeding to Researcher and
+ * Librarian — skipping two more AI calls and keeping the human review
+ * queue free of Scout's own low-confidence noise (product announcements,
+ * plugin how-tos, etc.). Only applied to autonomous discovery: a human
+ * who manually pastes a URL has already made the relevance judgment, so
+ * their submission always gets the full pipeline regardless of score.
+ */
+const MIN_AUTONOMOUS_IMPORTANCE = Number(process.env.AUTONOMOUS_MIN_IMPORTANCE ?? "4");
+
 function friendlyStoreError(error: unknown): string {
   const message = error instanceof Error ? error.message : "The knowledge graph tables could not be reached.";
   if (message.includes("PGRST205") || message.includes("schema cache")) {
@@ -94,6 +105,16 @@ export async function discoverFromUrl(url: string, discoveryMethod: "manual" | "
     candidate = await updateResearchCandidate(candidate.id, { status: "investigating" });
   } catch (error) {
     return { ok: false, error: friendlyStoreError(error) };
+  }
+
+  if (discoveryMethod === "autonomous" && scoutResult.output.importanceScore < MIN_AUTONOMOUS_IMPORTANCE) {
+    const reason = `Scout gave this a low importance score (${scoutResult.output.importanceScore}/10, below the ${MIN_AUTONOMOUS_IMPORTANCE} threshold for autonomous discoveries) — skipped Researcher and Librarian.`;
+    try {
+      await rejectResearchCandidate(candidate.id, "agent:scout", reason);
+    } catch {
+      // Best-effort — the candidate just stays in "investigating" if this also fails.
+    }
+    return { ok: false, error: reason };
   }
 
   let researcherResult;
