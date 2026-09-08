@@ -32,6 +32,28 @@ function extractReadableText(html: string): string {
     .trim();
 }
 
+/**
+ * Scraped pages routinely carry "smart" punctuation (curly quotes, en/em
+ * dashes, bullets, ellipses) outside the Latin-1 range. In production only
+ * (never reproduced locally), those characters have caused agent calls to
+ * fail with "Cannot convert argument to a ByteString because the character
+ * at index N has a value of M which is greater than 255" — confirmed via
+ * production agent_logs rows where the offending value (8226) is exactly
+ * U+2022 BULLET. Normalizing to ASCII here, once, at the point content
+ * enters the pipeline, is cheaper and more robust than chasing which
+ * downstream fetch/header call is doing the ByteString conversion.
+ */
+function normalizeToAscii(text: string): string {
+  return text
+    .replace(/[‘’‚′]/g, "'") // curly single quotes, low-9 quote, prime
+    .replace(/[“”„″]/g, '"') // curly double quotes, low-9 quote, double prime
+    .replace(/[–—]/g, "-") // en dash, em dash
+    .replace(/…/g, "...") // horizontal ellipsis
+    .replace(/[•‣◦⁃∙]/g, "-") // bullet variants
+    .replace(/[  -​ 　]/g, " ") // nbsp and other unicode spaces
+    .replace(/[^\x00-\xFF]/g, ""); // anything else above Latin-1 — the confirmed ByteString threshold
+}
+
 export async function fetchSourceText(url: string): Promise<FetchedSource> {
   const parsed = new URL(url);
   if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
@@ -52,7 +74,7 @@ export async function fetchSourceText(url: string): Promise<FetchedSource> {
     }
 
     const html = await response.text();
-    const text = extractReadableText(html).slice(0, MAX_EXCERPT_LENGTH);
+    const text = normalizeToAscii(extractReadableText(html)).slice(0, MAX_EXCERPT_LENGTH);
 
     if (text.length < MIN_READABLE_LENGTH) {
       throw new Error("The fetched page did not contain enough readable text to investigate.");
