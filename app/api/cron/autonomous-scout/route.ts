@@ -7,7 +7,18 @@ import { findSourceByUrl, logAgentAction } from "@/lib/kg-store";
 import { isSupabaseConfigured } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+/**
+ * Hobby's real duration cap (with Fluid compute, the current default) is
+ * 300s, not the 60s this was originally set to — confirmed against current
+ * Vercel docs, not assumed. The old 60s ceiling is the likely cause of two
+ * real candidates getting stuck at "investigating" with zero agent_logs
+ * rows: a platform-level kill mid-Researcher-call can't be caught by any
+ * try/catch, so nothing gets logged and the candidate never resolves.
+ * 300s gives Scout+Researcher (each with multi-provider fallback, up to
+ * ~45s per attempt) room to fail over fully for several URLs in one run
+ * without hitting that wall.
+ */
+export const maxDuration = 300;
 
 /**
  * Caps how many NEW candidates one run can create, independent of how many
@@ -15,9 +26,12 @@ export const maxDuration = 60;
  * unattended job: even if a search returns a page of results, this keeps
  * one run's cost and the human reviewer's queue bounded, and stays well
  * under what a rate-limited free-tier AI provider can absorb in one call.
+ * Hobby's cron frequency is hard-capped at once/day (a platform limit, not
+ * configurable), so this — not run frequency — is the real lever for more
+ * discovery volume per day.
  */
-const MAX_NEW_CANDIDATES_PER_RUN = 2;
-const RESULTS_PER_SEARCH = 5;
+const MAX_NEW_CANDIDATES_PER_RUN = 4;
+const RESULTS_PER_SEARCH = 8;
 
 type RunOutcome = { url: string; ok: boolean; error?: string };
 
