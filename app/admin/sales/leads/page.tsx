@@ -1,4 +1,5 @@
 import { AdminPageHeader, EmptyAdminState } from "@/components/admin-sales";
+import { LeadStatusButtons, PromoteLeadForm } from "@/components/sales-admin-forms";
 import { leadIntentLabels } from "@/data/sales-config";
 import { listSalesLeads } from "@/lib/sales-store";
 import type { QualificationBand } from "@/lib/sales-types";
@@ -41,6 +42,7 @@ export default async function SalesLeadsPage() {
                 <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel">Qualification</th>
                 <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel">Source</th>
                 <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel">Next step</th>
+                <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-steel">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -87,6 +89,12 @@ export default async function SalesLeadsPage() {
                     {lead.campaign ? <p className="mt-1">{lead.campaign}</p> : null}
                   </td>
                   <td className="px-4 py-4 text-xs text-steel">{lead.preferredNextStep ?? "—"}</td>
+                  <td className="min-w-[260px] px-4 py-4">
+                    <div className="grid gap-2">
+                      {lead.status !== "converted" ? <PromoteLeadForm lead={lead} /> : null}
+                      <LeadStatusButtons lead={lead} />
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

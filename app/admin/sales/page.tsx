@@ -1,6 +1,13 @@
 import { AdminPageHeader, EmptyAdminState, PipelineMetricGrid, PipelineStageGrid } from "@/components/admin-sales";
+import { getPipelineOverview } from "@/data/sales-dashboard";
+import { listOpportunities, listSalesLeads, listTasks } from "@/lib/sales-store";
 
-export default function SalesAdminPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SalesAdminPage() {
+  const [leads, opportunities, tasks] = await Promise.all([listSalesLeads(), listOpportunities(), listTasks()]);
+  const overview = getPipelineOverview({ leads, opportunities, tasks });
+
   return (
     <div className="grid gap-10">
       <AdminPageHeader eyebrow="Founder command centre" title="Sales operating system.">
@@ -9,9 +16,9 @@ export default function SalesAdminPage() {
           consulting, and design partners. Authentication is enforced by middleware before this route renders.
         </p>
       </AdminPageHeader>
-      <PipelineMetricGrid />
-      <PipelineStageGrid />
-      <EmptyAdminState />
+      <PipelineMetricGrid overview={overview} />
+      <PipelineStageGrid opportunities={opportunities} />
+      {opportunities.length === 0 ? <EmptyAdminState /> : null}
     </div>
   );
 }

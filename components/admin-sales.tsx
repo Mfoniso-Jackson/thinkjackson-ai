@@ -1,7 +1,9 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { emptyPipelineMessage, getPipelineOverview } from "@/data/sales-dashboard";
+import { emptyPipelineMessage } from "@/data/sales-dashboard";
+import type { PipelineOverview } from "@/data/sales-dashboard";
 import { pipelineStages } from "@/data/sales-config";
+import type { Opportunity } from "@/lib/sales-types";
 
 export const adminSalesNav = [
   { label: "Execution", href: "/admin/execution" },
@@ -54,8 +56,7 @@ export function EmptyAdminState({ title = "No private records connected yet.", d
   );
 }
 
-export function PipelineMetricGrid() {
-  const overview = getPipelineOverview();
+export function PipelineMetricGrid({ overview }: { overview: PipelineOverview }) {
   const metrics = [
     ["Active leads", overview.totalActiveLeads],
     ["Qualified opportunities", overview.qualifiedOpportunities],
@@ -80,20 +81,23 @@ export function PipelineMetricGrid() {
   );
 }
 
-export function PipelineStageGrid() {
+export function PipelineStageGrid({ opportunities = [] }: { opportunities?: Opportunity[] }) {
   return (
     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-      {pipelineStages.map((stage) => (
-        <div key={stage.value} className="rounded-lg border border-line bg-white/[0.035] p-4">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-sm font-semibold text-white">{stage.label}</h2>
-            <span className="rounded-md border border-line px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-steel">
-              {stage.active ? "Active" : "Terminal"}
-            </span>
+      {pipelineStages.map((stage) => {
+        const count = opportunities.filter((opportunity) => opportunity.stage === stage.value).length;
+        return (
+          <div key={stage.value} className="rounded-lg border border-line bg-white/[0.035] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-sm font-semibold text-white">{stage.label}</h2>
+              <span className="rounded-md border border-line px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-steel">
+                {stage.active ? "Active" : "Terminal"}
+              </span>
+            </div>
+            <p className="mt-4 text-sm leading-6 text-steel">{count} record{count === 1 ? "" : "s"}</p>
           </div>
-          <p className="mt-4 text-sm leading-6 text-steel">0 records</p>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

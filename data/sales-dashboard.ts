@@ -2,16 +2,26 @@ import { pipelineStages } from "@/data/sales-config";
 import type { FollowUpTask, Lead, Opportunity, Proposal, SalesEvidenceAsset } from "@/lib/sales-types";
 import { validateOpportunityNextAction } from "@/lib/sales-validation";
 
-export const leads: Lead[] = [];
-export const opportunities: Opportunity[] = [];
-export const tasks: FollowUpTask[] = [];
+/**
+ * Proposals and evidence assets aren't wired to a real store yet — only
+ * leads, opportunities, and tasks are (see lib/sales-store.ts). Pages that
+ * need proposals pass an empty array here rather than reading a fake
+ * module-level list, so it's obvious at the call site what's still a
+ * placeholder.
+ */
 export const proposals: Proposal[] = [];
 export const salesEvidenceAssets: SalesEvidenceAsset[] = [];
 
-export const emptyPipelineMessage =
-  "No private CRM data is stored in the repository. Leads now write to Supabase (public.sales_leads) — this dashboard doesn't read from it yet.";
+export const emptyPipelineMessage = "No records yet. Leads, opportunities, and tasks read live from Supabase.";
 
-export function getPipelineOverview() {
+/**
+ * Pure aggregation over already-fetched data rather than reading a module
+ * store — pages fetch leads/opportunities/tasks from lib/sales-store.ts
+ * (server-only, hits Supabase) and pass the results in here, keeping this
+ * function testable without I/O and usable from any page that has the data.
+ */
+export function getPipelineOverview(input: { leads: Lead[]; opportunities: Opportunity[]; tasks: FollowUpTask[] }) {
+  const { leads, opportunities, tasks } = input;
   const activeOpportunities = opportunities.filter((opportunity) => pipelineStages.find((stage) => stage.value === opportunity.stage)?.active);
   const pipelineValue = activeOpportunities.reduce((sum, opportunity) => sum + (opportunity.estimatedValue ?? 0), 0);
   const weightedValue = activeOpportunities.reduce(
@@ -33,14 +43,18 @@ export function getPipelineOverview() {
   };
 }
 
-export function getTodayQueue() {
+export type PipelineOverview = ReturnType<typeof getPipelineOverview>;
+export type TodayQueue = ReturnType<typeof getTodayQueue>;
+
+export function getTodayQueue(input: { leads: Lead[]; opportunities: Opportunity[]; tasks: FollowUpTask[]; proposals: Proposal[] }) {
+  const { leads, opportunities, tasks, proposals: proposalList } = input;
   const today = new Date().toISOString().slice(0, 10);
   const activeOpportunities = opportunities.filter((opportunity) => pipelineStages.find((stage) => stage.value === opportunity.stage)?.active);
 
   return {
     overdueTasks: tasks.filter((task) => task.status === "open" && task.dueDate < today),
     dueToday: tasks.filter((task) => task.status === "open" && task.dueDate === today),
-    proposalsAwaitingAction: proposals.filter((proposal) => proposal.status === "draft" || proposal.status === "review"),
+    proposalsAwaitingAction: proposalList.filter((proposal) => proposal.status === "draft" || proposal.status === "review"),
     highPriorityLeadsWithoutActivity: leads.filter((lead) => lead.status === "new"),
     opportunitiesWithNoNextStep: activeOpportunities.filter((opportunity) => !validateOpportunityNextAction(opportunity).ok),
     stalledOpportunities: activeOpportunities.filter((opportunity) => !opportunity.lastInteractionAt)
