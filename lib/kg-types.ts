@@ -125,7 +125,40 @@ export type LibrarianOutput = {
     title: string;
     similarity: number;
   };
+  /**
+   * One per entity Scout extracted (person/company/technology/project),
+   * resolved against already-published entities by exact name/alias match
+   * (see findExistingEntity in lib/agents/librarian.ts) so the same person
+   * mentioned across multiple discoveries becomes one canonical node, not a
+   * new one every time. `existing: true` means this reuses an entity that's
+   * already in the entities table rather than proposing a new one.
+   */
+  proposedEntities?: Array<{
+    entityType: ScoutOutput["entities"][number]["kind"];
+    slug: string;
+    canonicalName: string;
+    existing: boolean;
+  }>;
 };
+
+/**
+ * A single claim from Researcher's output, kept alongside the node/entity it
+ * came from once the candidate is published — previously this structure
+ * existed only transiently inside research_candidates.payload and was
+ * discarded at publish time, so "why does ThinkJackson believe this" could
+ * never be answered from published data. See the `claims` table.
+ */
+export type PublishedClaim = {
+  id: string;
+  nodeId: string;
+  statement: string;
+  epistemicStatus: EpistemicStatusValue;
+  evidence: string | null;
+  sourceId: string | null;
+  createdAt: string;
+};
+
+export type EpistemicStatusValue = (typeof epistemicStatuses)[number];
 
 export type ResearchCandidatePayload = {
   url: string;

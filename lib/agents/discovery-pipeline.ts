@@ -7,6 +7,7 @@ import {
   createSource,
   findActiveCandidateBySourceId,
   findSourceByUrl,
+  listEntities,
   listPublishedNodesByType,
   logAgentAction,
   rejectResearchCandidate,
@@ -136,12 +137,16 @@ export async function discoverFromUrl(url: string, discoveryMethod: "manual" | "
   }
 
   try {
-    const existingNodesOfType = await listPublishedNodesByType(sourceTypeToNodeType(scoutResult.output.sourceType));
+    const [existingNodesOfType, existingEntities] = await Promise.all([
+      listPublishedNodesByType(sourceTypeToNodeType(scoutResult.output.sourceType)),
+      listEntities()
+    ]);
     const librarianOutput = runLibrarian({
       url: parsedUrl,
       scout: scoutResult.output,
       researcher: researcherResult.output,
-      existingNodesOfType
+      existingNodesOfType,
+      existingEntities
     });
     await logAgentAction({ agent: "librarian", researchCandidateId: candidate.id, requestSuccess: true, schemaValid: true });
 

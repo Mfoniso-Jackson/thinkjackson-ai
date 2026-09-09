@@ -52,6 +52,25 @@ function dynamicNodeHref(ref: NodeRef, row: KgNodeRow): string {
   return row.metadata?.url ?? "#";
 }
 
+type EntityRow = { entity_type: string; slug: string; canonical_name: string; description: string | null };
+
+async function resolveEntity(ref: NodeRef): Promise<ResolvedNode | undefined> {
+  try {
+    const rows = (await supabaseRequest(`entities?slug=eq.${ref.slug}&status=eq.published&select=*&limit=1`)) as EntityRow[];
+    const row = rows[0];
+    if (!row) return undefined;
+    return {
+      ref,
+      title: row.canonical_name,
+      eyebrow: row.entity_type.charAt(0).toUpperCase() + row.entity_type.slice(1),
+      summary: row.description ?? `Mentioned across ThinkJackson's research — see the claims and sources below.`,
+      href: `/entities/${ref.slug}`
+    };
+  } catch {
+    return undefined;
+  }
+}
+
 export async function relatedRefsHybrid(ref: NodeRef, nodeType?: NodeRef["type"]): Promise<RelatedNode[]> {
   const staticResults = staticRelatedRefs(ref, nodeType);
   if (!isSupabaseConfigured()) return staticResults;
@@ -89,6 +108,8 @@ export async function relatedRefsHybrid(ref: NodeRef, nodeType?: NodeRef["type"]
 export async function resolveNodeHybrid(ref: NodeRef): Promise<ResolvedNode | undefined> {
   const staticResolved = resolveStaticNode(ref);
   if (staticResolved || !isSupabaseConfigured()) return staticResolved;
+
+  if (ref.type === "entity") return resolveEntity(ref);
 
   try {
     const rows = (await supabaseRequest(

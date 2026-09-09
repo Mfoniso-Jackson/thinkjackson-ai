@@ -1,5 +1,5 @@
 import type { DiscoverableNodeType, LibrarianOutput, ResearcherOutput, ScoutOutput } from "@/lib/kg-types";
-import type { PublishedNode } from "@/lib/kg-store";
+import type { PublishedEntity, PublishedNode } from "@/lib/kg-store";
 import { slugify } from "@/lib/utils";
 
 /**
@@ -80,11 +80,38 @@ export function findPossibleDuplicate(
   return { nodeId: best.node.id, type: best.node.type, slug: best.node.slug, title: best.node.title, similarity: best.similarity };
 }
 
+/**
+ * Exact match on canonical name or any known alias, case/whitespace
+ * insensitive, restricted to the same entity_type — deliberately not a
+ * fuzzy heuristic like findPossibleDuplicate's title-overlap check, since
+ * getting entity resolution wrong silently merges two different people. A
+ * miss just means a new entity gets created (cheap, reversible); a false
+ * merge would corrupt whose claims are whose. Genuine fuzzy resolution
+ * ("Prof. Ramesh Raskar" vs "R. Raskar") is real future work, not this slice.
+ */
+function normalizeEntityName(name: string): string {
+  return name.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+export function findExistingEntity(
+  name: string,
+  entityType: ScoutOutput["entities"][number]["kind"],
+  existingEntities: PublishedEntity[]
+): PublishedEntity | undefined {
+  const normalized = normalizeEntityName(name);
+  return existingEntities.find(
+    (entity) =>
+      entity.entityType === entityType &&
+      (normalizeEntityName(entity.canonicalName) === normalized || entity.aliases.some((alias) => normalizeEntityName(alias) === normalized))
+  );
+}
+
 export function runLibrarian(params: {
   url: string;
   scout: ScoutOutput;
   researcher: ResearcherOutput;
   existingNodesOfType?: PublishedNode[];
+  existingEntities?: PublishedEntity[];
 }): LibrarianOutput {
   const slug = (slugify(params.scout.title).slice(0, 80) || slugify(params.url)).replace(/-+$/, "");
 
@@ -103,7 +130,16 @@ export function runLibrarian(params: {
       rationale: connection.rationale,
       confidence: params.scout.confidenceScore / 10
     })),
-    possibleDuplicate: findPossibleDuplicate(params.scout.title, params.existingNodesOfType ?? [])
+    possibleDuplicate: findPossibleDuplicate(params.scout.title, params.existingNodesOfType ?? []),
+    proposedEntities: params.scout.entities.map((entity) => {
+      const existing = findExistingEntity(entity.name, entity.kind, params.existingEntities ?? []);
+      return {
+        entityType: entity.kind,
+        slug: existing?.slug ?? (slugify(entity.name).slice(0, 80) || slugify(entity.kind)).replace(/-+$/, ""),
+        canonicalName: existing?.canonicalName ?? entity.name,
+        existing: existing !== undefined
+      };
+    })
   };
 
   if (params.researcher.openQuestion) {

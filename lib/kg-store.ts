@@ -1,6 +1,6 @@
 import "server-only";
-import { isSupabaseConfigured, supabaseInsert, supabaseRequest, supabaseUpdate } from "@/lib/supabase";
-import type { ResearchCandidate, ResearchCandidatePayload, ResearchCandidateStatus } from "@/lib/kg-types";
+import { isSupabaseConfigured, supabaseInsert, supabaseRequest, supabaseUpdate, supabaseUpsert } from "@/lib/supabase";
+import type { EpistemicStatusValue, PublishedClaim, ResearchCandidate, ResearchCandidatePayload, ResearchCandidateStatus } from "@/lib/kg-types";
 
 type SourceRow = {
   id: string;
@@ -88,6 +88,131 @@ export async function listAllPublishedNodes(limit = 50): Promise<PublishedNode[]
       metadata: row.metadata,
       createdAt: row.created_at
     }));
+  } catch {
+    return [];
+  }
+}
+
+export type PublishedEntity = {
+  id: string;
+  entityType: string;
+  slug: string;
+  canonicalName: string;
+  aliases: string[];
+  description: string | null;
+  externalIds: Record<string, unknown>;
+  createdAt: string;
+};
+
+function toEntity(row: {
+  id: string;
+  entity_type: string;
+  slug: string;
+  canonical_name: string;
+  aliases: string[];
+  description: string | null;
+  external_ids: Record<string, unknown>;
+  created_at: string;
+}): PublishedEntity {
+  return {
+    id: row.id,
+    entityType: row.entity_type,
+    slug: row.slug,
+    canonicalName: row.canonical_name,
+    aliases: row.aliases,
+    description: row.description,
+    externalIds: row.external_ids,
+    createdAt: row.created_at
+  };
+}
+
+/** Every published entity, most recent first — used by an index/browse view and by the Librarian's entity-resolution check before proposing a new one. */
+export async function listEntities(): Promise<PublishedEntity[]> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const rows = (await supabaseRequest("entities?status=eq.published&select=*&order=created_at.desc&limit=500")) as Parameters<typeof toEntity>[0][];
+    return rows.map(toEntity);
+  } catch {
+    return [];
+  }
+}
+
+export async function getEntity(slug: string): Promise<PublishedEntity | undefined> {
+  if (!isSupabaseConfigured()) return undefined;
+  try {
+    const rows = (await supabaseRequest(`entities?slug=eq.${slug}&status=eq.published&select=*&limit=1`)) as Parameters<typeof toEntity>[0][];
+    return rows[0] ? toEntity(rows[0]) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Every claim from every node that "mentions" this entity — the whole point
+ * of keeping claims and entities as their own tables instead of letting
+ * both evaporate at publish time. Two queries (find mentioning nodes, then
+ * their claims) rather than a single join, since supabaseRequest is a thin
+ * PostgREST wrapper with no query builder for embedded resource joins here.
+ */
+export async function listClaimsForEntity(entitySlug: string): Promise<Array<PublishedClaim & { nodeTitle: string; nodeSlug: string; nodeType: string; sourceUrl: string | null }>> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const mentions = (await supabaseRequest(
+      `kg_relationships?to_type=eq.entity&to_slug=eq.${entitySlug}&relation_type=eq.mentions&select=from_type,from_slug`
+    )) as Array<{ from_type: string; from_slug: string }>;
+    if (mentions.length === 0) return [];
+
+    const nodeRows = (
+      await Promise.all(
+        mentions.map(
+          (mention) =>
+            supabaseRequest(
+              `kg_nodes?type=eq.${mention.from_type}&slug=eq.${mention.from_slug}&status=eq.published&select=id,type,slug,title&limit=1`
+            ) as Promise<Array<{ id: string; type: string; slug: string; title: string }>>
+        )
+      )
+    ).flat();
+    if (nodeRows.length === 0) return [];
+
+    const claimsByNode = await Promise.all(
+      nodeRows.map(
+        (node) =>
+          supabaseRequest(`claims?node_id=eq.${node.id}&select=*&order=created_at.asc`) as Promise<
+            Array<{
+              id: string;
+              node_id: string;
+              statement: string;
+              epistemic_status: EpistemicStatusValue;
+              evidence: string | null;
+              source_id: string | null;
+              created_at: string;
+            }>
+          >
+      )
+    );
+
+    const sourceIds = [...new Set(claimsByNode.flat().map((c) => c.source_id).filter((id): id is string => id !== null))];
+    const sources = sourceIds.length
+      ? ((await supabaseRequest(`kg_sources?id=in.(${sourceIds.join(",")})&select=id,url`)) as Array<{ id: string; url: string }>)
+      : [];
+    const urlBySourceId = new Map(sources.map((s) => [s.id, s.url]));
+
+    return claimsByNode.flatMap((claims, index) => {
+      const node = nodeRows[index];
+      return claims.map((claim) => ({
+        id: claim.id,
+        nodeId: claim.node_id,
+        statement: claim.statement,
+        epistemicStatus: claim.epistemic_status,
+        evidence: claim.evidence,
+        sourceId: claim.source_id,
+        createdAt: claim.created_at,
+        nodeTitle: node.title,
+        nodeSlug: node.slug,
+        nodeType: node.type,
+        sourceUrl: claim.source_id ? (urlBySourceId.get(claim.source_id) ?? null) : null
+      }));
+    });
   } catch {
     return [];
   }
@@ -193,14 +318,43 @@ export async function publishResearchCandidate(id: string, reviewedBy: string) {
   const librarian = candidate.payload.librarian;
   if (!librarian) throw new Error("This candidate has no Librarian proposal to publish.");
 
-  await supabaseInsert("kg_nodes", {
+  const insertedNode = (await supabaseInsert("kg_nodes", {
     type: librarian.proposedNode.type,
     slug: librarian.proposedNode.slug,
     title: librarian.proposedNode.title,
     summary: librarian.proposedNode.summary,
     metadata: librarian.proposedNode.metadata,
     created_by: "agent:librarian"
-  });
+  })) as { id: string };
+
+  for (const entity of librarian.proposedEntities ?? []) {
+    await supabaseUpsert(
+      "entities",
+      { entity_type: entity.entityType, slug: entity.slug, canonical_name: entity.canonicalName },
+      "entity_type,slug"
+    );
+    await supabaseInsert("kg_relationships", {
+      from_type: librarian.proposedNode.type,
+      from_slug: librarian.proposedNode.slug,
+      relation_type: "mentions",
+      to_type: "entity",
+      to_slug: entity.slug,
+      confidence: null,
+      source_id: candidate.sourceId,
+      created_by: "agent:librarian"
+    });
+  }
+
+  for (const claim of candidate.payload.researcher?.claims ?? []) {
+    await supabaseInsert("claims", {
+      node_id: insertedNode.id,
+      statement: claim.statement,
+      epistemic_status: claim.epistemicStatus,
+      evidence: claim.evidence ?? null,
+      source_id: candidate.sourceId,
+      research_candidate_id: candidate.id
+    });
+  }
 
   for (const relationship of librarian.proposedRelationships) {
     await supabaseInsert("kg_relationships", {
