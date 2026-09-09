@@ -6,6 +6,7 @@ export const navGroups = [
       { label: "Map", href: "/map" },
       { label: "Research", href: "/research" },
       { label: "Observatory", href: "/observatory" },
+      { label: "Discoveries", href: "/discoveries" },
       { label: "Questions", href: "/questions" },
       { label: "Predictions", href: "/predictions" },
       { label: "Entities", href: "/entities" },

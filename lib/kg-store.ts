@@ -218,6 +218,44 @@ export async function listClaimsForEntity(entitySlug: string): Promise<Array<Pub
   }
 }
 
+const DISCOVERABLE_TYPES = "resource,paper,technology,dataset,experiment";
+
+/**
+ * A discovered resource has no dedicated page per type — /discoveries/[slug]
+ * looks it up across all five discoverable types rather than needing the
+ * caller to already know which one. Slugs are only unique per (type, slug),
+ * not globally, but a real cross-type collision is vanishingly unlikely
+ * since slugs are content-derived; if it ever happens this returns whichever
+ * row comes back first, which is an acceptable, honest tradeoff for the
+ * simplicity of one shared route instead of five near-identical ones.
+ */
+export async function getDiscoveredNode(slug: string): Promise<PublishedNode | undefined> {
+  if (!isSupabaseConfigured()) return undefined;
+  try {
+    const rows = (await supabaseRequest(
+      `kg_nodes?slug=eq.${slug}&type=in.(${DISCOVERABLE_TYPES})&status=eq.published&select=*&limit=1`
+    )) as Array<{ id: string; type: string; slug: string; title: string; summary: string; metadata: Record<string, unknown>; created_at: string }>;
+    const row = rows[0];
+    if (!row) return undefined;
+    return { id: row.id, type: row.type, slug: row.slug, title: row.title, summary: row.summary, metadata: row.metadata, createdAt: row.created_at };
+  } catch {
+    return undefined;
+  }
+}
+
+/** Every published discovered resource across all five discoverable types, most recent first — the /discoveries index. */
+export async function listDiscoveredNodes(limit = 100): Promise<PublishedNode[]> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const rows = (await supabaseRequest(
+      `kg_nodes?type=in.(${DISCOVERABLE_TYPES})&status=eq.published&select=*&order=created_at.desc&limit=${limit}`
+    )) as Array<{ id: string; type: string; slug: string; title: string; summary: string; metadata: Record<string, unknown>; created_at: string }>;
+    return rows.map((row) => ({ id: row.id, type: row.type, slug: row.slug, title: row.title, summary: row.summary, metadata: row.metadata, createdAt: row.created_at }));
+  } catch {
+    return [];
+  }
+}
+
 /** Every kg_relationships row is agent-authored (see the table's own default created_by), so a plain count is a real, honest "connections discovered" figure without needing a filter. */
 export async function countPublishedRelationships(): Promise<number> {
   if (!isSupabaseConfigured()) return 0;

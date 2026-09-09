@@ -46,9 +46,12 @@ function dynamicNodeEyebrow(type: string): string {
   return dynamicNodeEyebrows[type] ?? "Discovered resource";
 }
 
+const discoverableTypes = new Set(["resource", "paper", "technology", "dataset", "experiment"]);
+
 function dynamicNodeHref(ref: NodeRef, row: KgNodeRow): string {
   if (ref.type === "question") return `/questions/${ref.slug}`;
   if (ref.type === "prediction") return `/predictions/${ref.slug}`;
+  if (discoverableTypes.has(ref.type)) return `/discoveries/${ref.slug}`;
   return row.metadata?.url ?? "#";
 }
 

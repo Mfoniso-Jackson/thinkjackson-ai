@@ -32,6 +32,7 @@ const typeEyebrows: Record<string, string> = {
 function hrefFor(node: { type: string; slug: string; metadata: Record<string, unknown> }): string {
   if (node.type === "question") return `/questions/${node.slug}`;
   if (node.type === "prediction") return `/predictions/${node.slug}`;
+  if (discoverableTypes.has(node.type)) return `/discoveries/${node.slug}`;
   return typeof node.metadata.url === "string" ? node.metadata.url : "#";
 }
 
