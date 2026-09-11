@@ -7,6 +7,13 @@ import { publicVentures } from "@/data/ventures";
 import { people } from "@/data/people";
 import { writingPosts } from "@/lib/writing";
 
+/**
+ * JSON-schema maxLength is deliberately looser than researcherOutputSchema's
+ * real Zod limits (lib/kg-types.ts) — see the matching comment in scout.ts
+ * for why. Same fix: real headroom instead of a tight cap that Gemini has
+ * been observed to hard-truncate against mid-word, corrupting output that
+ * still technically satisfies the schema.
+ */
 const researcherJsonSchema = {
   type: "object",
   additionalProperties: false,
@@ -21,9 +28,9 @@ const researcherJsonSchema = {
         additionalProperties: false,
         required: ["statement", "epistemicStatus"],
         properties: {
-          statement: { type: "string", minLength: 10, maxLength: 400 },
+          statement: { type: "string", minLength: 10, maxLength: 800 },
           epistemicStatus: { type: "string", enum: ["fact", "interpretation", "hypothesis", "prediction", "speculation"] },
-          evidence: { type: "string", maxLength: 300 }
+          evidence: { type: "string", maxLength: 600 }
         }
       }
     },
@@ -37,17 +44,17 @@ const researcherJsonSchema = {
         required: ["targetType", "targetSlug", "relationType", "rationale"],
         properties: {
           targetType: { type: "string", enum: ["idea", "territory", "venture", "person", "essay"] },
-          targetSlug: { type: "string", minLength: 1, maxLength: 120 },
+          targetSlug: { type: "string", minLength: 1, maxLength: 200 },
           relationType: { type: "string", enum: ["discusses", "supports", "challenges", "related-to", "applies"] },
-          rationale: { type: "string", minLength: 10, maxLength: 300 }
+          rationale: { type: "string", minLength: 10, maxLength: 600 }
         }
       }
     },
-    openQuestion: { type: "string", minLength: 10, maxLength: 300 }
+    openQuestion: { type: "string", minLength: 10, maxLength: 600 }
   }
 };
 
-const systemPrompt = `You are the Researcher inside ThinkJackson's research pipeline. You receive one source's extracted text, a Scout's initial read of it, and a whitelist of ThinkJackson's existing ideas, territories, ventures, people, and essays. Extract the specific claims the source actually makes and label each one honestly: fact (directly stated and verifiable from the text), interpretation (a reasonable synthesis of what's stated), hypothesis (something the source proposes testing), prediction (a claim about a future outcome), or speculation (an interesting possibility the text does not sufficiently support). Never upgrade a claim's confidence beyond what the text itself supports. Then propose 1-3 connections from this source to items in the provided whitelist ONLY — every targetSlug you return must be copied exactly from the whitelist, never invented. If nothing in the whitelist genuinely relates, propose the single closest one honestly labeled as a weak related-to connection rather than fabricating a stronger one. Optionally note one open question this source raises that isn't yet answered.`;
+const systemPrompt = `You are the Researcher inside ThinkJackson's research pipeline. You receive one source's extracted text, a Scout's initial read of it, and a whitelist of ThinkJackson's existing ideas, territories, ventures, people, and essays. Extract the specific claims the source actually makes and label each one honestly: fact (directly stated and verifiable from the text), interpretation (a reasonable synthesis of what's stated), hypothesis (something the source proposes testing), prediction (a claim about a future outcome), or speculation (an interesting possibility the text does not sufficiently support). Never upgrade a claim's confidence beyond what the text itself supports. Then propose 1-3 connections from this source to items in the provided whitelist ONLY — every targetSlug you return must be copied exactly from the whitelist, never invented. If nothing in the whitelist genuinely relates, propose the single closest one honestly labeled as a weak related-to connection rather than fabricating a stronger one. Optionally note one open question this source raises that isn't yet answered. Keep each claim's statement under 400 characters, evidence under 300 characters, and rationale under 300 characters — write complete thoughts that fit naturally within that budget rather than longer ones that get cut off.`;
 
 export type ResearchableContext = {
   ideas: Array<{ slug: string; title: string; summary: string }>;
