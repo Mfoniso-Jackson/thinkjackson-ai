@@ -33,6 +33,22 @@ export const maxDuration = 300;
 const MAX_NEW_CANDIDATES_PER_RUN = 4;
 const RESULTS_PER_SEARCH = 8;
 
+/**
+ * A fixed candidate count isn't actually what protects against the
+ * function running out of time — a slow provider day can make even one
+ * discovery (Scout + Researcher, each with multi-provider fallback) eat
+ * most of the 300s budget, and raising MAX_NEW_CANDIDATES_PER_RUN just
+ * shifts the risk to whichever candidate is last in the queue rather than
+ * removing it. Real production case (2026-09-09): a 4th candidate started
+ * ~281s into a run and got killed mid-Researcher-fallback with nothing
+ * logged. This checks actual elapsed time before starting each new
+ * discovery instead, so the run always finishes cleanly — with fewer
+ * candidates on a slow day — rather than getting killed mid-flight.
+ * 90s margin is generous headroom for Librarian + the DB writes after the
+ * last discovery still in flight when the check passes.
+ */
+const TIME_BUDGET_SAFETY_MARGIN_SECONDS = 90;
+
 type RunOutcome = { url: string; ok: boolean; error?: string };
 
 /**
@@ -49,6 +65,7 @@ type RunOutcome = { url: string; ok: boolean; error?: string };
  * endpoint from being triggered by anyone but Vercel's own scheduler.
  */
 export async function GET(request: NextRequest) {
+  const startedAt = Date.now();
   const cronSecret = process.env.CRON_SECRET;
   const authHeader = request.headers.get("authorization");
   if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
@@ -80,9 +97,16 @@ export async function GET(request: NextRequest) {
 
   const outcomes: RunOutcome[] = [];
   let created = 0;
+  let stoppedForTimeBudget = false;
 
   for (const result of results) {
     if (created >= MAX_NEW_CANDIDATES_PER_RUN) break;
+
+    const elapsedSeconds = (Date.now() - startedAt) / 1000;
+    if (elapsedSeconds > maxDuration - TIME_BUDGET_SAFETY_MARGIN_SECONDS) {
+      stoppedForTimeBudget = true;
+      break;
+    }
 
     try {
       const existing = await findSourceByUrl(new URL(result.url).toString());
@@ -102,6 +126,7 @@ export async function GET(request: NextRequest) {
     query,
     searchResultCount: results.length,
     candidatesCreated: created,
+    stoppedForTimeBudget,
     outcomes
   });
 }
