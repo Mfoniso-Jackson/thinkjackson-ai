@@ -3,7 +3,8 @@ import { Container } from "@/components/container";
 import { NodeCard } from "@/components/node-card";
 import { Reveal } from "@/components/reveal";
 import { CTASection } from "@/components/cta-section";
-import { listPublishedNodesByType } from "@/lib/kg-store";
+import { listOpenLoops } from "@/lib/kg-store";
+import type { OpenLoopStatus } from "@/lib/kg-types";
 
 export const dynamic = "force-dynamic";
 
@@ -16,8 +17,15 @@ export const metadata: Metadata = {
   }
 };
 
+const statusLabels: Record<OpenLoopStatus, string> = {
+  open: "Open",
+  investigating: "Investigating",
+  resolved: "Resolved",
+  abandoned: "Abandoned"
+};
+
 export default async function QuestionsPage() {
-  const questions = await listPublishedNodesByType("question");
+  const questions = await listOpenLoops();
 
   return (
     <>
@@ -32,7 +40,7 @@ export default async function QuestionsPage() {
               <p className="mt-7 max-w-3xl text-lg leading-8 text-steel">
                 ThinkJackson accumulates open questions rather than only publishing answers. Each one here was raised
                 by real research passing through the discovery pipeline, connected to the specific idea or territory
-                it emerged from — not written as a rhetorical device.
+                it emerged from — with a working hypothesis and status, not just a title.
               </p>
             </div>
           </Reveal>
@@ -52,9 +60,9 @@ export default async function QuestionsPage() {
                 <Reveal key={question.slug} delay={index * 0.04}>
                   <NodeCard
                     href={`/questions/${question.slug}`}
-                    eyebrow="Open question"
+                    eyebrow={statusLabels[question.metadata.status]}
                     title={question.title}
-                    summary="Raised by research ThinkJackson has reviewed and approved — see what it connects to."
+                    summary={question.metadata.hypothesis ?? "No working hypothesis yet — see what it connects to."}
                   />
                 </Reveal>
               ))}

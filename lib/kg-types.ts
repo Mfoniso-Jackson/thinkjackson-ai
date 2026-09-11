@@ -14,6 +14,26 @@ export const epistemicStatuses = ["fact", "interpretation", "hypothesis", "predi
 export const scoutSourceTypes = ["article", "paper", "repo", "announcement", "interview", "dataset", "experiment", "other"] as const;
 
 /**
+ * An "open loop" is a question node with a working record attached — a
+ * hypothesis, a status, evidence gathered so far, and a next action. Scout
+ * and Researcher can seed the hypothesis when they raise a question, but
+ * everything here is meant to be revised by a human as the loop is
+ * actually worked; it's deliberately stored in kg_nodes.metadata rather
+ * than a new table, since it's just structured state on an existing node
+ * type, not a new kind of entity.
+ */
+export const openLoopStatuses = ["open", "investigating", "resolved", "abandoned"] as const;
+export type OpenLoopStatus = (typeof openLoopStatuses)[number];
+
+export type OpenLoopMetadata = {
+  raisedByUrl?: string;
+  status: OpenLoopStatus;
+  hypothesis: string | null;
+  evidenceSummary: string | null;
+  nextAction: string | null;
+};
+
+/**
  * The kg_nodes type a discovery becomes is derived from this classification,
  * not a separate field the Researcher or Librarian has to also get right —
  * one source of truth for "what kind of thing is this" that both Scout's
@@ -60,7 +80,15 @@ export const researcherOutputSchema = z.object({
     )
     .min(1)
     .max(3),
-  openQuestion: z.string().min(10).max(300).optional()
+  openQuestion: z.string().min(10).max(300).optional(),
+  /**
+   * A starting hypothesis for the open question above — only meaningful
+   * paired with one. This is a seed, not a final answer: the founder is
+   * expected to revise it as an open loop gets worked (see
+   * OpenLoopStatus/OpenLoopMetadata below), never left as the AI's
+   * unexamined first guess.
+   */
+  openQuestionHypothesis: z.string().min(10).max(400).optional()
 });
 export type ResearcherOutput = z.infer<typeof researcherOutputSchema>;
 
@@ -93,6 +121,7 @@ export type LibrarianOutput = {
     type: "question";
     slug: string;
     title: string;
+    hypothesis?: string;
     generatedByTargets: Array<{ toType: (typeof connectableNodeTypes)[number]; toSlug: string }>;
   };
   /**

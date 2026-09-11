@@ -148,6 +148,7 @@ export function runLibrarian(params: {
       type: "question",
       slug: questionSlug,
       title: params.researcher.openQuestion,
+      hypothesis: params.researcher.openQuestionHypothesis,
       generatedByTargets: params.researcher.proposedConnections.map((connection) => ({
         toType: connection.targetType,
         toSlug: connection.targetSlug

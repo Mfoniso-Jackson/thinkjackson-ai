@@ -1,6 +1,13 @@
 import "server-only";
 import { isSupabaseConfigured, supabaseInsert, supabaseRequest, supabaseUpdate, supabaseUpsert } from "@/lib/supabase";
-import type { EpistemicStatusValue, PublishedClaim, ResearchCandidate, ResearchCandidatePayload, ResearchCandidateStatus } from "@/lib/kg-types";
+import type {
+  EpistemicStatusValue,
+  OpenLoopMetadata,
+  PublishedClaim,
+  ResearchCandidate,
+  ResearchCandidatePayload,
+  ResearchCandidateStatus
+} from "@/lib/kg-types";
 
 type SourceRow = {
   id: string;
@@ -91,6 +98,72 @@ export async function listAllPublishedNodes(limit = 50): Promise<PublishedNode[]
   } catch {
     return [];
   }
+}
+
+/** One open-loop question node, with its metadata narrowed to the OpenLoopMetadata shape rather than the generic Record<string, unknown> PublishedNode carries. */
+export async function getQuestionNode(slug: string): Promise<(PublishedNode & { metadata: OpenLoopMetadata }) | undefined> {
+  if (!isSupabaseConfigured()) return undefined;
+  try {
+    const rows = (await supabaseRequest(`kg_nodes?type=eq.question&slug=eq.${slug}&status=eq.published&select=*&limit=1`)) as Array<{
+      id: string;
+      type: string;
+      slug: string;
+      title: string;
+      summary: string;
+      metadata: Partial<OpenLoopMetadata>;
+      created_at: string;
+    }>;
+    const row = rows[0];
+    if (!row) return undefined;
+    return {
+      id: row.id,
+      type: row.type,
+      slug: row.slug,
+      title: row.title,
+      summary: row.summary,
+      createdAt: row.created_at,
+      metadata: {
+        raisedByUrl: row.metadata.raisedByUrl,
+        status: row.metadata.status ?? "open",
+        hypothesis: row.metadata.hypothesis ?? null,
+        evidenceSummary: row.metadata.evidenceSummary ?? null,
+        nextAction: row.metadata.nextAction ?? null
+      }
+    };
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * The founder is the only writer here — working an open loop (revising its
+ * hypothesis, logging evidence, setting a next action, changing status) is
+ * exactly the "final research direction" judgment the operating brief
+ * reserves for a human, not something Librarian or any agent updates.
+ */
+export async function updateOpenLoop(slug: string, patch: Partial<OpenLoopMetadata>): Promise<void> {
+  const existing = await getQuestionNode(slug);
+  if (!existing) throw new Error("Question not found.");
+  const metadata: OpenLoopMetadata = { ...existing.metadata, ...patch };
+  await supabaseUpdate("kg_nodes", `type=eq.question&slug=eq.${slug}`, { metadata });
+}
+
+/** Every published question node, normalized to OpenLoopMetadata — the /admin/questions list and the public /questions index both read through this. */
+export async function listOpenLoops(): Promise<Array<PublishedNode & { metadata: OpenLoopMetadata }>> {
+  const nodes = await listPublishedNodesByType("question");
+  return nodes.map((node) => {
+    const raw = node.metadata as Partial<OpenLoopMetadata>;
+    return {
+      ...node,
+      metadata: {
+        raisedByUrl: raw.raisedByUrl,
+        status: raw.status ?? "open",
+        hypothesis: raw.hypothesis ?? null,
+        evidenceSummary: raw.evidenceSummary ?? null,
+        nextAction: raw.nextAction ?? null
+      }
+    };
+  });
 }
 
 export type PublishedEntity = {
@@ -408,12 +481,19 @@ export async function publishResearchCandidate(id: string, reviewedBy: string) {
   }
 
   if (librarian.proposedQuestion) {
+    const openLoop: OpenLoopMetadata = {
+      raisedByUrl: candidate.payload.url,
+      status: "open",
+      hypothesis: librarian.proposedQuestion.hypothesis ?? null,
+      evidenceSummary: null,
+      nextAction: null
+    };
     await supabaseInsert("kg_nodes", {
       type: librarian.proposedQuestion.type,
       slug: librarian.proposedQuestion.slug,
       title: librarian.proposedQuestion.title,
       summary: librarian.proposedQuestion.title,
-      metadata: { raisedByUrl: candidate.payload.url },
+      metadata: openLoop,
       created_by: "agent:librarian"
     });
 
