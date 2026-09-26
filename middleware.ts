@@ -17,7 +17,8 @@ export function middleware(request: NextRequest) {
     !request.nextUrl.pathname.startsWith("/admin/execution") &&
     !request.nextUrl.pathname.startsWith("/admin/research") &&
     !request.nextUrl.pathname.startsWith("/admin/newsletter") &&
-    !request.nextUrl.pathname.startsWith("/admin/questions")
+    !request.nextUrl.pathname.startsWith("/admin/questions") &&
+    !request.nextUrl.pathname.startsWith("/admin/content")
   ) {
     return NextResponse.next();
   }
@@ -55,5 +56,12 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/sales/:path*", "/admin/execution/:path*", "/admin/research/:path*", "/admin/newsletter/:path*", "/admin/questions/:path*"]
+  matcher: [
+    "/admin/sales/:path*",
+    "/admin/execution/:path*",
+    "/admin/research/:path*",
+    "/admin/newsletter/:path*",
+    "/admin/questions/:path*",
+    "/admin/content/:path*"
+  ]
 };
