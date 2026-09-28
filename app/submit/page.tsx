@@ -7,7 +7,7 @@ import { CTASection } from "@/components/cta-section";
 export const metadata: Metadata = {
   title: "Submit to the Map",
   description:
-    "Is your work missing from ThinkJackson's knowledge graph? Submit research, a person, a company, a project, a question, or a correction — it goes through the same Scout, Researcher, and Librarian pipeline as everything else, reviewed by a human before anything publishes.",
+    "Is your work missing from ThinkJackson's knowledge graph? Submit research, a person, a company, a project, a question, or a correction. It goes through the same Scout, Researcher, and Librarian pipeline as everything else, reviewed by a human before anything publishes.",
   alternates: {
     canonical: "/submit"
   }
@@ -26,7 +26,7 @@ export default function SubmitPage() {
               </h1>
               <p className="mt-7 text-lg leading-8 text-steel">
                 Submit research, a person, a company, a project, a question, or a correction. It runs through the
-                same Scout, Researcher, and Librarian pipeline as everything else ThinkJackson discovers on its own —
+                same Scout, Researcher, and Librarian pipeline as everything else ThinkJackson discovers on its own,
                 reviewed by a human before anything joins the public graph.
               </p>
             </div>

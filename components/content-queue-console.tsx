@@ -182,7 +182,7 @@ export function ContentQueueConsole({ initialItems }: { initialItems: ContentQue
       <AddItemForm onAdded={(item) => setItems((current) => [item, ...current])} />
       {items.length === 0 ? (
         <div className="rounded-lg border border-dashed border-line bg-white/[0.02] p-8 text-sm leading-6 text-steel">
-          Nothing queued yet — add the first item above.
+          Nothing queued yet. Add the first item above.
         </div>
       ) : (
         items.map((item) => <ItemEditor key={item.id} item={item} />)

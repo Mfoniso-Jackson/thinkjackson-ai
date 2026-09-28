@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Predictions",
   description:
-    "ThinkJackson's public prediction ledger — claims about future outcomes, surfaced by research, dated, and left open for a later verdict rather than quietly forgotten.",
+    "ThinkJackson's public prediction ledger: claims about future outcomes, surfaced by research, dated, and left open for a later verdict rather than quietly forgotten.",
   alternates: {
     canonical: "/predictions"
   }
@@ -30,7 +30,7 @@ export default async function PredictionsPage() {
                 A public record, not a highlight reel.
               </h1>
               <p className="mt-7 max-w-3xl text-lg leading-8 text-steel">
-                Every prediction here was raised by real research and approved by a human before publishing — the
+                Every prediction here was raised by real research and approved by a human before publishing. The
                 brief behind this site is explicit that predictions stay a human call, not an agent one. Each stays
                 dated and unresolved until there&apos;s a real verdict to record, not a probability invented to look
                 rigorous.
@@ -44,7 +44,7 @@ export default async function PredictionsPage() {
         <Container>
           {predictions.length === 0 ? (
             <div className="rounded-lg border border-dashed border-line bg-white/[0.02] p-8 text-sm leading-6 text-steel">
-              No predictions published yet. They come from approved research, not a starting list — check back once
+              No predictions published yet. They come from approved research, not a starting list. Check back once
               the discovery pipeline has run.
             </div>
           ) : (

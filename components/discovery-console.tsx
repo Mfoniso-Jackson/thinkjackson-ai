@@ -83,7 +83,7 @@ export function DiscoveryConsole({ initialCandidates }: { initialCandidates: Res
           </button>
         </div>
         <p className="mt-3 text-xs leading-5 text-steel">
-          Scout fetches this one URL — nothing autonomous, nothing crawled. The result stops at &quot;verified&quot; until you approve it below.
+          Scout fetches this one URL. Nothing autonomous, nothing crawled. The result stops at &quot;verified&quot; until you approve it below.
         </p>
         {error ? (
           <p role="status" aria-live="polite" className="mt-3 rounded-md border border-volt/40 bg-volt/10 p-3 text-sm text-volt">
@@ -199,7 +199,7 @@ function CandidateCard({
             <span className="font-mono text-xs text-steel">
               {librarian.possibleDuplicate.type}:{librarian.possibleDuplicate.slug}
             </span>{" "}
-            — &ldquo;{librarian.possibleDuplicate.title}&rdquo; ({Math.round(librarian.possibleDuplicate.similarity * 100)}% title overlap).
+            &ldquo;{librarian.possibleDuplicate.title}&rdquo; ({Math.round(librarian.possibleDuplicate.similarity * 100)}% title overlap).
           </p>
         </div>
       ) : null}
@@ -269,7 +269,7 @@ function CandidateCard({
               <span className="font-mono text-white">
                 {librarian.proposedQuestion.type}:{librarian.proposedQuestion.slug}
               </span>{" "}
-              — &quot;{librarian.proposedQuestion.title}&quot;
+              &quot;{librarian.proposedQuestion.title}&quot;
             </p>
           ) : null}
         </div>

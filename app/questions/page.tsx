@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Questions",
   description:
-    "The open questions ThinkJackson is tracking — surfaced by research, not answered by assertion. Accumulated over time rather than published as conclusions.",
+    "The open questions ThinkJackson is tracking, surfaced by research, not answered by assertion. Accumulated over time rather than published as conclusions.",
   alternates: {
     canonical: "/questions"
   }
@@ -40,7 +40,7 @@ export default async function QuestionsPage() {
               <p className="mt-7 max-w-3xl text-lg leading-8 text-steel">
                 ThinkJackson accumulates open questions rather than only publishing answers. Each one here was raised
                 by real research passing through the discovery pipeline, connected to the specific idea or territory
-                it emerged from — with a working hypothesis and status, not just a title.
+                it emerged from, with a working hypothesis and status, not just a title.
               </p>
             </div>
           </Reveal>
@@ -51,7 +51,7 @@ export default async function QuestionsPage() {
         <Container>
           {questions.length === 0 ? (
             <div className="rounded-lg border border-dashed border-line bg-white/[0.02] p-8 text-sm leading-6 text-steel">
-              No open questions yet. They emerge from approved research, not from a starting list — check back once
+              No open questions yet. They emerge from approved research, not from a starting list. Check back once
               the discovery pipeline has run.
             </div>
           ) : (
@@ -62,7 +62,7 @@ export default async function QuestionsPage() {
                     href={`/questions/${question.slug}`}
                     eyebrow={statusLabels[question.metadata.status]}
                     title={question.title}
-                    summary={question.metadata.hypothesis ?? "No working hypothesis yet — see what it connects to."}
+                    summary={question.metadata.hypothesis ?? "No working hypothesis yet. See what it connects to."}
                   />
                 </Reveal>
               ))}

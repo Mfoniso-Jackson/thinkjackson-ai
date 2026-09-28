@@ -65,7 +65,7 @@ export function SubmitForm() {
       </label>
 
       <label className="block">
-        <span className="font-mono text-xs uppercase tracking-[0.18em] text-steel">Email (optional — if you want to hear back)</span>
+        <span className="font-mono text-xs uppercase tracking-[0.18em] text-steel">Email (optional; if you want to hear back)</span>
         <input name="contactEmail" type="email" placeholder="you@domain.com" className={fieldClass} />
         {state.errors?.contactEmail ? <p className="mt-1 text-sm text-volt">{state.errors.contactEmail}</p> : null}
       </label>

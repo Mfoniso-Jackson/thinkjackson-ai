@@ -36,7 +36,7 @@ export default function PodcastPage() {
           <SectionHeading eyebrow="Episodes" title="No episodes yet." >
             <p>
               The show has not recorded its first conversation. This page will list real episodes as soon as they
-              exist — nothing is staged or scheduled ahead of that.
+              exist. Nothing is staged or scheduled ahead of that.
             </p>
           </SectionHeading>
           {episodes.length === 0 ? (

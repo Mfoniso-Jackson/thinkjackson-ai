@@ -76,7 +76,7 @@ export default async function EntityDetailPage({ params }: EntityPageProps) {
 
           {claims.length === 0 ? (
             <div className="mt-6 rounded-lg border border-dashed border-line bg-white/[0.02] p-8 text-sm leading-6 text-steel">
-              ThinkJackson hasn&apos;t published a claim connected to this entity yet — it was resolved from a
+              ThinkJackson hasn&apos;t published a claim connected to this entity yet. It was resolved from a
               discovery still under review, or one whose claims didn&apos;t survive to publication.
             </div>
           ) : (

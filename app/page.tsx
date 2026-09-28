@@ -42,7 +42,7 @@ export default function Home() {
               </h1>
               <p className="mt-7 max-w-4xl text-lg leading-8 text-steel sm:text-xl">
                 {transIntelligence.definition} ThinkJackson investigates that transition through research, essays,
-                a podcast, and ventures built as live experiments inside the thesis — not as a separate startup
+                a podcast, and ventures built as live experiments inside the thesis, not as a separate startup
                 portfolio.
               </p>
               <ReferrerAwareHeroCtas />

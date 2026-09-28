@@ -9,7 +9,7 @@ export const proposals: Proposal[] = [];
 export const salesEvidenceAssets: SalesEvidenceAsset[] = [];
 
 export const emptyPipelineMessage =
-  "No private CRM data is stored in the repository. Leads now write to Supabase (public.sales_leads) — this dashboard doesn't read from it yet.";
+  "No private CRM data is stored in the repository. Leads now write to Supabase (public.sales_leads), but this dashboard doesn't read from it yet.";
 
 export function getPipelineOverview() {
   const activeOpportunities = opportunities.filter((opportunity) => pipelineStages.find((stage) => stage.value === opportunity.stage)?.active);

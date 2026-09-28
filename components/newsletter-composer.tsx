@@ -68,7 +68,7 @@ export function NewsletterComposer({ subscriberCount }: { subscriberCount: numbe
 
       <div>
         <label className="block font-mono text-xs uppercase tracking-[0.18em] text-steel" htmlFor="body">
-          Body (plain text — blank line for a new paragraph, URLs auto-link)
+          Body (plain text; blank line for a new paragraph, URLs auto-link)
         </label>
         <textarea
           id="body"

@@ -12,7 +12,7 @@ export const podcast = {
   name: "The Trans-Intelligence Podcast",
   tagline: "Conversations with the people redefining intelligence.",
   thesis:
-    "Not another AI podcast about model releases. This show exists to ask what happens as intelligence moves from something humans hold individually to something distributed across machines, agents, networks, markets, and institutions — and to have that conversation with the researchers, builders, and skeptics closest to each layer of that transition.",
+    "Not another AI podcast about model releases. This show exists to ask what happens as intelligence moves from something humans hold individually to something distributed across machines, agents, networks, markets, and institutions, and to have that conversation with the researchers, builders, and skeptics closest to each layer of that transition.",
   themes: [
     "What is intelligence?",
     "Can machines think?",

@@ -12,7 +12,7 @@ export default async function AdminContentPage() {
     <div className="grid gap-10">
       <AdminPageHeader eyebrow="Content queue" title="What's being written.">
         <p>
-          Launch posts, newsletter issues, and the operating loop&apos;s Signal/Research/Framework/Build categories — a
+          Launch posts, newsletter issues, and the operating loop&apos;s Signal/Research/Framework/Build categories: a
           real backlog moved by hand through idea → drafted → scheduled → published, not a scheduling engine.
         </p>
       </AdminPageHeader>

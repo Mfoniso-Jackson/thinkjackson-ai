@@ -14,7 +14,7 @@ export default async function AdminNewsletterPage() {
       <AdminPageHeader eyebrow="The Intelligence Brief" title="Newsletter.">
         <p>
           Sends immediately to every subscribed address via Resend, with an unsubscribe link stamped into every
-          copy. No drafts are saved — write, preview, send.
+          copy. No drafts are saved: write, preview, send.
         </p>
       </AdminPageHeader>
       {!configured ? (

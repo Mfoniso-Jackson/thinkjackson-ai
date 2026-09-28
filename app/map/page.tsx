@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Trans-Intelligence Map",
   description:
-    "Every idea, territory, venture, essay, and discovery ThinkJackson has published, laid out by the real connections between them — not a curated diagram.",
+    "Every idea, territory, venture, essay, and discovery ThinkJackson has published, laid out by the real connections between them, not a curated diagram.",
   alternates: {
     canonical: "/map"
   }
@@ -27,7 +27,7 @@ export default function MapPage() {
                 The whole graph, not a curated diagram.
               </h1>
               <p className="mt-7 max-w-3xl text-lg leading-8 text-steel">
-                Every node here is real and clickable — grouped by the research territory it&apos;s closest to, connected
+                Every node here is real and clickable, grouped by the research territory it&apos;s closest to, connected
                 by the same relationships that power every related-content panel on the site. A line crossing from one
                 cluster to another is a real connection between territories, which is the whole point of
                 Trans-Intelligence: capability distributing across boundaries, not staying inside one discipline.

@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Entities",
   description:
-    "The people, companies, technologies, and projects ThinkJackson's research keeps encountering — resolved to one canonical node per entity, with every claim traceable to its source.",
+    "The people, companies, technologies, and projects ThinkJackson's research keeps encountering, resolved to one canonical node per entity, with every claim traceable to its source.",
   alternates: {
     canonical: "/entities"
   }
@@ -38,7 +38,7 @@ export default async function EntitiesPage() {
               </h1>
               <p className="mt-7 max-w-3xl text-lg leading-8 text-steel">
                 Every person, company, technology, and project ThinkJackson&apos;s research mentions is resolved to one
-                canonical node here — not a new record every time a name reappears. Each entity&apos;s page shows exactly
+                canonical node here, not a new record every time a name reappears. Each entity&apos;s page shows exactly
                 which claims ThinkJackson holds about it, and where each one came from.
               </p>
             </div>
@@ -50,7 +50,7 @@ export default async function EntitiesPage() {
         <Container>
           {entities.length === 0 ? (
             <div className="rounded-lg border border-dashed border-line bg-white/[0.02] p-8 text-sm leading-6 text-steel">
-              No entities yet. They&apos;re resolved from real, approved research as it&apos;s published — check back once the
+              No entities yet. They&apos;re resolved from real, approved research as it&apos;s published. Check back once the
               discovery pipeline has run.
             </div>
           ) : (

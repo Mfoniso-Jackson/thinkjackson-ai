@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Observatory",
   description:
-    "A real record of ThinkJackson's research pipeline — every source reviewed, connection discovered, and question raised, in the order it actually happened.",
+    "A real record of ThinkJackson's research pipeline: every source reviewed, connection discovered, and question raised, in the order it actually happened.",
   alternates: {
     canonical: "/observatory"
   }
@@ -67,7 +67,7 @@ export default async function ObservatoryPage() {
                 A real record, not a highlight reel.
               </h1>
               <p className="mt-7 max-w-3xl text-lg leading-8 text-steel">
-                Every entry below came from ThinkJackson&apos;s actual research pipeline — a human pointed Scout at a
+                Every entry below came from ThinkJackson&apos;s actual research pipeline. A human pointed Scout at a
                 real source, Researcher proposed real connections, and a human approved what you see here before it
                 became part of the graph. Nothing on this page is a projection.
               </p>

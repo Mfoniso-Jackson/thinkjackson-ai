@@ -41,7 +41,7 @@ export function ReturningVisitorNote() {
 
   return (
     <div className="mb-8 rounded-lg border border-signal/25 bg-signal/[0.06] p-5">
-      <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">Welcome back — new since your last visit</p>
+      <p className="font-mono text-xs uppercase tracking-[0.22em] text-signal">Welcome back: new since your last visit</p>
       <ul className="mt-3 space-y-2">
         {recent.map((event) => (
           <li key={event.title}>

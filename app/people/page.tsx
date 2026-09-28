@@ -27,7 +27,7 @@ export default function PeoplePage() {
               </h1>
               <p className="mt-7 text-lg leading-8 text-steel">
                 ThinkJackson prioritizes intellectual relevance over headcount. This network grows as real research
-                collaborators, podcast guests, and co-builders join — not before.
+                collaborators, podcast guests, and co-builders join, not before.
               </p>
             </div>
           </Reveal>

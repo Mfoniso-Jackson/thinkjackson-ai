@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Discoveries",
   description:
-    "Every source ThinkJackson's research pipeline has reviewed and published — papers, technologies, datasets, experiments, and general resources, each connected to the ideas, territories, and entities it touches.",
+    "Every source ThinkJackson's research pipeline has reviewed and published: papers, technologies, datasets, experiments, and general resources, each connected to the ideas, territories, and entities it touches.",
   alternates: {
     canonical: "/discoveries"
   }
@@ -39,7 +39,7 @@ export default async function DiscoveriesPage() {
               </h1>
               <p className="mt-7 max-w-3xl text-lg leading-8 text-steel">
                 Every source here passed through Scout, Researcher, and Librarian, then a human review, before
-                publication. Each one connects outward — to the ideas and territories it touches, and to the people,
+                publication. Each one connects outward: to the ideas and territories it touches, and to the people,
                 companies, and technologies it mentions.
               </p>
             </div>
@@ -51,7 +51,7 @@ export default async function DiscoveriesPage() {
         <Container>
           {nodes.length === 0 ? (
             <div className="rounded-lg border border-dashed border-line bg-white/[0.02] p-8 text-sm leading-6 text-steel">
-              No discoveries published yet — check back once the discovery pipeline has run and a human has approved
+              No discoveries published yet. Check back once the discovery pipeline has run and a human has approved
               a candidate.
             </div>
           ) : (

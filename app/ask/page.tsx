@@ -7,7 +7,7 @@ import { CTASection } from "@/components/cta-section";
 export const metadata: Metadata = {
   title: "Ask ThinkJackson",
   description:
-    "A grounded question-answering interface over ThinkJackson's real knowledge graph — every answer traces back to a published claim and its source, or says plainly when the graph doesn't have enough yet.",
+    "A grounded question-answering interface over ThinkJackson's real knowledge graph. Every answer traces back to a published claim and its source, or says plainly when the graph doesn't have enough yet.",
   alternates: {
     canonical: "/ask"
   }
@@ -25,7 +25,7 @@ export default function AskPage() {
                 Ask the graph, not a chatbot.
               </h1>
               <p className="mt-7 text-lg leading-8 text-steel">
-                Every answer is grounded in ThinkJackson&apos;s actual published knowledge graph — concepts, claims,
+                Every answer is grounded in ThinkJackson&apos;s actual published knowledge graph: concepts, claims,
                 and sources that already exist, not general knowledge. If the graph doesn&apos;t have enough to
                 answer honestly, it says so instead of guessing.
               </p>

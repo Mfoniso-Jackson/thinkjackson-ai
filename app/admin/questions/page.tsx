@@ -12,7 +12,7 @@ export default async function AdminQuestionsPage() {
     <div className="grid gap-10">
       <AdminPageHeader eyebrow="Open loops" title="Questions ThinkJackson is working.">
         <p>
-          Every question a discovery raised, with a hypothesis, status, evidence gathered so far, and a next action —
+          Every question a discovery raised, with a hypothesis, status, evidence gathered so far, and a next action:
           the record of an open loop actually being worked, not just a title sitting on a list.
         </p>
       </AdminPageHeader>

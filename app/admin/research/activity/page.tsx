@@ -22,7 +22,7 @@ export default async function ResearchActivityPage() {
     <div className="grid gap-10">
       <AdminPageHeader eyebrow="Observability" title="Agent activity.">
         <p>
-          Every call through the AI Runtime logs here — Scout, Researcher, Librarian, and daily mission generation —
+          Every call through the AI Runtime logs here (Scout, Researcher, Librarian, and daily mission generation):
           model, provider, latency, and whether it succeeded. Nothing on this page is estimated.
         </p>
       </AdminPageHeader>

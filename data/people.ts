@@ -21,7 +21,7 @@ export const people = [
       "Builds AI-native systems that connect financial engineering, autonomous agents, reinforcement-learning research, Web3 coordination, and adaptive decision infrastructure.",
     believes: [
       "Intelligence is moving from individual humans toward systems distributed across humans, machines, agents, networks, markets, and institutions.",
-      "An agent that looks competent can still be anchored to a ritual that stopped being causally useful — this is a safety problem, not just a performance problem.",
+      "An agent that looks competent can still be anchored to a ritual that stopped being causally useful. That's a safety problem, not just a performance problem.",
       "Financial and economic intelligence should be treated as a market of competing views, not a single model's opinion."
     ]
   }

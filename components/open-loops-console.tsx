@@ -111,7 +111,7 @@ export function OpenLoopsConsole({ initialLoops }: { initialLoops: Loop[] }) {
   if (initialLoops.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-line bg-white/[0.02] p-8 text-sm leading-6 text-steel">
-        No open questions yet — they&apos;re raised automatically when a discovery surfaces one, not written ahead of time.
+        No open questions yet. They&apos;re raised automatically when a discovery surfaces one, not written ahead of time.
       </div>
     );
   }
