@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AnalyticsMarker } from "@/components/analytics-marker";
 import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
 import { RelatedNodes } from "@/components/related-nodes";
@@ -45,6 +46,7 @@ export default async function QuestionDetailPage({ params }: QuestionPageProps) 
 
   return (
     <>
+      <AnalyticsMarker event="node_viewed" properties={{ type: "question", slug }} />
       <section className="py-24 sm:py-32">
         <Container>
           <Reveal>

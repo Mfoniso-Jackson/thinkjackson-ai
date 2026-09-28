@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AnalyticsMarker } from "@/components/analytics-marker";
 import { Container } from "@/components/container";
 import { Reveal } from "@/components/reveal";
 import { CTASection } from "@/components/cta-section";
@@ -44,6 +45,7 @@ export default async function EntityDetailPage({ params }: EntityPageProps) {
 
   return (
     <>
+      <AnalyticsMarker event="node_viewed" properties={{ type: "entity", slug }} />
       <section className="py-24 sm:py-32">
         <Container>
           <Reveal>

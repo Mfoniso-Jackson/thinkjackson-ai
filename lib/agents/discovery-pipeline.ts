@@ -15,16 +15,20 @@ import {
 } from "@/lib/kg-store";
 import type { ResearchCandidate, ResearchCandidatePayload } from "@/lib/kg-types";
 
+export type DiscoveryMethod = "manual" | "autonomous" | "submitted";
+
 export type PipelineResult = { ok: true; data: ResearchCandidate } | { ok: false; error: string };
 
 /**
- * Below this Scout importance score, an autonomously-found candidate is
+ * Below this Scout importance score, a non-admin-curated candidate is
  * auto-rejected right after Scout instead of proceeding to Researcher and
  * Librarian — skipping two more AI calls and keeping the human review
  * queue free of Scout's own low-confidence noise (product announcements,
- * plugin how-tos, etc.). Only applied to autonomous discovery: a human
- * who manually pastes a URL has already made the relevance judgment, so
- * their submission always gets the full pipeline regardless of score.
+ * plugin how-tos, etc.). Exempts only "manual": an admin who pastes a URL
+ * has already made the relevance judgment. Both "autonomous" (Tavily
+ * search) and "submitted" (a public visitor via /submit) are untrusted in
+ * the same way — arguably a public submission deserves it even more, since
+ * anyone can propose anything.
  */
 const MIN_AUTONOMOUS_IMPORTANCE = Number(process.env.AUTONOMOUS_MIN_IMPORTANCE ?? "4");
 
@@ -45,7 +49,11 @@ function friendlyStoreError(error: unknown): string {
  * responsibility (admin auth vs. the cron's CRON_SECRET check), not this
  * function's, since it has no session to check either way.
  */
-export async function discoverFromUrl(url: string, discoveryMethod: "manual" | "autonomous"): Promise<PipelineResult> {
+export async function discoverFromUrl(
+  url: string,
+  discoveryMethod: DiscoveryMethod,
+  submission?: { reason: string; relationship: string; contactEmail?: string }
+): Promise<PipelineResult> {
   let parsedUrl: string;
   try {
     parsedUrl = new URL(url).toString();
@@ -82,7 +90,8 @@ export async function discoverFromUrl(url: string, discoveryMethod: "manual" | "
     retrievedAt: scoutResult.source.retrievedAt,
     excerpt: scoutResult.source.text,
     scout: scoutResult.output,
-    discoveryMethod
+    discoveryMethod,
+    ...(submission ? { submission } : {})
   };
 
   try {
@@ -108,8 +117,8 @@ export async function discoverFromUrl(url: string, discoveryMethod: "manual" | "
     return { ok: false, error: friendlyStoreError(error) };
   }
 
-  if (discoveryMethod === "autonomous" && scoutResult.output.importanceScore < MIN_AUTONOMOUS_IMPORTANCE) {
-    const reason = `Scout gave this a low importance score (${scoutResult.output.importanceScore}/10, below the ${MIN_AUTONOMOUS_IMPORTANCE} threshold for autonomous discoveries) — skipped Researcher and Librarian.`;
+  if (discoveryMethod !== "manual" && scoutResult.output.importanceScore < MIN_AUTONOMOUS_IMPORTANCE) {
+    const reason = `Scout gave this a low importance score (${scoutResult.output.importanceScore}/10, below the ${MIN_AUTONOMOUS_IMPORTANCE} threshold for non-admin-curated discoveries) — skipped Researcher and Librarian.`;
     try {
       await rejectResearchCandidate(candidate.id, "agent:scout", reason);
     } catch {

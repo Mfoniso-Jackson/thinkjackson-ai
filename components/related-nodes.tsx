@@ -1,24 +1,8 @@
-import Link from "next/link";
 import { resolveRelatedHybrid } from "@/lib/graph/hybrid";
-import { relationTypeLabels } from "@/lib/graph/types";
+import { RelatedNodeLink as NodeLink } from "@/components/related-node-link";
 import type { NodeRef } from "@/lib/graph/types";
 
 const VISIBLE_BY_DEFAULT = 4;
-
-function NodeLink({ item }: { item: { direction: string; relationType: string; resolved: { href: string; title: string; summary: string } } }) {
-  return (
-    <Link
-      href={item.resolved.href}
-      className="block rounded-lg border border-line bg-white/[0.035] p-5 transition hover:border-signal/35 active:border-signal/50"
-    >
-      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-steel">
-        {relationTypeLabels[item.relationType as keyof typeof relationTypeLabels] ?? item.relationType}
-      </p>
-      <h3 className="mt-2 text-base font-semibold text-white">{item.resolved.title}</h3>
-      <p className="mt-2 text-sm leading-6 text-steel">{item.resolved.summary}</p>
-    </Link>
-  );
-}
 
 /**
  * Renders visible-without-JS: the first few connections ship as real HTML,

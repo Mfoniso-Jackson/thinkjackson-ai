@@ -197,14 +197,21 @@ export type ResearchCandidatePayload = {
   researcher?: ResearcherOutput;
   librarian?: LibrarianOutput;
   /**
-   * "autonomous" when the URL came from the scheduled web-search cron
-   * rather than a human pasting it in — surfaced in the admin review queue
-   * so the reviewer knows whether a person or the system found this,
-   * matching the site's general provenance-over-polish stance. Omitted
-   * (not defaulted to "manual") for candidates created before this field
-   * existed, rather than guessing their origin.
+   * "autonomous" when the URL came from the scheduled web-search cron,
+   * "submitted" when a visitor proposed it via /submit — surfaced in the
+   * admin review queue so the reviewer knows whether a person (site admin
+   * or public visitor) or the system found this, matching the site's
+   * general provenance-over-polish stance. Omitted (not defaulted to
+   * "manual") for candidates created before this field existed, rather
+   * than guessing their origin.
    */
-  discoveryMethod?: "manual" | "autonomous";
+  discoveryMethod?: "manual" | "autonomous" | "submitted";
+  /** Only present when discoveryMethod is "submitted" — who proposed it and why, shown to the reviewer alongside the pipeline's own output. Never auto-trusted; it's context for a human, not a claim the pipeline itself makes. */
+  submission?: {
+    reason: string;
+    relationship: string;
+    contactEmail?: string;
+  };
 };
 
 export type ResearchCandidateStatus = "discovered" | "investigating" | "verified" | "rejected" | "published";

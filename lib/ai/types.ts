@@ -7,7 +7,7 @@
  * pre-building categories like "vision" or "coding" with no caller was
  * rejected as overengineering.
  */
-export type TaskType = "structured-agent" | "mission";
+export type TaskType = "structured-agent" | "mission" | "concierge";
 
 export type AIRequest = {
   task: TaskType;

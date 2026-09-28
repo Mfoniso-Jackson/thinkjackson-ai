@@ -14,7 +14,11 @@ export type AnalyticsEvent =
   | "outbound_repository_clicked"
   | "sales_lead_form_started"
   | "sales_lead_submitted"
-  | "sales_cta_clicked";
+  | "sales_cta_clicked"
+  | "node_viewed"
+  | "relationship_clicked"
+  | "question_asked"
+  | "submission_completed";
 
 export function trackEvent(event: AnalyticsEvent, properties?: Record<string, string>) {
   track(event, properties);

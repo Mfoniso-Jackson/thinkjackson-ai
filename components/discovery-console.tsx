@@ -138,10 +138,30 @@ function CandidateCard({
               found autonomously
             </span>
           ) : null}
+          {candidate.payload.discoveryMethod === "submitted" ? (
+            <span className="ml-2 inline-flex rounded-md border border-volt/40 bg-volt/10 px-2 py-1 font-mono text-[11px] uppercase tracking-[0.1em] text-volt">
+              submitted by a visitor
+            </span>
+          ) : null}
           <h3 className="mt-3 text-lg font-semibold text-white">{candidate.title}</h3>
           <a href={candidate.payload.url} target="_blank" rel="noreferrer" className="text-xs text-signal hover:text-white">
             {candidate.payload.url}
           </a>
+          {candidate.payload.submission ? (
+            <div className="mt-3 rounded-md border border-line bg-ink/40 p-3 text-xs leading-5 text-steel">
+              <p>
+                <span className="font-semibold text-white">Why it matters:</span> {candidate.payload.submission.reason}
+              </p>
+              <p className="mt-1">
+                <span className="font-semibold text-white">Relationship:</span> {candidate.payload.submission.relationship}
+              </p>
+              {candidate.payload.submission.contactEmail ? (
+                <p className="mt-1">
+                  <span className="font-semibold text-white">Contact:</span> {candidate.payload.submission.contactEmail}
+                </p>
+              ) : null}
+            </div>
+          ) : null}
         </div>
         {candidate.status === "verified" ? (
           <div className="flex gap-2">

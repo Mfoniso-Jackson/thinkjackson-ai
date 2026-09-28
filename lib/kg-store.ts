@@ -291,6 +291,69 @@ export async function listClaimsForEntity(entitySlug: string): Promise<Array<Pub
   }
 }
 
+export type ClaimWithContext = PublishedClaim & { nodeTitle: string; nodeSlug: string; nodeType: string; sourceUrl: string | null };
+
+/**
+ * Every published claim, with its node/source context resolved — used by
+ * Ask ThinkJackson's retrieval step. Fetches everything rather than
+ * filtering server-side: the graph is still small enough (tens of nodes)
+ * that scoring relevance in memory is simpler and more transparent than a
+ * bespoke SQL relevance query, matching the project's "don't overengineer"
+ * posture. Revisit only once claim volume makes this genuinely expensive.
+ */
+export async function listAllClaimsWithContext(): Promise<ClaimWithContext[]> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const claims = (await supabaseRequest("claims?select=*&order=created_at.desc")) as Array<{
+      id: string;
+      node_id: string;
+      statement: string;
+      epistemic_status: EpistemicStatusValue;
+      evidence: string | null;
+      source_id: string | null;
+      created_at: string;
+    }>;
+    if (claims.length === 0) return [];
+
+    const nodeIds = [...new Set(claims.map((c) => c.node_id))];
+    const nodes = (await supabaseRequest(`kg_nodes?id=in.(${nodeIds.join(",")})&select=id,title,slug,type`)) as Array<{
+      id: string;
+      title: string;
+      slug: string;
+      type: string;
+    }>;
+    const nodeById = new Map(nodes.map((n) => [n.id, n]));
+
+    const sourceIds = [...new Set(claims.map((c) => c.source_id).filter((id): id is string => id !== null))];
+    const sources = sourceIds.length
+      ? ((await supabaseRequest(`kg_sources?id=in.(${sourceIds.join(",")})&select=id,url`)) as Array<{ id: string; url: string }>)
+      : [];
+    const urlBySourceId = new Map(sources.map((s) => [s.id, s.url]));
+
+    return claims
+      .map((claim) => {
+        const node = nodeById.get(claim.node_id);
+        if (!node) return null;
+        return {
+          id: claim.id,
+          nodeId: claim.node_id,
+          statement: claim.statement,
+          epistemicStatus: claim.epistemic_status,
+          evidence: claim.evidence,
+          sourceId: claim.source_id,
+          createdAt: claim.created_at,
+          nodeTitle: node.title,
+          nodeSlug: node.slug,
+          nodeType: node.type,
+          sourceUrl: claim.source_id ? (urlBySourceId.get(claim.source_id) ?? null) : null
+        };
+      })
+      .filter((claim): claim is ClaimWithContext => claim !== null);
+  } catch {
+    return [];
+  }
+}
+
 const DISCOVERABLE_TYPES = "resource,paper,technology,dataset,experiment";
 
 /**

@@ -13,7 +13,9 @@ export const navGroups = [
       { label: "People", href: "/people" },
       { label: "Podcast", href: "/podcast" },
       { label: "Ventures", href: "/projects" },
-      { label: "Writing", href: "/writing" }
+      { label: "Writing", href: "/writing" },
+      { label: "Ask ThinkJackson", href: "/ask" },
+      { label: "Submit to the Map", href: "/submit" }
     ]
   },
   {
